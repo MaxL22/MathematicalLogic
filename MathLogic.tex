@@ -1,0 +1,1621 @@
+\title{Mathematical Logic}
+\author{Massimo Perego}
+\date{}
+
+\documentclass[11pt]{article}
+\usepackage{enumitem} 					%enumerate, itemize
+\usepackage{graphicx} 					%File grafici 
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{amsmath}  					%Roba Matematica
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{gensymb}  					%Simboli vari 
+%\usepackage{pgfplots} 					%Grafici
+\usepackage{texdate} 					%Data formattata, usare \printfdate{ISOext}
+\usepackage[hidelinks]{hyperref} 			%link
+\usepackage[english]{babel} 				%Selezione lingua per il documento
+\usepackage[autostyle, english = american]{csquotes} 	%Virgolette che si aprono/chiudono da sole
+\usepackage[font={small}]{caption} 			%Font caption immagini ridotto
+\usepackage[utf8]{inputenc} 				%Traduzione input
+%\usepackage{fancyhdr} 					%Controllo per headers e footers
+\usepackage[parfill]{parskip} 				%A capo niente spazio
+\usepackage{float}
+%\usetikzlibrary{datavisualization} 			%Grafici
+%\usetikzlibrary{datavisualization.formats.functions}
+\MakeOuterQuote{"}
+%\DeclareMathOperator{\sgn}{sgn}			%sgn operator
+\lstset{basicstyle=\ttfamily,language=c,keywordstyle=\color{blue}, showstringspaces=false} %Command is \begin{lstlisting}
+
+\usepackage{xfrac}
+\usepackage{lipsum}
+\usepackage{qtree}
+\usepackage{amsthm}
+\usepackage{tikz}
+
+\begin{document}
+	\initcurrdate
+	\maketitle 									%Titolo 
+	\setlist[itemize]{noitemsep} 							%Meno spazio in liste itemize
+	\setlist[enumerate]{noitemsep} 							%Meno spazio in liste enumerate
+	\newcommand{\nn}{\hfill \\}
+	%\newcommand{\RNum}[1]{\uppercase\expandafter{\romannumeral #1\relax}} 		%Numeri romani
+	%\newcommand{\myfont}{\fontfamily{lmtt}\selectfont } 				%Font BDD
+	%\newcommand{\notimplies}{\;\not\!\!\!\implies} %Comando not implies corretto
+	%\newcommand{\ts}{\hspace*{0.666cm}}
+	\newcommand{\bline}{\noindent\rule[0.5ex]{0.5\linewidth}{0.5pt}}
+	%Macros
+	\newcommand{\fl}{\mathcal{F}_\mathcal{L}}
+	\newcommand{\FL}{\mathcal{F}_\mathcal{L}}
+	\newcommand{\ta}{v: \mathcal{L} \rightarrow \{0,1\}}
+	\newcommand{\finsat}{\subseteq_\omega}
+	\newcommand{\FLe}{\sfrac{mathcal{F}_\mathcal{L}}{\equiv}}
+	
+	\tableofcontents
+	
+	\newpage
+	
+	\section*{Introduction}
+	\addcontentsline{toc}{section}{\protect\numberline{}Introduction}
+	Starting on logic: from the sentences
+	\begin{itemize}
+		\item 	Every man is mortal 
+		\item Socrates is a man
+		\\ \bline
+		\item Therefore, Socrates is mortal 
+	\end{itemize}
+	Under the line logical conclusions.\\
+	
+	This is an example of \textbf{syllogism}. \textbf{Consequences from some assumptions, which are considered true}.\\
+	The concept is that \textbf{if the assumptions are true, then the consequences must also be true}.\\
+	
+	Logic doesn't really think about each part of the sentence in a literal sense (we don't care what they "mean" in the real world), but \textbf{each sentence has to be formalized in a way that makes the "shape" of the information the most important part}. \\
+	
+	Another example: 
+	\begin{itemize}
+		\item All cats have seven legs 
+		\item Bob is a cat 
+		\\ \bline
+		\item Therefore Bob has seven legs
+	\end{itemize}
+	 
+	We can say this because the "shape" of the argument is the same as before, even if rationally it doesn't make sense, it's not "right", but \textbf{in a world in which these informations are true then the consequences must be true}.\\
+	
+	We don't care about the content, \textbf{we care about the shape and what our clauses imply}.  \\
+	
+	\newpage
+	
+	Another example: 
+	\begin{itemize}
+		\item Every tik is tok
+		\item Tak is tik 
+		\\ \bline
+		\item Therefore tak is tok
+	\end{itemize}
+	
+	It doesn't mean shit, but this is true whatever being tik, tak or tok means. \\
+	
+	We probably will want to model pieces of the real world, but logic doesn't care about that. \\
+	
+	\textbf{Formalizing} the shape of these examples:
+	\begin{itemize}
+		\item First sentence
+		$$ \forall x \;\;\;  P(x) \rightarrow Q(x) $$
+		For all individual in the world if it has the property of being tik($P()$), then it has the property of being tok ($Q()$).
+		
+		\item Second sentence 
+		$$ P(s) $$
+		Tak ($s$) is tik 
+		\\ \bline
+		
+		\item Therefore 
+		$$ Q(s) $$
+		Tak is tok
+	\end{itemize}
+	
+	We \textbf{formalized} the sentences, but we \textbf{lost some information in the process}, we lose the facts that we're talking about Socrates, or cats, we don't know that we're talking about mortality or number of legs. \\
+	
+	\newpage
+	
+	Considering another argument:
+	\begin{itemize}
+		\item Every flower is perfumed 
+		\item The rose is perfumed
+		\\ \bline
+		\item Therefore the rose is a flower? 
+	\end{itemize}
+	
+	Formalization
+	$$\forall x\;\;\; P(x) \rightarrow Q(x)$$
+	$$Q(s)$$
+	\begin{center}
+		\bline \\
+		Therefore $P(s)$? \\
+	\end{center}
+	
+	
+	This \textbf{doesn't hold}, our first predicate doesn't automatically works bidirectionally, we're \textbf{reversing our implication}. \\
+	With our assumptions there's no "proof" that $P(s)$ is valid if 
+	$P(x) \rightarrow Q(x)$. \\
+	
+	Final example: 
+	\begin{itemize}
+		\item If it rains I take my umbrella
+	\end{itemize}
+	
+	Which one is the \textbf{equivalent?}
+	\begin{enumerate}
+		\item If it doesn't rain I don't take my umbrella 
+		\item If I don't take my umbrella then it doesn't rain 
+		\item If I take the umbrella then it rains 
+		\item Either it doesn't rain or I take the umbrella
+		\item It rains only if I take the umbrella
+		\item It rains if I take the umbrella 
+		\item It rains if and only if I take the umbrella
+		\item None of the above 
+	\end{enumerate}
+	
+	To answer we need to formalize what we mean by equivalent: for logicians it means "given a world in which its true then the other is true and given a world in which it's false then the other is false". \\
+	
+	\newpage
+	
+	With this definition then the \textbf{second} one is \textbf{true}: 
+	$$ P(x) \rightarrow Q(x) \text{ then } \neg Q(x) \rightarrow \neg P(x) $$
+	
+	The first one is a simple negation, it can't be true as well. \\
+	
+	The third one is the opposite of the original sentence. \\
+	
+	There's at least two types of \textit{or} in a natural language, usually it's exclusive. The \textbf{fourth sentence is correct if the \textit{or} is inclusive}, if it's a \textit{xor} it can't be. \\
+	
+	\textbf{Five} is also a \textbf{correct} translation, once we agree on the meaning of words like "if", "only if", ...; It basically means that the first part (rain) can or can not happen based on the "umbrella" fact, which is the same as the original. \\
+	We're speaking in both cases about a necessary and sufficient condition for rain. Taking the umbrella is a necessary condition for rain, it doesn't cause the rain. There's no causation between clauses. \\
+	
+	Six and seven are false, since five is true. \\
+	
+	%End of L1
+	
+	\paragraph{Equivalence:} What does "saying the same thing" means in logic terms? \\
+	Two sentences \textbf{say the same thing if and only if (iff) they are true in exactly the same circumstances}, a.k.a. "possible world", a.k.a. "truth evaluation". \\
+	
+	If \textit{it rains} then \textit{I take my umbrella}: the cursive ones are stand alone sentences, each one is an \textbf{atomic sentence} (in logic terms), they cannot be further disassembled. \\
+	
+	\newpage
+	
+	So, \textbf{formalizing} the sentence
+	\begin{itemize}
+		\item it rains $= P$
+		\item I take my umbrella $= Q$
+		\item if/then $= \rightarrow$
+	\end{itemize}
+	$$ P \rightarrow Q $$
+	
+	There can be many (infinite) world in which "it rains", i.e. $P$, is true and another set of worlds in which "I take my umbrella", i.e. $Q$, is true. These sets can (will) intersect.\\
+	
+	Imagining something along the lines of a Venn diagram (I don't care enough to actually draw it), there will be the following regions:
+	\begin{itemize}
+		\item $P$: worlds in which it only rains
+		\item $Q$: worlds in which I only take my umbrella
+		\item $P \cap Q$: worlds in which it rains and I take my umbrella
+		\item $ \neg (P \vee Q)$: worlds in which it doesn't rain and I don't take my umbrella (outside all)
+	\end{itemize}
+	
+	For each region we have
+	\begin{itemize}
+		\item it rains but I don't take my umbrella (inside the $P$ region only) $\implies$ for the worlds in here the preposition is false
+		\item it doesn't rain but I take my umbrella ($Q$ region) $\implies$ for the worlds in here the preposition is true
+		\item inside both regions, it rains and I take my umbrella $\implies$ for the worlds here the preposition is true
+		\item outside both regions, doesn't rain, don't take my umbrella $\implies$ for the worlds here the preposition is true
+	\end{itemize}
+	Now we have a sort of "image" on which to evaluate if other sentences are equivalent. \textbf{If another preposition gives us the same image}, i.e. the same truth values in the same regions of the diagram, \textbf{it's equivalent to our original}.\\
+	
+	% Draw the Venn diagrams for all
+	% No, I don't think I will
+	
+	\newpage
+	
+	Considering our earlier example and taking sentence $\#4$:
+	$$ (\neg P) \vee Q $$
+	\begin{itemize}
+		\item $\neg P$ is true when $P$ is not (duh)
+		\item $P \vee Q$ is true inside the $P$, $Q$ and intersection region between them
+	\end{itemize}
+	
+	So, combining these two gives us that, $(\neg P) \vee Q$ is true
+	\begin{itemize}
+		\item inside $Q$ region
+		\item inside intersection between $P$ and $Q$
+		\item outside everything
+	\end{itemize}
+	
+	So it's the same as our initial example $P \rightarrow Q$, they give the same "picture", so they say the same thing, they are equivalent. \textbf{They are true in the same circumstances}. Each world is false (or true), i.e. has the same value, in both cases.\\
+	
+	Another case, sentence $\#2$:
+	$$ \neg Q \rightarrow \neg P$$
+	gives the same picture, while sentence $\# 1$
+	$$ \neg P \rightarrow \neg Q$$
+	does not (obviously, they're opposite to one another, they can't be both true).\\
+	
+	Considering sentences  $\#5$ 
+	$$ Q \leftarrow P \implies P \rightarrow Q $$
+	and $\#6$
+	$$ Q \rightarrow P$$
+	
+	$\# 6$ can be rephrased in $\# 6'$ as: If I take my umbrella it rains. Doesn't sound too correct, does it?\\
+	While in sentence $\#5$ "only if" goes the other way in respect to "if".\\
+	
+	\newpage
+	
+	Basically:
+	\begin{itemize}
+		\item \textbf{if} goes \textbf{one way} 
+		\item \textbf{only if} goes the \textbf{other way} 
+		\item \textbf{if and only if (iff)} goes \textbf{both ways}
+	\end{itemize}
+	
+	Inside
+	$$ P \rightarrow Q: \, true$$
+	It means that: 
+	\begin{itemize}
+		\item $P$ is \textbf{sufficient} for $Q$ to be true (if there's $P$ there must be $Q$)
+		\item $Q$ is \textbf{necessary} for $P$ to be true (there can't be $P$ without $Q$)
+	\end{itemize}
+	There can be no case in which $P$ (it rains) is true and $Q$ isn't (I take my umbrella).\\
+	
+	When is our preposition true? "$P \rightarrow Q$ is true" can be read as: 
+	\begin{center}
+		"When $P$ is true then $Q$ is true"
+	\end{center}
+	 or 
+	 \begin{center}
+	 	"Each single time $P$ is true then $Q$ is true (in every possible world)"
+	 \end{center}
+	
+	% End of the introduction called "What do we mean by propositional logic" (?) maybe? 
+	% Need to revise this shit, it's easy but fuck it's confused 
+	
+	\newpage
+	
+	\section{Introduction to Formulas}
+	A \textbf{"Sentence"} (or \textbf{"proposition"}) in natural language is a \textbf{grammaticarly correct sequence of words such that it makes sense to ask whether} (in the given circumstance) \textbf{it is true or false}.\\
+	
+	For example, "It rains" is a sentence, and we can wonder if in our world it's true or not (pretend not to be able to look out the window).\\
+	
+	"If it rains I stay at home" is another sentence, it can be true or not.\\
+	
+	"What's the time?" is NOT a sentence, it has "the time" as the answer, we don't wonder if it's true or false. In general, questions are not sentences.\\
+	
+	"$2+2 = 4$" is a sentence, in math language, but it's a sentence. We didn't define which language. "$2+2 = 5$" is also a sentence, usually wrong, but a sentence.\\
+	
+	\newpage
+	
+	\subsection{Meaning: Denotation vs Connotation}
+	Considering: 
+	\begin{itemize}
+		\item $4$
+		\item $2^2$
+		\item $6-2$
+		\item $5+1$
+	\end{itemize}
+	
+	They're \textbf{not sentences} because they \textbf{can't be true or false}, they just are. \\
+	
+	But all these expressions \textbf{mean the same thing}, they all \textbf{denote} the natural number $4$ (apart from the last one). This is the denotation of these expressions.\\
+	
+	They are all expressions that describe distinct ways to obtain $4$. The \textbf{denotation} is the number $4$, \textbf{all the other informations given by the expressions are connotations}.\\
+	For each given an expression $E$ we have the denotation of $E$ and the connotation(s) of $E$.\\
+	
+	A \textbf{denotation} is just a \textbf{name} (a pointer), \textbf{referring to a uniquely determined object} of discourse.\\
+	
+	The \textbf{connotations} are the \textbf{names with all the actual information they contain}. A name can be a complex thing and as such can contain informations.\\
+	
+	We will generally be dealing with denotation, since it's hard to deal with connotation as they can be any way to deal with the object of interest.\\
+	
+	\newpage
+	
+	\paragraph{Invariance under substitutions:} denotation enjoys the following property: two different ways to connote the same denoted object can be substituted and they mean the same thing. \\
+	
+	We can exchange $4$ and $2+2$, right? They are different strings but evaluate to the same object.\\
+	
+	What is the denotation of sentences? What can we say about (considering our "usual" arithmetic world):
+	\begin{itemize}
+		\item $4 = pred(5)$ we can say that it's $true$
+		\item $4 = succ(5)$: $false$
+		\item $4  =3+1$: $true$
+		\item $4 = 4$: $true$
+		\item $2 = 2$: $true$
+		\item $4 = 6$: $false$
+	\end{itemize}
+
+	The \textbf{denotation of a sentence}, in a given possible world, is just \textbf{one of two truth values}, $true$ or $false$. \textbf{Each sentence is evaluated to a precise truth value}.\\
+	
+	%Out of context, kinda
+	\paragraph{Tautology:} something that's true in every possible world, like $P(x) \vee \neg P(x)$ or $P \rightarrow P$. They can be indefinitely complex.\\
+	
+	\newpage
+	
+	\subsection{Formalization}
+	What is propositional logic about? Propositions (a.k.a. sentences) and their semantics (denotation, their truth values) in every possible circumstance.\\
+	
+	To formalize sentences we distinguish among \textbf{two types of sentences}: 
+	\begin{itemize}
+		\item \textbf{Atomic sentences},  simple sentences (It rains, Paul runs, I stay at home, ...) which cannot be simplified anymore, can't be disassembled further (in propositional logic), there aren't any connectives.\\
+		
+		\item \textbf{Complex sentences}, made from atomic sentences with connectives in between (It rains and Paul runs, Paul runs or I stay at home, ...), that can be arbitrarily complex
+	\end{itemize}
+	
+	The \textbf{formalization} of these types of sentences is:
+	\begin{itemize}
+		\item \textbf{Atomic sentences} $\rightarrow$ \textbf{atomic formulas}, they \textbf{become symbols} ($p$, $q$, $r$, $p_1$, ...), we fix an infinite (countable, don't need more) set of symbols, whatever they are, and they become a set of atomic formulas. \\
+		
+		$\mathcal{L}$ is called "propositional language" and its elements are called "atomic formulas" or "propositional letters/variables". In every possible world, every propositional letter can either be true or false. Basically: choose an infinite amount of symbols, each sentence is one.\\
+		
+		\item \textbf{Complex sentences}: fix a propositional language and the \textbf{set of propositional formulas on this language}.\\ $\mathcal{F}_\mathcal{L}$ is defined as follows (3 ways):
+		\begin{enumerate}
+			\item The smallest set such that: 
+			\begin{itemize}
+				\item for all $p \in \mathcal{L}$ then $p \in \mathcal{F}_\mathcal{L} (\mathcal{L} \subseteq \mathcal{F}_\mathcal{L})$
+				\item If $A, B \in \mathcal{F}_\mathcal{L}$ then $(A \cap B)$, $(A \cup B)$, $(A \rightarrow B)$, $(\neg A) \in \mathcal{F}_\mathcal{L}$
+			\end{itemize}
+			
+			\item $\mathcal{F}_\mathcal{L}$ is the intersection of all sets $\mathcal{X}$ such that:
+			\begin{itemize}
+				\item $\mathcal{L} \subseteq \mathcal{X}$
+				\item If $A,B \in \mathcal{X}$ then $(A \cap B)$, $(A \cup B)$, $(A \rightarrow B)$, $(\neg A) \in \mathcal{X}$
+			\end{itemize}
+
+			\item Inductive definition of $\mathcal{F}_\mathcal{L}$: $\mathcal{F}_\mathcal{L}$ is the set such that the following properties hold: 
+			\begin{itemize}
+				\item $\mathcal{L} \subseteq \mathcal{F}_\mathcal{L}$ (base)
+				\item If $A, B \in \mathcal{F}_\mathcal{L}$ then $(A \cap B)$, $(A \cup B)$, $(A \rightarrow B)$, $(\neg A) \in \mathcal{F}_\mathcal{L}$ (inductive step)
+				\item Nothing else belongs to $\mathcal{F}_\mathcal{L}$
+			\end{itemize}
+		\end{enumerate}
+		
+		\newpage
+		
+		The difference between first and last one is that in the former we specify "smallest set", while in the last it's a property.\\
+		
+		Examples: $p,q,r \in \mathcal{L}$, then
+		$$ ((p \wedge q) \rightarrow r) \in \mathcal{F}_\mathcal{L} $$
+		this is a valid formula and as such is in $\mathcal{F}_\mathcal{L}$
+		$$ p \vee \wedge (q \wedge r) \notin \mathcal{F}_\mathcal{L} $$
+		this is a string but it's not a formula.\\
+		We need to be able to recognize formulas from (ugly) strings. We need a certificate (a kind of proof) to certify that it's a formula.\\
+	\end{itemize} 
+	
+	It's worth noting that the set of connectives used in each definition is chosen arbitrarily, there can be indefinitely many (or few) and the formalization of complex sentences is based upon the considered connectives.\\
+	
+	% End of L2
+	
+	\newpage
+	
+	\subsection{Certifying formulas}
+	We need to \textbf{produce a certificate that a string is a formula}, a kind of proof that something is a formula. We don't need to prove that something is NOT a formula since we indirectly get that from the fact that there's no certificate for such formula.\\
+	
+	\subsubsection{$\mathcal{L}$-construction} 
+	First example of a certificate. An $\mathcal{L}$-construction is a way to \textbf{show that}, given \textbf{a word defined on the symbols in the alphabet} $w \in \left(\{\wedge, \vee, \neg, \rightarrow, ), (\} \cup \mathcal{L}\right)^\ast$ ("w" is any strings made up of these symbols) \textbf{is actually a formula}, i.e. $w \in \mathcal{F}_{\mathcal{L}}$. Defines how to prove that $w$ is a formula.\\
+	
+	%TODO: CHECK THESE POINTS ON THE SLIDES
+	We can consider $w$ as a sequence of strings $w_1, w_2, w_3, \, ...$ such that:
+	\begin{itemize}
+		\item $w_u = w$
+		\item For all $i =  1,2, ... , u$ one of these rules must hold
+		\begin{itemize}
+			\item $w_i \in L$ ($i$th position is a letter) 
+			\item or there is $j<i$ such that $w_i = (\neg w_j)$
+			\item or there are $j,k < i$ such that
+			\begin{itemize}[label=]
+				\item $w_i = (w_j \wedge w_k)$
+				\item $w_i = (w_j \vee w_k)$
+				\item $w_i = (w_j \rightarrow w_k)$
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+	%AT LEAST 'TILL HERE
+	
+	The string must be the negation of something else, the conjunction of something else or the disjunction of something else, implication, ecc.; it must be made of something else which is simpler.\\
+	
+	An $\mathcal{L}$-construction is a sequence of finitely many strings such that the last one is the one we want to prove. \\
+	
+	Example: for $(p \wedge q) \rightarrow r$ the sequence can be, adding one after the other: 
+	$$ p, q, p \wedge q, r $$
+	and using these we can build the original sentence, so we have an $\mathcal{L}$-construction for it and so $(p \wedge q) \rightarrow r \in \mathcal{F}_{\mathcal{L}}$.\\
+	
+	\newpage
+	
+	This isn't the only $\mathcal{L}$-construction possible, there are infinitely many possible ones (we can add useless stuff and even repetitions), we just \textbf{need the elements to build our string and prove it's a formula}. \\
+	
+	But we can have a \textbf{shortest} $\mathcal{L}$-construction, and at the minimum it will be as long as the number of letters $+$ number of connectives used in the formula we need to certify.\\
+	
+	%TODO
+	Provide a definition for a minimal length $\mathcal{L}$-construction for a formula $w \in \mathcal{F}_{\mathcal{L}}$ and use it to show that $\rightarrow (p \wedge q) \notin \mathcal{F}_{\mathcal{L}}$.\\
+	
+	$\mathcal{L}$-constructions should be (are) easy to find and easy to read.\\
+	
+	\newpage
+	
+	\subsubsection{Unique readability}
+	With $\mathcal{L}$-constructions comes another property of the syntactical aspect of formulas: \textbf{unique readability}. From the definition of $\mathcal{L}$-construction, it can be observed that if $w \in \mathcal{F}_{\mathcal{L}}$ then \textbf{exactly one} of the following cases \textbf{holds}
+	\begin{itemize}
+		\item $w \in \mathcal{L}$
+		\item or there is $v \in \mathcal{F}_{\mathcal{L}}$ such that $w = (\neg v)$
+		\item or there are $v_1, v_2 \in \mathcal{F}_{\mathcal{L}}$ such that $w = (v_1 \wedge v_2)$
+		\item or there are $v_1, v_2 \in \mathcal{F}_{\mathcal{L}}$ such that $w = (v_1 \vee v_2)$
+		\item or there are $v_1, v_2 \in \mathcal{F}_{\mathcal{L}}$ such that $w = (v_1 \rightarrow v_2)$
+	\end{itemize}
+	Essentially, $w$ is not decomposable, or is decomposable in a unique way.\\
+	
+	Example of a formal language lacking this property: let $w \in \Sigma^\ast$ and consider $w = v_1 \cdot v_2$ (concatenation of strings). This doesn't have unique readability, for example if we have $w = hello$ this is decomposable in $w = v_1 \cdot v_2$ in multiple ways
+	\begin{itemize}
+		\item $\epsilon, hello$
+		\item $h, ello$
+		\item $he, llo$
+		\item $hel, lo$
+		\item $hell, o$
+		\item $hello, \epsilon$
+	\end{itemize}
+	It's decomposable 6 different ways, we just need 2 to prove that it doesn't have unique readability.\\
+	
+	\newpage
+	
+	The language of formulas is designed to have unique readability.\\
+	
+	Unique readability of formulas provides us with other kinds of certificates that prove something is a formula.\\
+	
+	Unique readability provides us with a \textbf{unique parsing tree} for any formula. \\
+	
+	We can decompose uniquely the formula: $(p \wedge q) \rightarrow r$ in a parse tree such that  
+	
+	\Tree [.$(p\wedge q)\rightarrow r$ 
+	[.$p\wedge q$ [.\textit{p} ] [.\textit{q} ] ]
+	[.$r$ ] ]
+	
+	If we can have a single parsing tree it's a formula.\\
+	
+	\newpage
+	
+	\subsubsection{Structural induction principle}
+	Since we can \textbf{define} $\mathcal{F}_{\mathcal{L}}$ \textbf{as an inductive set} (third definition), it comes with its own \textbf{induction principle}.\\
+	
+	Let $\mathcal{P}$ be some property that can be asked of formulas (note that it may hold or not for any given formula, it doesn't have to be true, it's just a property for any given $\mathcal{F} \in \mathcal{F}_{\mathcal{L}}$). \\
+	
+	This property $\mathcal{P}$ holds for all formulas $\mathcal{F} \in \mathcal{F}_{\mathcal{L}}$ iff: 
+	\begin{enumerate}
+		\item \textbf{base}: $\mathcal{P}$ holds for all propositional letters $p \in \mathcal{L}$
+		\item \textbf{step(s)}: if $\mathcal{P}$ holds for generic formulas $A,B \in \mathcal{F}_{\mathcal{L}}$ then $\mathcal{P}$ holds for all the ways to build new formulas starting from $A$ and $B$: $(\neg A), (A \wedge B), (A \vee B), (A \rightarrow B)$
+	\end{enumerate}
+	
+	We can prove that this principle works since we defined $\mathcal{F}_{\mathcal{L}}$ in an inductive way. Proof of the structural induction principle: 
+	\begin{itemize}
+		\item Let $\mathcal{P}$ be a property satisfying "base" and "step(s)" (our principle).
+		\item Let $\mathcal{I} = \{\mathcal{F} \in \mathcal{F}_{\mathcal{L}}: \mathcal{P} \text{ holds for } \mathcal{F}\}$ (the set of formulas for which $\mathcal{P}$ holds).
+	\end{itemize}
+	
+	We now need to shows that $\mathcal{F}_{\mathcal{L}} = \mathcal{I}$ (the set of formulas in which the property holds coincides with the complete set of formulas).
+	
+	\begin{proof}
+		To do that we can show that:
+		\begin{itemize}
+			\item $\mathcal{F}_{\mathcal{L}} \subseteq \mathcal{I}$
+			\item $\mathcal{I} \subseteq \mathcal{F}_{\mathcal{L}}$
+		\end{itemize} 
+		The second one is trivial since $\mathcal{I}$ is defined as a subset of $\mathcal{F}_{\mathcal{L}}$. We only need to prove that all the formulas are in $\mathcal{I}$.\\
+		
+		Now since $\mathcal{P}$ satisfies "base" then $\mathcal{P}$ holds for all $p \in \mathcal{L}$, for all propositional letters $p \in \mathcal{L}$, $p \in \mathcal{I}$ then $\mathcal{L} \subseteq \mathcal{I}$. \\
+		Since $\mathcal{P}$ satisfies "step(s)" then if $A,B \in \mathcal{I}$ then $\mathcal{P}$ holds for $A$ and $B$ and then by "step(s)" $\mathcal{P}$ holds for $(\neg A), (A \wedge B), (A \vee B), (A \rightarrow B)$, and thus the same constructions we defined for $\mathcal{F}_{\mathcal{L}}$ belong to $\mathcal{I}$. Each formula $\mathcal{F}$ then belongs to $\mathcal{I}$. This also means that $\mathcal{F}_{\mathcal{L}} \subseteq \mathcal{I}$.\\
+	\end{proof}
+	
+	\subsection{Semantics of propositional logic}
+	The \textbf{meaning}, in the denotational sense, that \textbf{we want to attach to formulas}, which for sentences can be either true or false.\\
+	
+	Classical propositional logic is based on a couple of \textbf{underlying design ideas}:
+	\begin{itemize}
+		\item \textbf{Bivalence principle}
+		\item \textbf{Truth-functionality principle }
+	\end{itemize}
+	
+	\paragraph{Bivalence principle:} a sentence (formula) in every possible world \textbf{is either true or false}. Basically, we have just 2 truth values, either true or false. \\
+	
+	\paragraph{Truth-functionality principle:} (also called compositionality, extensionality) the \textbf{truth value of a sentence} (a formula) in a given possible world \textbf{only depends on the truth values of the sentences composing it} (and the fixed meaning of connectives). \\
+	We don't need to consider what the sentences says. We completely discard the meaning of the values, an atomic sentence is only either true or false and complex sentences with connectives lead to the logical meaning of the formula.\\
+	
+	An example of a non truth-functional realm is probability since it's based on, well, probability, it's based on the likelihood of events, we can't connect events with truth-functionality, we must consider what each event means, we can't reason on probability without knowing what each probability means (which is what truth-functionality would imply).\\
+	
+	\newpage
+	
+	Formalizing time?
+	
+	For instance, take conjunction
+	$$ A, B \in \mathcal{F}_{\mathcal{L}} \;\;\;\;\;\; A \wedge B$$
+	We want to evaluate the value in a given possible world.\\
+	
+	By bivalence we know that this is either true or false.\\
+	By truth-functionality this value depends only on
+	\begin{itemize}
+		\item whether $A$ is true or false 
+		\item whether $B$ is true or false
+	\end{itemize} 
+	
+	\paragraph{The notion of "possible world":} it's a \textbf{function} from the set of propositional letters to the set of truth values 
+	$$ v: \, \mathcal{L} \rightarrow \{0,1\} $$
+	
+	It \textbf{assigns a truth value to each of the propositional letters}. Basically it gives the truth value for every variable/letter.\\
+	A possible world (circumstance) is formalized by a map $ v: \, \mathcal{L} \rightarrow \{0,1\} $ called truth-evaluation or truth-assignment.\\
+	
+	The \textbf{set of all possible worlds is the set of all possible truth evaluations}.\\
+	
+	Semantics of $(A\wedge B)$: we can \textbf{extend} $v$ to apply it to things like $(A\wedge B)$ (basically evaluate the value of this):
+	$$ \tilde{v} (A\wedge B) \in \{0,1\}$$
+	
+	Which depends only on $\tilde{v}(A)$ and $\tilde{v}(B)$ (the values of the atomic formulas that compose it) and on the fixed semantics of $\wedge$.\\
+	
+	We want to combine the semantics of  $\tilde{v}(A)$ and $\tilde{v}(B)$, fixing 
+	$$ I_{\wedge} : \, \{0,1\}^2 \rightarrow \{0,1\} $$
+	Basically the truth table of the connective $\wedge$.
+	
+	\newpage
+	
+	$$ \tilde{v}(A \wedge B) := I_\wedge (\tilde{v}(A),  \tilde{v}(B))$$
+	$$ I_{\wedge} : \, \{0,1\}^2 \rightarrow \{0,1\}  = a \cdot b = \min \{a,b\} $$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \wedge b$ \\
+			\hline 
+			0 & 0 & 0 \\
+			0 & 1 & 0 \\
+			1 & 0 & 0 \\
+			1 & 1 & 1
+		\end{tabular}
+	\end{center}
+	
+	$$ I_{\vee} : \, \{0,1\}^2 \rightarrow \{0,1\} = a + b = \max \{a,b\} $$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \vee b$ \\
+			\hline 
+			0 & 0 & 0 \\
+			0 & 1 & 1 \\
+			1 & 0 & 1 \\
+			1 & 1 & 1
+		\end{tabular}
+	\end{center}
+	
+	$$ I_{\neg} : \, \{0,1\} \rightarrow \{0,1\} = 1 - a $$
+	\begin{center}
+		\begin{tabular}{c | c}
+			$a$ & $\neg a$ \\
+			0 & 1 \\
+			1 & 0
+		\end{tabular}
+	\end{center}
+	
+	$$ I_{\rightarrow} : \, \{0,1\}^2 \rightarrow \{0,1\} = \max\{1-a, b\}$$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \rightarrow b$ \\
+			\hline 
+			0 & 0 & 1 \\
+			0 & 1 & 1 \\
+			1 & 0 & 0 \\
+			1 & 1 & 1
+		\end{tabular}
+	\end{center}
+	
+	\newpage
+	
+	Exercise: specify the function for co-implication $\leftrightarrow$ and exclusive or $\oplus$.\\
+	$$ I_{\leftrightarrow} : \, \{0,1\}^2 \rightarrow \{0,1\} = $$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \leftrightarrow b$ \\
+			\hline 
+			0 & 0 & 1 \\
+			0 & 1 & 0\\
+			1 & 0 & 0\\
+			1 & 1 & 1
+		\end{tabular}
+	\end{center}
+	%TODO 	
+	
+	Also, what's the relation between implication and another one of these functions?\\
+	Answer:
+	
+	\newpage
+	
+	\paragraph{Definition:} A \textbf{truth evaluation is an arbitrarily chosen map} 
+	$$v: \mathcal{L} \rightarrow \{0,1\}$$
+	
+	\paragraph{Definition:} the canonical extension $\tilde{v}: \mathcal{F}_{\mathcal{L}} \rightarrow \{0,1\}$ of $v : \mathcal{L} \rightarrow \{0,1\}$ is defined as follows:
+	\begin{itemize}
+		\item if $f = p$, $p \in \mathcal{L}$ then $\tilde{v} (p) = v(p)$
+		\item if $A, B \in \mathcal{F}_{\mathcal{L}}$ then 
+		\begin{itemize}[label=]
+			\item $\tilde{v} (A \wedge B) := I_\wedge (\tilde{v} (A), \tilde{v} (B))$
+			\item $\tilde{v} (A \vee B) := I_\vee (\tilde{v} (A), \tilde{v} (B))$
+			\item $\tilde{v} (A \rightarrow B) := I_\rightarrow (\tilde{v} (A), \tilde{v} (B))$
+			\item $\tilde{v} (\neg A) := I_\neg (\tilde{v} (A))$
+		\end{itemize}
+	\end{itemize}
+	
+	%Maybe change the sec title to "introduction to formulas"
+	
+	\nn
+	
+	The canonical extension basically means that $v$ gives us the value of a single letter but can be extended for any valid formula.\\
+	The tilde might be forgotten.\\
+	
+	\newpage
+	
+	\subsubsection{Tautologies and other definitions}
+	\paragraph{Definition:} a \textbf{tautology} is a formula $F$ (so $F \in \mathcal{F}_\mathcal{L}$) is a tautology iff $\tilde{v} (F) = 1$ for all $v: \mathcal{L} \rightarrow \{0,1\}$, i.e. it's always true.\\
+	
+	\paragraph{Definition:} a \textbf{satisfiable formula}, a formula$ F \in \mathcal{F}_\mathcal{L}$ is satisfiable iff
+	$$ \tilde{v} (F) = 1 $$ 
+	for at least one assignment $v: \mathcal{L} \rightarrow \{0,1\}$, i.e. there is at least one assignment that makes it true.\\
+	
+	A tautology obviously is a satisfiable formula (implication). \\
+	
+	\paragraph{Definition:} a formula $F \in \mathcal{F}_\mathcal{L}$ is (these will be kinda synonyms in our usage)
+	\begin{itemize}
+		\item \textbf{contradiction}
+		\item \textbf{unsatisfiable}
+		\item \textbf{refutable}
+	\end{itemize}
+	iff $\tilde{v} (F) = 0$ for all assignments $v : \mathcal{L} \rightarrow \{0,1\}$, i.e. is never true.\\
+	
+	\paragraph{Fact:} Let $F \in \mathcal{F}_\mathcal{L}$ then $F$ is a tautology iff 
+	$$ \neg F \text{ is a contradiction}$$
+	
+	\begin{proof}
+		$F$ is a tautology iff (by definition of tautology) $\tilde{v} (F) = 1$ for all $v: \mathcal{L} \rightarrow \{0,1\}$.\\
+		
+		By definition of (truth table) $I_\neg \rightarrow$ iff $\tilde{v} (\neg F) = 0$ for all $v: \mathcal{L} \rightarrow \{0,1\}$, and thus by definition of contradiction $\neg F$ is unsatisfiable.\\
+	\end{proof}
+	
+	\newpage
+	
+	To \textbf{prove} that the \textbf{implication is correct} the way it is:
+	\begin{proof}
+		I mean, not really a proof but kind of (not a proof, I just like the little square at the end). By referring to the truth table of 
+		$$ I_\rightarrow : \, \{0,1\}^2 \rightarrow \{0,1\} $$
+		As seen some pages behind. Exercise: write down all possible truth tables on 2 arguments and assign a fit name (or a formula) to each one of them and find the only one that can reasonably named implication $a \rightarrow b$.\\
+		
+		For $n$ variables there are $2^{2^n}$ possible truth tables.  To denote the all false table $\bot$, to denote all true $\top$.\\
+		
+		I won't actually write all truth tables, I trust the guy.\\
+		
+		Progression on combinatorics: 
+		$$ |\{F : \{0,1\}^n \rightarrow \{0,1\} \}| = 2^{2^n} $$
+		Which is a specific version for a more general formula: with $A$ and $B$ finite sets
+		$$ |\{F : A \rightarrow B \}| = |B|^{|A|} $$
+		So $|B|$ options for each element of $A$.\\
+		
+		Let $\mathcal{S}$ be a set of $n$ many elements. There are $2^n$ possible subsets of $\mathcal{S}$, basically the cardinality of $\mathcal{S} \rightarrow \mathcal{S}$.\\
+		
+		$$ 2^n = |\mathcal{P} (\mathcal{S})| = 2^{|\mathcal{S}|} = |\{F : \mathcal{S} \rightarrow \{0,1\}\}|$$
+		characteristic functions of the subsets of $\mathcal{S}$
+		$$ X_A :  \mathcal{S} \rightarrow \{0,1\} \;\;\;
+		\begin{cases}
+			\text{ if } \; X_A \in A \; \text{ then } \; X_A (x) = 1 \\
+			\text{ if } \; X_A \notin A \; \text{ then } \; X_A (x) = 1 \\
+		\end{cases}
+		$$
+		
+		\newpage
+		
+		"If a natural number is divisible by $4$ then it is divisible by $2$"
+		$$ n = 4k \implies n = (2 \cdot 2) k \implies 2 \cdot (2k) $$
+		The only assumption is that $n$ is divisible by 4 for all natural numbers.\\
+		
+		"If 4 is divisible by 4, then 4 is divisible by 2".\\
+		This is a type of $true \rightarrow true = true$.\\
+		
+		But this must be $true$ for all natural numbers: "If 3 is divisible by 4, then 3 is divisible by 2"
+		This is a $false \rightarrow false = true$, so $false$ implies $false$ must be $true$.\\
+		
+		The last case of implication can be covered by: "If 6 is divisible by 4 then 6 is divisible by 2". \\
+		Which is the case $false \rightarrow true = true$.\\
+	\end{proof}
+	
+	We want to prove how we can \textbf{encode} the \textbf{infinite information} given by a general truth value assignment on all letters of $\mathcal{L}$ in \textbf{finite time}.\\
+	
+	\paragraph{Lemma:} let $F \in \mathcal{F}_\mathcal{L}$ be a formula and let $v,v' : \mathcal{L} \rightarrow \{0,1\}$ be two (possibly) distinct truth value assignments.  Then: if $v(p) = v'(p)$ for all $p \in \mathcal{L}$ letters \textbf{actually occurring} in $F$ (occur as a sub-formula, so occur in every $\mathcal{L}$-construction of $F$) then $v(F) = v'(F)$. The only relevant part of an assignment is the \textbf{letters actually occurring}, we don't care about all the infinite non-occurring letters. \\
+	
+	\begin{proof}
+		Structural induction of F
+		\paragraph{Base:} If $F=p$, $p \in \mathcal{L}$ then $p$ occurs in $F$, trivially then by hypothesis $v(p) = v'(p)$, then by definition of $\tilde{v}$, $\tilde{v} (p) = \tilde{v}'(p)$. \\
+		
+		\paragraph{Steps:} If $F = (\neg A)$ for some $A \in \mathcal{F}_\mathcal{L}$, then by induction hypothesis (I.H.) $\tilde{v} (A) = \tilde{v}'(A)$. Since each $p \in \mathcal{L}$ occurring in $F$ occurs in $A$ too, by definition of $I_\neg: \tilde{v} (\neg A) = \tilde{v} (\neg A)$ then $v(F) = v'(F)$.\\
+		
+		If $F = (A \wedge B)$ for some $A, B \in \mathcal{F}_\mathcal{L}$ then each $p \in \mathcal{L}$ occurring in $A$ occurs in $F$ too, each $p \in \mathcal{L}$ occurring in $B$ occurs in $F$ too. \\
+		
+		Each $p \in \mathcal{L}$ occurring in $F$ occurs in $A$ or in $B$.\\
+		So we can apply the I.H. $\tilde{v} (A) = \tilde{v}' (A)$ and $\tilde{v} (B) = \tilde{v}' (B)$. By definition of $I_\wedge$
+		$$ \tilde{v} (A \wedge B) = I_\wedge (\tilde{v}(A), \tilde{v}(B)) =  I_\wedge (\tilde{v}' (A), \tilde{v}' (B)) = \tilde{v}' (A \wedge B) $$
+	\end{proof}
+	
+	\paragraph{Remarks on the lemma:} the lemma allow us \textbf{evaluate the behavior of any} $F \in \mathcal{F}_\mathcal{L}$ under all assignments (of which there are infinitely many) \textbf{just by computing the truth table of} $F$ (finite object, albeit it can be large), whose columns are indexed by the prepositional letters actually occurring in $F$.\\
+	
+	If  in $F$ are present exactly the propositional letters $p_1, p_2, \, ... \, , p_n$, how many rows does the table for $F$ have? There are $2^n$ rows, it's exponential in the length of $F$. Each row is a possible assignment (function) of $p_1, \, ... \, , p_n \rightarrow \{0,1\}$.\\
+	
+	Let $A,B \in \mathcal{F}_\mathcal{L}$:
+	\begin{enumerate}
+		\item $A \rightarrow \neg A$: satisfiable, but not a tautology
+		\item $A \wedge \neg A$: unsatisfiable 
+		\item $A \rightarrow (A \vee B)$: tautology
+	\end{enumerate}
+	You can check with truth tables (under each column the result of each operand):
+	$$
+	\begin{array}{c | c c c c | c}
+		A & A & \rightarrow & \neg & A & \\
+		\hline
+		0 & 0 & 1 & 1 & 0 & 1\\
+		1 & 1 & 0 & 0 & 1 & 0\\
+	\end{array}
+	\;\;\;\;
+	\begin{array}{c | c c c c | c}
+		A & A & \wedge & \neg & A & \\
+		\hline
+		0 & 0 & 0 & 1 & 0 & 0\\
+		1 & 1 & 0 & 0 & 1 & 0\\
+	\end{array}
+	\;\;\;\;
+	\begin{array}{c c | c c c c c | c}
+		A & B & A & \rightarrow & (A & \vee & B) & \\
+		\hline
+		0 & 0 & 0 & 1 & 0 & 0 & 0 & 1\\
+		0 & 1 & 0 & 1 & 0 & 1 & 1 & 1\\
+		1 & 0 & 1 & 1 & 1 & 1 & 0& 1 \\
+		1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+	\end{array}
+	$$
+	
+	\newpage
+	
+	Exercise: verify that the following are tautologies
+	\begin{itemize}
+		\item $A \rightarrow (B \rightarrow A)$ (called "weakening")
+		\item $(\neg \rightarrow A) \rightarrow A$ (called "consequentia mirabilis")
+		\item $(A \rightarrow B) \vee (B \rightarrow A)$ (called "prelinearity")
+		\item $(A \wedge B) \rightarrow A$
+		\item $A \rightarrow (A \vee B)$
+		\item $A \vee \neg A$ (called "tertium non datur" or "excluded middle")
+		\item $\neg \neg A \rightarrow A$ and $A \rightarrow \neg \neg A$ (called "double negation laws" or "involutiveness of negation")
+	\end{itemize}
+	
+	Let $A \in \mathcal{F}_\mathcal{L}$, $A \rightarrow \neg A$, the truth table:
+	$$
+	\begin{array}{c | c c c c | c}
+		A & A & \rightarrow & \neg & A & \\
+		\hline
+		0 & 0 & 1 & 1 & 0 & 1\\
+		1 & 1 & 0 & 0 & 1 & 0\\
+	\end{array}
+	$$
+	This \textbf{does not take into consideration differences between $A$ and simple letters}, but if we instantiate $A$ with a specific formula, for example $A: p \wedge \neg p$ (a contradiction), we can verify that $(p \wedge \neg p) \rightarrow \neg (p \wedge \neg p) $ is a tautology.\\
+	
+	But if $A: p \vee \neg p$ then 
+	$$ (p \vee \neg p) \rightarrow \neg (p \vee \neg p) $$
+	is a contradiction.\\
+	
+	A tautology/contradiction remains a tautology/contradiction if you replace letters with arbitrary formulas (the contrary doesn't necessarily hold).\\
+	
+	Prelinearity: $(A \rightarrow B) \vee (B \rightarrow A)$ tautology with ($A, B  \in \mathcal{F}_\mathcal{L}$). This kinda means that "in every possible world $A \rightarrow B$ is true or $B \rightarrow A$ is true".\\
+	Looking at the individual truth tables we can see that it's a tautology.\\
+	
+	Excluded middle: $A \vee \neg A$, the refusation of this tautology is the start of other types of logic, not propositional.\\
+	This means "in every possible world A is true or A is false", which is clearly a tautology.\\
+	
+	\newpage
+	
+	% End of L4
+	
+	\section{Semantics notions for sets of formulas}
+	
+	Let $\Gamma \subseteq \fl$ ($\Gamma$ is a subset of the set of all formulas), then $\Gamma$ is called a \textbf{theory}.\\
+	
+	\paragraph{Definition:} a \textbf{theory} $\Gamma \subseteq FL$ is \textbf{satisfiable} iff it exists a truth value assignment $v: \mathcal{L} \rightarrow \{0,1\}$ such that for all $\gamma \in \Gamma$ then $\tilde{v} (\gamma) = 1$ (in symbols $v \models \gamma$ we mean $v$ satisfies $\gamma$ as a formula) .\\
+	
+	\paragraph{Definition:} $\Gamma \subseteq \mathcal{F}_\mathcal{L}$ is \textbf{unsatisfiable} iff for all assignments $v: \mathcal{L} \rightarrow \{0,1\}$ there exists at least $\gamma \in \Gamma$ such that $\tilde{v} (\gamma) = 0$.\\
+	
+	$v \not \models \Gamma$ for all $\ta$. $v \not \models \gamma$ if $\tilde{v} (\gamma) = 0$.\\
+	
+	\newpage
+	
+	\subsection{Logical consequence}
+	Of a formula $F \in \fl$ from a theory $\Gamma \subseteq \fl$).\\
+	
+	\paragraph{Definition:} let $\Gamma \subseteq \FL$, $F \in \FL$ , then $F$ \textbf{is a logical consequence of} $\Gamma$, $\Gamma \models F$, iff for every assignment $\ta$ satisfying $\Gamma$ it holds that $v$ satisfies $F$ too:
+	$$ v \models \Gamma \implies v \models F $$
+	
+	\vfill
+	
+	To express the fact that a given formula $F \in \FL$ \textbf{is a tautology} by means of the notion of logical consequence there are several ways, for example 
+	$$ T \models F $$
+	with $T$ being an always true constant.\\
+	Another solution: let $\Omega$ be a set of tautologies: 
+	$$\Omega \models F$$
+	Or even:
+	$$ \emptyset \models F$$
+	since you can't falsify a formula in the $\emptyset$, there's no formula.\\
+	For a \textbf{tautology} is also commonly used:
+	$$ \models F$$
+	with no operand on the left side.\\
+	
+	\newpage
+	
+	\subsubsection{Fundamental semantic properties of theories with respect to logical consequence}
+	
+	\paragraph{Lemma:} let $\Gamma \subseteq \FL$ be a theory and $A \in \FL$, then $\Gamma \models A$ \textbf{iff} $\Gamma \cup \{\neg A\}$ is unsatisfiable.\\
+	
+	\begin{proof}
+		$\Gamma \models A$ \textbf{iff} (by def of $\models$) for all assignments $\ta$, $\tilde{v} (\gamma) =1$ for all $\gamma \in \Gamma$ implies $\tilde{v} (A) = 1$.\\
+		
+		\textbf{Iff} for all $\ta$ either it is not the case that $\tilde{v} (\gamma) = 1$ for all $\gamma \in \Gamma$, or $\tilde{v} (A) = 1$.\\
+		
+		\textbf{Iff} for all $\ta$ there exists $\gamma \in \Gamma$ such that $\tilde{v} (\gamma) = 0$ or $\tilde{v} (\neg A) = 0$.\\
+		
+		\textbf{Iff} (by definition of unsatisfiability) $\Gamma \cup \{\neg A\}$ is unsatisfiable.\\
+	\end{proof}
+	
+	Basically, if $A$ is a logical consequence of $\Gamma$ then there's no case in which  $\Gamma \cup \{\neg A\}$ can be true, since for all assignments in which $\Gamma$ is satisfied $A$ is also satisfied and thus $\neg A$ is always false.\\
+	
+	\newpage
+	
+	\paragraph{Lemma (Semantical deduction Lemma):} Let $P,Q \in \FL$, $\{P\} \models Q$ iff $P \rightarrow Q$.  The logical consequence relation can be internalized using the logical implication connective.\\
+	
+	\begin{proof}
+		$P \models Q$ \textbf{iff} (by definition of $\models$) for all $\ta$, $\tilde{v} (P) = 1$ implies $\tilde{v} (Q) = 1$.\\
+		
+		\textbf{Iff} (by definition of $I_\rightarrow$) $\tilde{v} (P \rightarrow Q) = 1$ for all $\ta$ that is $P \rightarrow Q$ is a tautology.\\
+	\end{proof}
+	
+	Saying $P \models Q$ or $P \rightarrow Q$ is kinda the same.\\
+	
+	\paragraph{Theorem (Semantical deduction):} Let $\Gamma \subseteq \FL$ and $P,Q \in \FL$, then $\Gamma \cup \{P\} \models Q$ (which will be also written as $\Gamma, P \models Q$) iff $\Gamma \models P \rightarrow Q$.\\
+	
+	\begin{proof}
+		$\Gamma, P \models Q$ \textbf{iff} (by definition of $\models$) for all assignments $\ta$ such that $v \models \Gamma$ and $\tilde{v}(P) = 1$ (all assignments that satisfy both $\Gamma$ and $P$) then $\tilde{v}(Q) = 1$ (also satisfy $Q$).\\
+		
+		\textbf{Iff} (by definition of $I_\rightarrow$) for all $\ta$ such that $v \models \Gamma$ it holds that $\tilde{v}(P \rightarrow Q) =1$.\\
+		
+		\textbf{Iff} (by definition of $\models$) $\Gamma \models P \rightarrow Q$.\\
+	\end{proof}
+	
+	This is a stronger version of the lemma presented earlier.\\
+	
+	\newpage
+	
+	\subsection{Compactness Theorem}
+	It's one of the theorems that lies at the foundation of logic. \\
+	
+	Let $\Gamma \subseteq \FL$, $\Gamma$ \textbf{is satisfiable iff} for all $\Gamma' \subseteq \Gamma$, with $\Gamma'$ finite, then $\Gamma'$ \textbf{is satisfiable}. Every subset of a set of satisfiable formulas is satisfiable.\\
+	
+	Do we \textit{really} need to consider the case $\Gamma$ is infinite (contains infinitely many formulas)? Yeah, kinda, it will be shown that in first order logic a single formula may contain the amount of information of infinitely many propositional formulas (whatever this means).\\
+	
+	Compactness theorem allows us to \textbf{reduce the analysis of satisfiability} of a possibly infinite theory \textbf{to the analysis of its finite sub-theories}, but observe that \textbf{there are infinitely many finite sub-theories of an infinite theory}.\\
+	
+	Rewriting the theorem: $\Gamma \subseteq \FL$ \textbf{is satisfiable iff} for all $\Gamma' \subseteq_{\omega} \Gamma$ then $\Gamma'$ is satisfiable (with $\subseteq_{\omega}$ meaning finite subset). The non-trivial case is when $\Gamma$ is infinite.\\
+	
+	\begin{proof}
+		Proving the statement \textbf{from left to right} is trivial, if $v \models \Gamma$ then, clearly, by the definition of satisfiability and the notion of subset, $v \models \Gamma'$, for each $\Gamma' \subseteq \Gamma$ too (not even $\subseteq_\omega$, just any subset, even infinite).\\
+	\end{proof}
+	Proving right to left is not so trivial.\\
+	
+	Consider the statement \textbf{equivalent} to the theorem \textbf{obtained via contraposition} ($A \rightarrow B$ says the same thing as $\neg B \rightarrow \neg A$). Again from left to right: if there is $\Gamma' \subseteq_\omega$ is unsatisfiable then clearly $\Gamma$ is unsatisfiable.\\
+	
+	From right to left: if $\Gamma$ \textbf{is unsatisfiable}, then there \textbf{exists} $\Gamma' \subseteq_\omega \Gamma$ such that $\Gamma'$ is \textbf{unsatisfiable}.\\
+	
+	\newpage
+	
+	\paragraph{Some terminology} before the proof: we say that a given theory $\Gamma \subseteq \FL$ is \textbf{finitely satisfiable} (fin sat) \textbf{iff} for all finite sub-theories $\Gamma' \subseteq_\omega \Gamma$, $\Gamma'$ \textbf{is satisfiable}.
+	
+	The proof of the non trivial part consists of $\Gamma$ fin sat, implies $\Gamma$ sat.\\
+	
+	%TODO proof should maybe start here
+	\begin{proof}
+		We need some facts before the proof.\\
+		
+		\paragraph{Preparation:} we fix any \textbf{arbitrarily chosen listing} $F_1, F_2, \, ... \, , F_k , \, ...$ (enumerably infinite, without repetitions) of all formulas $\in \FL$. To concretely implement such an enumeration we have two issues to face:
+		
+		\begin{itemize}
+			 \item $1^{st}$ issue: the \textbf{alphabet of} $\FL$: $\{\wedge, \vee, \neg, \rightarrow\} \cup \{),(\} \cup \mathcal{L}$. This contains an infinite set an thus is an \textbf{infinite alphabet}. To \textbf{switch to a finite alphabet}: 
+			$$ \{\wedge, \vee, \neg, \rightarrow\} \cup \{),(\} \cup \{p,l\} $$
+			
+			with $p_k \in \mathcal{L}$ written as $p_k = plll \, ... \, l$, with $k$ many $l$s (just a unary encoding, we just need some kind of finite encoding, let it be a unary encoding, binary, base 10, hex, ...).\\
+			
+			\newpage
+			
+			\item $2^{nd}$ issue: take the alphabet $\{a,b, \, ... \, , \}$: list all the words on this alphabet, but they are infinite and we must define an order. If we use a lexicographic ordering we get: 
+			
+			\begin{center}
+				\begin{tabular}{| c |}
+					\hline
+					$\epsilon$ (empty word)\\
+					$a$\\
+					$aa$\\
+					$a...aa$\\
+					...\\
+					$b \leftarrow$ never reached\\
+					\hline
+				\end{tabular}
+			\end{center}
+			
+			So the letter $b$ appears after an infinite amount of words. Using a short-lex ordering might be fairer (each word appears at a finite stage):
+			\begin{center}
+				\begin{tabular}{| c |}
+					\hline
+					$\epsilon$ (empty word)\\
+					$a$\\
+					... \\
+					$z$ \\
+					$aa$\\
+					$ab$\\
+					...\\
+					$zz$\\
+					\hline
+				\end{tabular}
+			\end{center}
+			First word of length 1, then length 2, ecc.
+		\end{itemize}
+		
+		\newpage
+		
+		\paragraph{The construction:} we \textbf{define} an \textbf{infinite succession of theories} (sets of formulas) as follows: the succession 
+		$$ D_0, D_1, \, ... \, , D_k , \, ... $$
+		
+		Which is inductively defined as follows:
+		\begin{itemize}
+			\item \textbf{Base:} 
+			$$D_0 := \Gamma$$
+			
+			\item \textbf{Step:}
+			$$ D_{n+1} := \begin{cases}
+				D_n \cup \{F_{n+1}\} \; & \text{ if } D_n \cup \{F_{n+1}\} \text{ is fin sat} \\
+				D_n \cup \{\neg F_{n+1}\}  & \text{ otherwise }
+			\end{cases}
+			$$
+		\end{itemize}
+		And we also define: 
+		$$ D := \bigcup_{i \in \mathbb{N}} D_i$$
+		
+		Note that this definition is well given and does not directly imply that $D_n \cup \{\neg F_{n+1}\}$ is fin sat, but just that $D_n \cup \{F_{n+1}\}$ is not fin sat.\\
+		
+		Now we shall prove some facts about the sequence
+		$$ \Gamma = D_0 \subseteq D_1 \subseteq D_2 \subseteq \, ... \, \subseteq D_k \subseteq \, ... \, \subseteq D $$
+		
+		To prove $\Gamma$ fin sat implies $\Gamma$ sat, we first need to prove some facts about the sequence above.\\
+		
+		\newpage
+		
+		\paragraph{Fact 1:} \textbf{every member of the sequence} $D_n$ (for all $n \in \mathbb{N}$) is himself \textbf{fin sat}.
+		
+		\begin{proof}
+			By induction on $n$
+			\begin{itemize}
+				\item \textbf{Base:} $n=0$, $D_0$ is fin sat, by definition, since $D_0 = \Gamma$ and $\Gamma$ is fin sat.
+				
+				\item \textbf{Step:} assume that Fact 1 is true for $D_0, D_1, \, ... \, , D_n$ and prove it for $D_{n+1}$. To prove this we shall proceed by contradiction. So we assume $D_{n+1}$ is not fin sat with the aim of finding a contradiction. \\
+				
+				Absurdum Hypothesis: $D_{n+1}$ is not fin sat. \\
+				
+				Hence by the definition of the sequence, $D_n \cup \{F_{n+1}\}$ and $D_n \cup \{\neg F_{n+1}\}$ are both NOT fin sat.\\
+				
+				Now we use the definition of fin sat, they are not fin sat 
+				\begin{itemize}[label=]
+					\item \textbf{iff} there exists 
+					$$ D' \subseteq_\omega D_{n} \cup \{F_{n+1}\} $$
+					such that $D'$ is unsatisfiable.\\
+					
+					\item \textbf{Iff} there exists 
+					$$ D'' \subseteq_\omega D_{n} \cup \{ \neg F_{n+1}\} $$
+					such that $D''$ is unsatisfiable.\\
+				\end{itemize}
+				
+				"Lazy" version, we can assume, without loss of generality that $F_{n+1} \in D'$, $\neg F_{n+1} \in D''$. We can argue that they are already in there, otherwise we can add them without major problems (if it's unsatisfiable adding something keeps it that way).\\
+				The actual version: if $F_{n+1} \notin D'$ then $D' \subseteq D_n$, but $D_n$ is fin sat, so $D'$ is fin sat, which is a contradiction.\\
+				
+				That is we can display $D'$ and $D''$ as follows 
+				$$ D' = E' \cup \{F_{n+1}\}, \;\; D'' = E'' \cup \{\neg F_{n+1}\}$$
+				with $E' = D' \setminus \{F_{n+1}\}$ and $E'' = D'' \setminus \{\neg F_{n+1}\}$.\\
+				
+				We observe that by construction that $E', E'' \subseteq_\omega D_n$ they are subsets of $D_n$.\\
+				
+				%End of L5
+				
+				\newpage
+				
+				\textbf{Note}: if we take the \textbf{theory} $E' \cup E'' \cup \{F_{n+1}\}$ this is \textbf{unsatisfiable}, since it contains $D'$. For the same reason $E' \cup E'' \cup \{F_{n+1}\}$ is \textbf{also unsatisfiable} since it contains $D''$. \\
+				
+				But $E' \cup E''$ is a finite subset of $D_n$, $\finsat D_n$, so they \textbf{must be fin sat} since we know that $D_n$ is fin sat by I.H. $E' \cup E''$ \textbf{is satisfiable}.\\
+				
+				This \textbf{satisfiable} set \textbf{differs} from the \textbf{unsatisfiable} ones by \textbf{one formula}, notably the same formula.\\
+				
+				If we find an assignment that satisfies $F_{n+1}$ then $D'$ is satisfiable, otherwise $\neg F_{n+1}$ is satisfied and $D''$ becomes satisfiable.\\
+				
+				So, we have: 
+				\begin{itemize}
+					\item $E' \cup E''$ \textbf{satisfiable}
+					\item $E' \cup E'' \cup \{F_{n+1}\}$ \textbf{unsatisfiable} ($\dag$)
+					\item $E' \cup E'' \cup \{\neg F_{n+1}\}$ \textbf{unsatisfiable} ($\dag \dag$)
+				\end{itemize}
+				
+				And there exists (by definition of satisfiability) $\ta$ such that $v \models E' \cup E''$ ($\tilde{v}(F) =  1$ for all $F \in E' \cup E''$). We can have a \textbf{truth assignment} that \textbf{satisfies} all formulas in that \textbf{set}.\\
+				
+				What about $\tilde{v}(F_{n+1})$?
+				\begin{itemize}
+					\item if it's $0$ it will satisfy $\tilde{v} (\neg F_{n+1})$ and then $v \models E' \cup E'' \cup \{\neg F_{n+1}\}$, \textbf{contradicting} ($\dag \dag$)
+					\item If it's $1$ it will satisfy $\tilde{v} (F_{n+1})$ and then $v \models E' \cup E'' \cup \{F_{n+1}\}$, \textbf{contradicting} ($\dag$)
+				\end{itemize}
+				And, by \textbf{bivalence}, there are \textbf{no other cases to consider}. We have reached in any case the contradiction that proves the induction step ($D_{n+1}$ is actually fin sat).\\
+				This concludes the proof by induction of Fact 1.\\
+				
+				We have proved that \textbf{each set} in our construction $D_i$ \textbf{is fin sat}.\\
+			\end{itemize}
+		\end{proof}
+		
+		\newpage
+		
+		\paragraph{Fact 2:} remembering the definition of $D$, $D$ is fin sat. We proved that \textbf{each set is fin sat}, now we need to \textbf{prove} that \textbf{their union is fin sat}
+		$$ D = \bigcup_{i \in \mathbb{N}} D_i \;\; \text{ id fin sat } $$
+		
+		Do we \textit{really} need to prove this? Yes, there are some properties of some sets, such as finiteness, that don't live into their union (with a collection of finite sets, their union might not be a finite set). \textbf{Properties of the members don't automatically carry over to their union}.\\
+		
+		\begin{proof}
+			Let $D'$ be a finite subset of $D$ ($D' \subseteq_\omega D$). It is sufficient to prove that $D'$ is satisfiable.\\
+			
+			We can display the finite set $D'$ by listing its formulas: 
+			$$ D' = \{F_{i1}, F_{i2}, \, ... \, , F_{im}\} \; \text{for some } m \in \mathbb{N} $$
+			
+			We give these indexes since we don't know exactly what formulas are inside $D'$, but there must be a maximum, whatever that number is and whatever the numbers in the set are.\\
+			
+			Let $k$ be the maximum index
+			$$ k = \max_{j=1}^m (ij) $$
+			
+			Then 
+			$$ D' \subseteq \{F_1, F_2, \, ... \, , F_k\} \cap D \subseteq D_k$$
+			
+			The set $D'$ must be a subset of all the formulas between $1$ and its highest index $k$, which is a subset of $D_k$, by definition f $D_k$.\\
+			
+			So $D' \subseteq_\omega D_k$ (as $D_k$ is defined in our sequence), but by Fact 1 $D_k$ is fin sat. So $D'$ is satisfiable since it's one of its sub-theories.\\
+			%End proof
+		\end{proof}
+		
+		\newpage
+		
+		\paragraph{Fact 3:} For each formula $F_t \in \FL$ , \textbf{exactly one among} $F_t$ and $\neg F_t$ \textbf{belongs to} $D$.\\
+		
+		\begin{proof}
+			By construction of the sequence, $F_t \in D_t$ or $\neg F_t \in D_t$. Since $D_t \subseteq D$: $F_t \in D$ or $\neg F_t \in D$. This proves that at least one is in the set. \\
+			
+			We now have to exclude that both of them are in the set: ($\{F_t, \neg F_t\} \subseteq D$).\\
+			But $D$ is satisfiable, and clearly $\{F_t, \neg F_t\}$ would contradict Fact 2 since it can't be satisfiable, by the definition of $I_\neg$.\\
+			
+			So $F_t \in D$ or $\neg F_t \in D$ and $\{F_t, \neg F_t\} \notin D$. Exactly one is $\in D$.\\
+		\end{proof}
+		
+		\paragraph{Construction:} we define the following \textbf{assignment} $v_D: \mathcal{L} \rightarrow \{0,1\}$.\\
+		For all $p \in \mathcal{L}$, $v_D (p) = 1$ iff $p \in D$.\\
+		
+		Notice that $v_D$ is \textbf{well defined} (either $p \in D$ or $p \notin D$ for each possible $p \in \mathcal{L}$).\\
+		
+		\paragraph{Fact 4:} $v_D \models D$ (for all $F \in D$, $\tilde{v}_D (F) = 1$); it's an assignment that satisfies $D$. If we can \textbf{prove this} then we have \textbf{proved that} $v_D \models \Gamma$ \textbf{since} $\Gamma \subseteq D$ (by construction of $D$). So $\Gamma$ is sat.\\
+		
+		\begin{proof}
+			By structural induction, we prove that for all formulas $F \in \FL: \, \tilde{v}_D (F) = 1$ \textbf{iff} $F \in D$.\\
+			
+			Notice: it would suffice to prove just one side of the iff, namely the side that says if $F \in D$ then $\tilde{v}_D (F) = 1$ (but the stronger proof is easier). We ask for the biconditional (iff)  for better using the I.H.\\
+			
+			\textbf{Base:} $F = p$, with $p \in \mathcal{L}$: so the statement we need to prove is the very definition of $\tilde{v}_D (p)$:
+			$$\tilde{v}_D (p) = v_D (p) = 1 \; \text{ iff } \; p \in D $$
+			
+			\textbf{Step(s):} we need to consider each way that we can decompose a formula and prove that it's $\in D$: 
+			\begin{itemize}
+				\item $F = (\neg G)$, $F$ is the negation of some formula $G$. \\
+				$\tilde{v}_D (F) = 1$ \textbf{iff} (by definition of $I_\neg$) $\tilde{v}_D (G) = 0$ \textbf{iff} (by I.H.) $G \notin D$ \textbf{iff} (by Fact 3) $\neg G \in D$ \textbf{iff} $F \in D$ (since $\neg G$ is $F$).\\
+				
+				\item $F = (G \wedge H)$.\\
+				$\tilde{v}_D (F) = 1$ \textbf{iff} $\tilde{v}_D (G \wedge H) = 1$ \textbf{iff} (by definition of $I_\wedge$) $\tilde{v}_D (G) = 1$ and $\tilde{v}_D (H) = 1$ \textbf{iff} (by I.H.) $G \in D$ and $H \in D$ \textbf{iff} $G \wedge H \in D$ \textbf{iff} $F \in D$.\\
+				To say that $G \wedge H \in D$ we can observe (by contradiction) that if $G \wedge H \notin D$ \textbf{iff} (by Fact 3) $\neg (G \wedge H) \in D$, then $\{G,H, \neg (G \wedge H)\} \subseteq_\omega D$ and this is a contradiction since by Fact 2 $D$ is fin sat, and this subset is unsatisfiable.\\
+				Then if $G \wedge H \in D$ then $G,H \in D$ (otherwise $G \notin D$ or $H \notin D$). Assume $G \notin D$ (the case $H \notin D$ is analogous), by Fact 3, $\neg G \in D$ and then $\{G \wedge H, \neg G\} \subseteq_\omega D$, which is unsatisfiable, contradicting Fact 2 again. So $F \in D$.\\
+				
+				\item $F = (G \vee H)$.\\
+				$\tilde{v}_D (G \vee H) = 1$ iff (by definition of $I_\vee$) $\tilde{v}_D (G) = 1$ or $\tilde{v}_D (H) = 1$ \textbf{iff} (by I.H.) $G \in D$ or $H \in D$ \textbf{iff} $G \vee H \in D$ \textbf{iff} $F \in D$.\\
+				If $G \in D$ or $H \in D$ then $(G \vee H) \in D$. By contradiction $(G \vee H) \notin D$, then, by Fact 3, $\neg (G \vee H) \in D$, then 
+				\begin{itemize}
+					\item if $G \in D$ then $\{G, \neg (G \vee H)\} \finsat D$, which contradicts Fact 2
+					\item if $H \in D$ then $\{H, \neg (G \vee H)\} \finsat D$, which contradicts Fact 2
+				\end{itemize}
+				If $(G \vee H) \in D$ then $G \in D$ or $H \in D$. By contradiction $G \notin D$ and $H \notin D$ and thus $\{\neg G, \neg H, (G \vee H)\} \finsat D$, which is unsatisfiable and contradicts Fact 2.\\
+				
+				\item Prove implication for fun (remember that $G \rightarrow H$ has the same truth table as $(\neg G) \vee H$)
+				%TODO
+			\end{itemize}
+		\end{proof}
+		We have proved Fact 4: $v_D \models D$.\\
+		
+		\newpage
+		
+		Then a fortiori (for stronger reasons) $v_D \models \Gamma$ (the assignment satisfies $D$, which is larger that $\Gamma$, so $v_D$ must satisfy $\Gamma$).\\
+		
+		So we have proved that:
+		$$ \Gamma \; \text{ fin sat } \Leftrightarrow \; \Gamma \; \text{ sat } $$
+	\end{proof}
+	%End of compactness proof
+	
+	By \textbf{contraposition}:
+	$$ \Gamma \; \text{ unsat } \; \implies \text{ there exists } \; \Gamma ' \subseteq_\omega \Gamma, \;\; \Gamma' \; \text{ unsat } $$
+	
+	\paragraph{Remarks on Compactness Theorem:}
+	$$ \Gamma \subseteq \FL  \;\;\;\;\; \Gamma' \subseteq \Gamma $$
+	We \textbf{proved the theorem} not by looking inside $\Gamma$, but by \textbf{enlarging it} with our sequence of $D_i$s, and \textbf{proved that} $v_D \models D$, and so $v_D \models \Gamma$, since $\Gamma \subseteq D$.\\
+	
+	$D$ is "large" and satisfiable. We \textbf{cannot expand $D$ further without losing} the property of $D$ \textbf{being satisfiable}.\\
+	
+	\begin{proof}
+		First of all, is $D$ everything? Does it contain it all? No, it doesn't, look at Fact 3, so $D \neq \FL$. \\
+		
+		Let $F_t \notin D$. By Fact 3: $\overline{D} = D \cup \{F_t\}$, and thus $\neg F_t \in D$. \\
+		Then $\{F_t, \neg F_t\} \subseteq_\omega \overline{D}$ so $\overline{D}$ is unsatisfiable.\\
+		If I add anything not already in $D$, the negation of that formula must already be in $D$ so the set cannot remain satisfiable if I add anything else.\\
+	\end{proof}
+	
+	$D$ is a \textbf{maximal expansion}, with respect to \textbf{satisfiability}, of $\Gamma$.\\
+	
+	\newpage
+	
+	We call a set $E$ of formulas \textbf{maximally satisfiable} if it has the same property of $D$: \textbf{iff} $E$ is a set and for all $F \in \FL$, $F \notin E$ the set $E \cup \{F\}$ is unsatisfiable (if I add anything the set cannot remain satisfiable).\\
+	
+	$D$ is \textbf{a} maximal expansion of $\Gamma$, there can be \textbf{many}, in our proof $D$ is fixed, after fixing the listing of formulas.\\
+	
+	Let us see that there are \textbf{different maximal expansions} of $\Gamma$. For instance $\Gamma = \{p_{27}\}$, we have 2 listings:
+	\begin{itemize}
+		\item listing 1: $p_{13}$, $p_{14}$
+		\item listing 2: $\neg p_{13}$, $\neg p_{14}$
+	\end{itemize}
+	
+	Then for listing 1: $D_1$ is expanded with $p_{13}$ while the $D_1$ made from listing 2 is expanded with $\neg p_{13}$ so, in the final set $D$, for listing 1 $p_{13} \in D$ while for listing 2 $\neg p_{13} \in D$. We can expand our set in different ways, based on which listing I choose.\\
+	
+	% End L6
+	
+	If we reason about the \textbf{information contained} inside a \textbf{maximally satisfiable theory} $D$ we notice that it carries the \textbf{same amount of information} as a \textbf{truth value assignment} $\ta$.\\
+	
+	$D$ max sat theory, from this we defined $v_D$ as $v_D (p) = 1$ iff $p \in D$ for all $p \in \mathcal{L}$. We can go the other way around, \textbf{starting from any assignment} $\ta$ and \textbf{construct the set of formulas} $D_v$:
+	$$ D_v := \{F \in \FL : \, \tilde{v} (F) = 1\}$$
+	
+	This way 
+	\begin{itemize}
+		\item $D_v$ is a max sat theory 
+		\item $v_{D_{w}} = w$, with $w$ truth assignment $w: \rightarrow \{0,1\}$
+		\item same thing with: $D_{v_E} = E$ with $E$ a max sat theory
+	\end{itemize}
+	
+	Associated with every max sat theory there is an assignment satisfying the theory ($v_D \models D$), and similarly for every assignment there can be a max sat theory satisfied by that assignment.\\
+	
+	%Make it make sense, end of compactness theory
+	
+	\newpage
+	
+	How can we tell if:
+	$$(\Gamma \subseteq \FL, \, A \in \FL) \;\;\;\;\; \Gamma \models A ?$$
+	All formulas in $\Gamma$ must satisfy also $A$, so $A$ it's a logical consequence.\\
+	
+	Already proven Lemma: $\Gamma \models A$ iff we can \textbf{reduce this problem to} the unsatisfiability problem: $\Gamma \cup \{\neg A\}$ \textbf{is unsatisfiable}.\\
+	
+	Assume $\Gamma$ is a finite theory ($\Gamma$ contains finitely many formulas)
+	$$ \Gamma = \{B_1, B_2, \, ... \, , B_u \} $$
+	
+	There are finitely many formulas, so there's a last element $B_u$
+	
+	$$ \Gamma \models A \text{ iff }$$
+	$$ \{B_1, B_2, \, ... \, , B_u \} \models A \text{ iff } $$
+	$$ \{B_1, B_2, \, ... \, , B_u, \neg A \} \text{ is unsat, as a theory, iff}$$
+	
+	by  the definition of $\wedge$ ($I_\wedge$)
+	$$ B_1 \wedge B_2 \wedge \, ... \, \wedge B_u \wedge \neg A \text{ is unsat, as a formula}$$
+	And this is decidable in finite time, however long it may be.\\
+	
+	What if $\Gamma$ is infinite? The conjunction of infinitely many things it's not a formula and its satisfiability it's not decidable in finite time. So 
+	$$ \Gamma  \cup \{\neg A\} \text{ is unsat}$$
+	
+	By compactness theorem, there is
+	$$ \Gamma' \finsat \Gamma \cup \{\neg A\} \text{ is unsat} $$
+	
+	Good news: we can have a finite theory which is unsatisfiable. Bad news: we don't know how to find it since there are infinitely many.\\
+	$\rightarrow$ "Semidecidability". If the input is infinite, it's improper speaking of decidability, it's semidecidability. We may be able to tell if it's satisfiable in finite time, or the algorithm could not end.\\
+	
+	\newpage
+	
+	\subsection{Semantic Equivalence (logical equivalence)}
+	
+	Are these the same?
+	$$ A \wedge B \;\;\;\;\;\; B \wedge A $$
+	These are syntactically different, they are different strings of symbols.\\
+	
+	Semantically, \textbf{for all assignments} $\ta$ it holds that $\tilde{v} (A \wedge B) = \tilde{v} (B \wedge A)$, by the definition of $I_\wedge$. They always \textbf{get the same resulting truth values}.\\
+	
+	\subsubsection{Equivalence relation}
+	%We need to introduce the equivalence relation: they're not the same formula, but the resulting value is always the same.\\
+	
+	\paragraph{What is a relation?} An $n$-ary relation $R$ on a set $S$ is just a subset of the $n$-th Cartesian power $S^n$ of $S$:
+	$$ R \subseteq S^n$$
+	A relation, mathematically, is just this.\\
+	
+	The \textbf{equivalence relation}: considering $R$ on a set $S$, $R$ is a \textbf{binary relation} ($R \subseteq S^2$) such that it \textbf{satisfies 3 conditions}:
+	\begin{itemize}
+		\item $R$ is \textbf{reflexive}: for all $s \in S$, $(s,s) \in R$
+		\item $R$ is \textbf{symmetric}: for all $s_1, s_2 \in S$ if $(s_1, s_2) \in R$ then also $(s_2, s_1) \in R$
+		\item $R$ is \textbf{transitive}: for all $s_1, s_2, s_3 \in S$ if $(s_1, s_2) \in R$ and $(s_2, s_3) \in R$ then $(s_1, s_3 \in R)$
+	\end{itemize}
+	
+	\paragraph{Equivalence classes:} Let $R \subseteq S^2$ be an equivalence relation, then for each $s \in S$ the \textbf{equivalence class} of $s$, called ($[s]_R$ or $\sfrac{s}{R}$) is \textbf{defined as}
+	$$ [s]_R := \{t \in S: \, (s,t) \in R\} $$
+	Basically, all elements equivalent to $s$.\\
+	
+	Observe: if $(s,t) \in R$ then $[s]_R = [t]_R$ and vice versa, if $[s]_R = [t]_R$ then $(s,t) \in R$.
+	
+	\newpage
+	
+	\paragraph{Partitions of a set:} A partition of $S$ is a set $\{B_1, B_2, \, ... \, , B_k , \, ... \, \} = \{B_i : \, i \in  I\}$ of subsets of $S$ (not necessarily finite, $B_i \subseteq S$) such that:
+	\begin{itemize}
+		\item $B_i \cap B_j = \emptyset$ for all $i \neq j \in I$
+		\item $\bigcup_{i \in I} B_i = S$
+	\end{itemize}
+	
+	A partition is a way of \textbf{cutting $S$ into blocks}.\\
+%	
+%	A partition is a set $\{B_i : \, i \in I\}$ of $S$ ($B_i \subseteq S$) such that
+%	* same as
+%	* above, same definition
+%	
+
+	Every \textbf{equivalence relation} $R \subseteq S^2$ \textbf{determines uniquely a partition} $P_R$ of $S$ 
+	$$ P_R = \{[s]_R : \, s \in S \}$$
+	The blocks of $P_R$ are the equivalence classes of $R$.\\
+	
+	We can go the other way around, every \textbf{partition} $P$ of $S$ \textbf{determines uniquely an equivalence relation} $R_P$ on $S$ ($R_P \subseteq S^2$)
+	$$ R_p : (s,t) \in R_P \text{ iff } s,t \text{ belong to the unique same block } B_i \in P$$
+	
+	\nn
+	
+	\subsubsection{Definition of Semantic equivalence}
+	Let us verify the the following \textbf{is an equivalence relation on} $\FL$
+	$$ \equiv \subseteq \FL^2$$
+	
+	For each $(A, B) \in \FL^2$ (or simpler, $A, B \in \FL$), then $(A, B) \in \equiv$, also written as $A \equiv B$ ($A$ is \textbf{logically equivalent to} $B$) \textbf{iff}, for any $\ta$, $\tilde{v}(A) = \tilde{v} (B)$.\\
+	
+	For all $A \in \FL$:
+	\begin{itemize}
+		\item $\equiv$ is \textbf{reflexive}: for all $A \in \FL$, $A \equiv A$, for each $\ta$ $\tilde{v} (A) = \tilde{v}(A)$
+		
+		\item $\equiv$ is \textbf{symmetric}: for all $A,B \in \FL$, $A \equiv B$ implies $B \equiv A$, for all $\ta$: $\tilde{v}(A) = \tilde{v}(B)$ implies $\tilde{v}(A) = \tilde{v}(B)$
+		
+		\item $\equiv$ is \textbf{transitive}: for all $A,B,C \in \FL$, $A \equiv B$ and $B \equiv C$ implies $A \equiv C$, for all $\ta$: $\tilde{v}(A) = \tilde{v}(B)$ and $\tilde{v}(B) = \tilde{v}(C)$ implies $\tilde{v}(A) = \tilde{v}(C)$
+	\end{itemize}
+	
+	\newpage
+	
+	$\equiv$ \textbf{determines a partition of} $\FL$. We subdivided the world in such a way that formulas that say the same thing are in the same block
+	$$ P_\equiv = \{[A]_\equiv : \, A \in \FL\}$$
+	$$ \sfrac{\FL}{\equiv} = \{[A]_\equiv : \, A \in \FL\}$$
+	
+	$[A \wedge B]_\equiv = [B \wedge A]_\equiv$ says that the formulas are equivalent, which is the same as saying $A \wedge B \equiv B \wedge A$.\\
+	
+	Two formulas are \textbf{logically equivalent} if they have the \textbf{same truth value under any assignment}.\\
+	
+	In general if $R \subseteq S^2$ is an equivalence relation, we write $\sfrac{S}{R} = \{[S]_R : s \in S\}$. This is called "$S$ modulo $R$" or "the quotient of $S$ over $R$".\\
+	
+	\vfill
+	
+	We eventually will enrich the set of logical equivalence classes $\sfrac{\FL}{\equiv}$ with operations which shall confer to the enriched set the status of an algebraic structure (namely: Boolean algebra).\\
+	
+	\newpage
+	
+	\subsection{Substitution (letter with a formula)}
+	
+	\textbf{Substitution} of a \textbf{propositional letter with a formula} (inside a formula). We want to get new formula from another one, while remaining semantically equivalent.\\
+		
+%	%Wtf, a cosa serve la prima parte
+%	Intuitive idea: we have $(p \wedge \neg q)\left[t \rightarrow q/ p\right] = ((t \rightarrow q) \wedge q)$.
+%	We substituted ...
+	
+	For each $A \in \FL$, for each $p \in \mathcal{L}$, for each $B \in \FL$, let us define the formula obtained by \textbf{replacing in} $A$ \textbf{each occurrence of} $p$ \textbf{with} $B$, $A\left[\sfrac{B}{p}\right] \in \FL$. Define it inductively as follows:
+	\begin{itemize}
+		\item \textbf{Base:} $A = q$, $Q \in \mathcal{L}$, define 
+		$$q[\sfrac{B}{p}] := \begin{cases}
+			B \; & q = p  \\
+			q \;  & q \neq p
+		\end{cases}
+		$$
+		If $q=p$ then it becomes $B$, otherwise nothing changes.
+		
+		\item \textbf{Step:} cases, if we have to substitute:
+		$$ (\neg A)[\sfrac{B}{p}] := \neg(A[\sfrac{B}{p}]) $$
+		$$ (A_1 \wedge A_2) [\sfrac{B}{p}] := A_1 [\sfrac{B}{p}] \wedge A_2 [\sfrac{B}{p}] $$
+		$$ (A_1 \vee A_2) [\sfrac{B}{p}] := A_1 [\sfrac{B}{p}] \vee A_2 [\sfrac{B}{p}] $$
+		$$ (A_1 \rightarrow A_2) [\sfrac{B}{p}] := A_1 [\sfrac{B}{p}] \rightarrow A_2 [\sfrac{B}{p}] $$
+	\end{itemize}
+	
+	\newpage
+	
+	\paragraph{Lemma (substitution):} let $\ta$ be an assignment and $S,T \in \FL$. If $\tilde{v}(S) = \tilde{v} (T)$, then for all $A \in \FL$, and all $p \in \mathcal{L}$
+	$$ \tilde{v} (A [\sfrac{S}{p}]) = \tilde{v} (A[\sfrac{T}{p}]) $$
+	
+	\begin{proof}
+		By induction on $A$: 
+		\begin{itemize}
+			\item \textbf{Base:} $A = q$, $q \in \mathcal{L}$, two cases: 
+			\begin{itemize}
+				\item $q \neq p$, then $q [\sfrac{S}{p}] = q = q [\sfrac{T}{p}]$, then 
+				$$\tilde{v}(q[\sfrac{S}{p}]) = \tilde{v}(q) = \tilde{v} (q[\sfrac{T}{p}])$$
+				
+				\item $q = p$, then $q[\sfrac{S}{p}] = S$ and $q[\sfrac{T}{p}] = T$, so
+				$$ \tilde{v} (q [\sfrac{S}{p}]) = \tilde{v} (S) = \tilde{v} (T) = \tilde{v} (q[\sfrac{T}{p}]) $$
+			\end{itemize}
+			
+			\item \textbf{Step:} cases are: 
+			\begin{itemize}
+				\item $A = \neg B$, by I.H. $\tilde{v} (B [\sfrac{S}{p}]) = \tilde{v} (B [\sfrac{T}{p}])$ and then 
+				$$ \tilde{v} ((\neg B) [\sfrac{S}{p}])  = I_\neg \left(\tilde{v} (B [\sfrac{S}{p}])\right) = I_\neg \left(\tilde{v} (B [\sfrac{T}{p}])\right) = \tilde{v} ((\neg B) [\sfrac{T}{p}])$$
+				\item $A = (B \wedge C)$
+				\item $A = (B \vee C)$
+				\item $A = (B \rightarrow C)$
+			\end{itemize}
+			The other cases are left as an exercise for the reader.\\
+		\end{itemize}
+		%TODO Complete
+	\end{proof}
+	
+	\paragraph{Theorem (substitution):} Let $S, T \in \FL$, if $S \equiv T$, then for all $A \in \FL$ and all $p \in \mathcal{L}$:
+	$$ A[\sfrac{S}{p}] \equiv A[\sfrac{T}{p}] $$
+	If in a single formula we \textbf{replace a formula with an equivalent} one we get a \textbf{distinct} formula \textbf{but still equivalent}.\\
+	
+	\begin{proof}
+		For all $\ta$ it holds that $\tilde{v} (s) = \tilde{v} (T)$, since $S \equiv T$. So by the substitution Lemma, for all $\ta$ we have $\tilde{v} (A [\sfrac{S}{p}]) = \tilde{v} (A[\sfrac{T}{p}])$, and then, by definition of $\equiv$
+		$$ A[\sfrac{S}{p}] \equiv A[\sfrac{T}{p}] $$
+	\end{proof}
+	
+	\newpage
+	
+	\paragraph{Theorem:} Given $F,G,H \in \FL$ the following are logical equivalences:
+	\begin{itemize}
+		\item \textbf{Idempotence}: $F \wedge F \equiv F$, $F \vee F \equiv F$
+		\item \textbf{Commutativity}: $F \vee G \equiv G \vee F$, $F \wedge G \equiv G \wedge F$
+		\item \textbf{Associativity}: $F \wedge (G \wedge H) \equiv (F \wedge G) \wedge H$, $F \vee (G \vee H) \equiv (F \vee G) \vee H$
+		\item \textbf{Distributivity}: $F \wedge (G \vee H) \equiv (F \wedge G) \vee (F \wedge H)$, $F \vee (G \wedge H) \equiv (F \vee G) \wedge (F \vee H)$
+		\item \textbf{Absorption}: $F \vee (F \wedge G) \equiv F$, $F \wedge (F \vee G) \equiv F$
+	\end{itemize}
+	
+	% End L7
+
+	Exercise: prove that idempotence $F \vee F \equiv F$, $F \wedge F \equiv F$ follows only by absorption (using substitution theorem).\\
+	
+	\begin{itemize}
+		\item \textbf{Double negation} (involutiveness of negation): $\neg \neg F \equiv F$
+		
+		\item \textbf{De Morgan}: 
+		$$ \begin{cases}
+			\neg (F \vee G) \equiv \neg F \wedge \neg G \\
+			\neg (F \wedge G) \equiv \neg F \vee \neg G
+		\end{cases}$$
+		
+		\item \textbf{Interdefinability}:
+		$$ \begin{cases}
+			F \rightarrow G \equiv (\neg F) \vee G  \\
+			F \rightarrow G \equiv \neg (F \wedge \neg G) \\
+			F \vee G \equiv (\neg F) \rightarrow G \\
+			F \wedge G \rightarrow \neg (F \rightarrow \neg G) \\
+			F \vee G \equiv \neg (\neg F \wedge \neg G) \\
+			F \wedge G \equiv \neg (\neg F \vee \neg G) \\
+		\end{cases}$$
+	\end{itemize}
+	
+	\begin{proof}
+		Just one case (the remaining ones are left as an exercise for the reader). We want to show that 
+		$$ \neg (F \vee G) \equiv \neg F \wedge \neg G$$
+		For all $\ta$ $\tilde{v} (\neg (F \vee G)) = 1$ 
+		\begin{itemize}[label*=]
+			\item \textbf{iff} by the semantics of $\neg$: $I_\neg$: $\tilde{v} (F \vee G) = 0$
+			\item \textbf{iff} by the semantics of $\wedge$: $\tilde{v} (F) = 0$ and $\tilde{v}(G) = 0$
+			\item \textbf{iff} by the semantics of $\neg$: $\tilde{v} (\neg F) = 1$ and $\tilde{v} (\neg G) = 1$
+			\item \textbf{iff} by the semantics of $\wedge$: $\tilde{v} (\neg F \wedge \neg G) = 1$
+		\end{itemize}
+		
+		By bivalence $\neg (F \vee G) \equiv \neg F \vee \neg G$ (we've proved that it holds for 1, the only other possible value is 0 so we don't need to prove that).\\
+	\end{proof}
+	
+	\newpage
+	
+	\subsection{Derived connectives}
+	We define these operators as \textbf{shortened versions of longer formulas}.\\
+	
+	We define $F \leftrightarrow G$, as $(F \rightarrow G) \wedge (G \rightarrow F)$. Specify
+	$$ I_\leftrightarrow: \, \{0,1\}^2 \rightarrow \{0,1\} $$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \leftrightarrow b$ \\
+			\hline 
+			0 & 0 & 1 \\
+			0 & 1 & 0\\
+			1 & 0 & 0\\
+			1 & 1 & 1
+		\end{tabular}
+	\end{center}
+	
+	\paragraph{Observation:} $\models F \leftrightarrow G$ (is a tautology) \textbf{iff} $F \equiv G$ \textbf{iff} $\models \neg F \leftrightarrow \neg G$ \textbf{iff} $\models G \leftrightarrow F$ \textbf{iff} $\models \neg G \leftrightarrow \neg F$.\\
+	
+	\paragraph{Observation:} $F \models G$ and $G \models F$ \textbf{iff} $F \equiv G$.\\
+	
+	We define other derived connectives $\bot, \top$. Technically they are zero-ary connectives (and as such they are formulas in themselves), they're \textbf{logical constants}, don't need arguments to be complete to a formula.\\
+	$$ \bot, \top \in \FL $$
+	$$ I_\bot: \, \{0,1\}^0 \rightarrow \{0,1\}\;\; \text{ identify with } 0$$ 
+	$$I_\top: \, \{0,1\}^0 \rightarrow \{0,1\} \;\; \text{ identify with } 1$$
+	
+	The $\{0,1\}^0$ represents the singleton set, so we can \textbf{identify the function with the result}. So 
+	$$ I_\bot := 0 \;\;\;\;\; I_\top := 1$$
+	
+	The $\top$ is in the \textbf{equivalence class of tautologies}:
+	$$ \top \equiv A \;\; \text{ iff } A \text{ is any tautology } (\models A), \text{ e.g. } \top := p \rightarrow p$$
+	
+	And $\bot$ is in the \textbf{equivalence class of contradictions}:
+	$$ \bot \equiv A \;\; \text{ iff } A \text{ is any contradiction } (\models \neg A), \text{ e.g. } \bot := p \wedge \neg p$$
+	
+	\newpage
+	
+	Some things \textbf{about these constants}:
+	$$ \neg \top \equiv \bot, \;\;\; \neg \bot \equiv \top $$
+	 
+	If $\models A$
+	$$ \neg A \equiv A \rightarrow \bot $$
+	$$ A \equiv \top \rightarrow A $$
+	
+	Some other equivalences:
+	\begin{itemize}
+		\item \textbf{Complementation}
+		$$ A \wedge \neg A \equiv \bot $$
+		$$ A \wedge \neg A \equiv \top $$
+		
+		\item \textbf{Unit} and \textbf{neutral elements}
+		$$ A \wedge \bot \equiv \bot $$
+		$$ A \vee \bot \equiv A $$
+		$$ A \wedge \top \equiv A $$
+		$$ A \vee \top \equiv \top $$
+	\end{itemize}
+	
+	\newpage
+	
+	\subsection{$\equiv$ as a congruence}
+	
+	$\equiv$ is \textbf{more than} simply being an \textbf{equivalence relation}. \\
+	
+	$\equiv$ is a \textbf{congruence} with respect to $\vee, \wedge, \rightarrow, \neg$ \textbf{thought as operations}, so if the operands are thought as
+	$$ \wedge : \, \FL^2/\equiv \rightarrow \sfrac{\FL}{\equiv} $$
+	$$ ([A]_\equiv, [B]_\equiv) \rightarrow [A \wedge B]_\equiv $$
+	
+	$\equiv$ is a congruence with respect to $\wedge$ as defined above.\\
+	If $A \equiv B$ and $C \equiv D$ then $A \wedge B \equiv C \wedge D$.\\
+	
+	Exercise: verify that $\equiv$ is a congruence with respect to all the connectives $\wedge, \vee, \rightarrow, \neg$ (also $\top, \bot, \leftrightarrow$ even if they're derived so there would technically be no need).\\
+	
+	\begin{proof}
+		We demonstrate just the case of $\equiv$ being a congruence with respect to $\neg$.\\
+		$A \equiv B$ \textbf{iff} $\neg A \equiv \neg B$. For all $\ta$, $\tilde{v}(A) = \tilde{v}(B)$ \textbf{iff} $T_\neg (\tilde{v}(A)) = I_\neg (\tilde{v}(B))$ \textbf{iff} $\tilde{v}(\neg A) = \tilde{v}(\neg B)$.\\
+	\end{proof}
+	
+	Note: it is not true that every equivalence relation is a congruence (with respect to some operations).\\
+	
+	We've started by considering the set of particular strings $\FL$, now we have a set of classes of logical equivalence $\FLe$ and the operator $\equiv$ can be thought as a congruence.\\
+	
+	\newpage
+	
+	\subsection{Partial order relation} 
+	
+	Let $R$ be a \textbf{binary relation} on $S$, $R \subseteq S^2$ such that 
+	\begin{itemize}
+		\item $R$ is reflexive $(s, s) \in R$ for all $s \in S$
+		\item $R$ is \textbf{antisymmetric} for all $(s,t) \in R$, if $(s,t) \in R$ and $(t,s) \in R$ then $s = t$
+		\item $R$ is transitive $(s,t) \in R$ and $(t,r) \in R$ then $(s,r) \in R$
+	\end{itemize}
+	Any \textbf{relation with these properties is a partial order relation}. The difference between this and an equivalence relation is the antisymmetric property, which states that if two elements are in the relation in a certain order, the opposite ordering can't be in the relation as well.\\
+	
+	Symbols: $\leq, \preceq, \sqsubseteq$.\\
+	
+	Some examples of partial orderings for the naturals: 
+	$$ (\mathbb{N}, \leq) $$
+	$a \leq b$ if it exists $c \in \mathbb{N}$ such that $a + b = c$.\\
+	This relation has a minimum element, which is $0$.\\
+	
+	$$ (\mathbb{N}, \geq) $$
+	$a \geq b$ if it exists $c \in \mathbb{N}$ such that $a - b = c$.\\
+	In this relation $0$ is the maximum element.\\
+	
+	$$ (\mathbb{N}, =) $$
+	In this relation every element is on the same level.\\
+	
+	\newpage
+	
+	Divisibility order:
+	$$ (\mathbb{N}, |) $$
+	$a|b$ ($a$ divides $b$) if there is $c \in \mathbb{N}$ such that $a \cdot c = b$.\\
+	
+	\begin{center}
+			\begin{tikzpicture}[scale=0.7]
+			\node (1) at (2,0) {1};
+			\node (2) at (-2,2) {2};
+			\node (3) at (2,2) {3};
+			\node (4) at (-2,4) {4};
+			\node (6) at (2,4) {6};
+			\node (0a) at (2,5) {...};
+			\node (1b) at (6,2) {...};
+			\node (0b) at (-2,5) {...};
+			\node (0c) at (6,5) {...};
+			\node (0) at (2,7) {0};
+			
+			\draw (0) -- (0a);
+			\draw (0) -- (0b);
+			\draw (0) -- (0c);
+			\draw (1) -- (2);
+			\draw (1) -- (3);
+			\draw (1) -- (1b);
+			\draw (2) -- (4);
+			\draw (2) -- (6);
+			\draw (3) -- (6);
+		\end{tikzpicture}
+	\end{center}
+	
+	This order has $1$ as a minimum, all the prime numbers in the first level (atoms), then all numbers created just by primes and so on until the maximal element, which is zero since there's always a number such that $n \cdot 0 = 0$.\\
+	
+	A \textbf{set} $P$, \textbf{equipped with a partial order relation} $\leq \subseteq P^2$ is called a \textbf{partially ordered set}, for short \textbf{poset} $(P, \leq)$.\\
+	
+	\newpage
+	
+	\subsubsection{Lattice}
+	To be a \textbf{lattice} there must be, \textbf{for each element in the poset}, a \textbf{greatest lower bound} and a \textbf{lowest upper bound}.\\
+	
+	Considering $S \subseteq P$, $P$ poset, $(P, \leq)$. \\
+	
+	We can define the \textbf{infimum} (greatest lower bound): $\inf S$ if it exists is the element $t \in P$ such that for all $z \in P$, if $z \leq s$ for all $s \in S$ then $z \leq t$ ($t$ is the greatest lower bound).\\
+	
+	We can also define the \textbf{supremum} $\sup S$: if it exists is the element $t \in P$ such that for all $z \in P$, if $s \leq z$ for all $s \in S$ then $t \leq z$ ($t$ is the lowest upper bound).\\
+	
+	$$ \inf S = \max \{z \in P: z \leq s \;\text{ for all } s \in S\}$$
+	$$ \sup S = \min \{z \in P : s \leq z ; \text{ for all } s \in S\}$$
+	If they exist.\\
+	
+	We can also define:
+	$$ \min S = t \text{ iff } t = \inf S \text{ and } t \in S$$
+	$$ \max S = t \text{ if } t = \sup S \text{ and } t \in S$$
+	
+	\newpage
+	
+	\textbf{Example} of a set lacking $\sup$ (and then lacking $\max$)
+	$$ S \subseteq \mathbb{Q} \;\;\;\;\; S := \{x : x^2 \leq 2\}$$
+	This has a $\sup$, but not in the rationals. It would be $\sqrt{2} \in \mathbb{R} \setminus \mathbb{Q}$.\\
+	
+	While
+	$$ S' \subseteq \mathbb{Q} \;\;\;\;\; S' := \{x : x \lneq 1\}$$
+	Has a $\sup$ but not a $\max$, $\sup S' = 1$ but $1 \notin S'$, so $\max S'$ does not exist.\\
+	
+	$$ S'' \subseteq \mathbb{Q} \;\;\;\;\; S'' := \{x : x \leq 1\}$$
+	$\sup S'' = 1$, $1 \in S''$ so $\max S'' = 1$
+	
+	\paragraph{Definition of Lattice (as poset):} A poset $(R, \leq)$ \textbf{is a lattice iff} for all $x,y \in R$ there \textbf{exists both} $\inf \{x,y\}$ \textbf{and} $\sup\{x,y\}$.\\
+	
+	\vfill
+	
+	Exercise: is our poset a lattice?
+	$$ (\mathbb{N}, \leq) $$
+	is a lattice because every pair has an greatest lower bound (the smaller number) and a lowest upper bound (the largest number).
+	
+	$$ (\mathbb{N}, |) $$
+	Divisibility is a lattice, the inf is the greatest common divisor, while the sup is the lowest common multiple.\\
+	
+	$$ (\mathbb{N}, =) $$
+	Is NOT a lattice, every element is on the same level, there is no $\inf$ or $\sup$.\\
+	
+	%End of  L8
+	
+
+\end{document}
