@@ -33,6 +33,7 @@
 \usepackage{qtree}
 \usepackage{amsthm}
 \usepackage{tikz}
+\usepackage{bm}
 
 \begin{document}
 	\initcurrdate
@@ -1571,7 +1572,7 @@
 	
 	\newpage
 	
-	\subsubsection{Lattice}
+	\subsection{Lattice}
 	To be a \textbf{lattice} there must be, \textbf{for each element in the poset}, a \textbf{greatest lower bound} and a \textbf{lowest upper bound}.\\
 	
 	Considering $S \subseteq P$, $P$ poset, $(P, \leq)$. \\
@@ -1617,5 +1618,233 @@
 	
 	%End of  L8
 	
+%	Esercizio random?
+%	
+%	Prove idempotence, follows from absorption
+%	%Check and try to prove this from notes
+%	
+%	
+%	Using explicitly the substitution theorem:
+%	
+%	Take p \in L not occurring in $F$
+%	$$ (F \wedge p) [F/p] = F \wedge F \equiv (F \wedge p)[F \wedge (F \vee F)/p] = F \vee (F \wedge (F \vee F)) \equiv F$$
+%	
+%	By absorption and substitution theorem we can say that $F \vee F \equiv F$.\\
+%	
+%	***
+	
+	\newpage
+	
+	\subsection{Algebraic Structure}
+	
+	%Lattices are not only posets with an order structure, but they're also an algebraic structure, each boolean algebra can be considered ...
+	
+	\paragraph{(Very sketchy) Definition of Algebraic Structure:} Let $S$ be a set, and $\ast_1, \ast_2, \, ... \, , \ast_n$ a number of operations (can be infinite) on $S$ (that is functions $\ast_i : S^{\nu(i)} \rightarrow S$, where $\nu(i)$ gives the arity of the operation).\\
+	
+	Then $(S, \ast_1, \ast_2, \, ... \, , \ast_n)$ is an \textbf{algebraic structure}, or is an algebra. \\
+	
+	By algebra we basically mean a set of operations.\\
+	
+	Example:
+	$$ (\mathbb{Z}, +, -, 0) $$
+	$$ + : \mathbb{Z}^2 \rightarrow \mathbb{Z} \;\;\;\; (a,b) \rightarrow a + b $$
+	$$ - : \mathbb{Z}^1 \rightarrow \mathbb{Z} \;\;\;\; a \rightarrow - a $$
+	$$ 0 : \mathbb{Z}^0 \rightarrow \mathbb{Z} \;\;\;\; 0 \text{ the constant/integer number } 0 $$
+	
+	The arity of these operations is, respectively: $\nu(+) = 2$, $\nu(-) = 1$, $\nu(0) = 0$.\\
+	
+	\newpage
+	
+	\subsubsection{Isomorphism}
+	Two \textbf{structures} are \textbf{isomorphic}
+	$$(S, \ast_1, \ast_2, \, ... \, , \ast_n) \cong (R, \circledcirc_1, \circledcirc_2, \, ... \, , \circledcirc_m) $$
+	
+	If they mathematically behave in the same manner, i.e. \textbf{iff}
+	
+	$$ m = n $$
+	
+	$$ \nu_S^{(i)} = \nu_R^{(i)} \;\; \text{ for each } i = 1,2, \, ... \, , n $$
+	
+	$$ \text{there exists } f : S \rightarrow R \text{ such as: } $$
+	$$\begin{cases}
+		f : \text{ injective: } & x \neq y \in S \implies f(x) \neq f(y) \\
+		f: \text{ surjective: }  & \text{ for all } y \in R \text{ there is } x \in S \text{ s.th. } f(x) = y
+	\end{cases}$$
+	$$\implies f \text{ is bijective (1-1 correspondance)} $$
+	
+	$$ f: \text{ is a homomorphism}: f(\ast_i (s_1, \, ... \, , s_k)) = \circledcirc_i(f(s_1), f(s_2), \, ... \, , f(s_k))$$
+	$$ \nu_S (i) = k, \text{ for all } (s_1, \, ... \, s_k) \in S^k $$
+	
+	TLDR: The structures are the same, except for their physical nature, they behave the same as far as those operations are concerned.\\
+	
+	\newpage
+	
+	\subsubsection{Lattices as algebraic structures}
+	
+	A \textbf{lattice as an algebraic structure} is a \textbf{set with binary operations}
+	$$ (R, \sqcap, \sqcup) \;\;\;\;\;
+	\begin{array}{c}
+		\sqcap: R^2 \rightarrow R\\
+		\sqcup: R^2 \rightarrow R
+	\end{array}
+	 $$
+	
+	such that \textbf{both} these \textbf{operations} are \textbf{associative and commutative}.\\
+	
+	$\sqcap, \sqcup$ are related by absorption:
+	$$
+	\text{for all }\; x, y \in R \;\;\;\;\;
+	\begin{cases}
+		x \sqcap (x \sqcup y) = x \\
+		x \sqcup (x \sqcap y) = x
+	\end{cases}$$
+	
+	A \textbf{lattice as a poset} can be \textbf{redefined as/associated} to a \textbf{lattice as an algebraic structure}
+	$$ (R, \leq ) \leftrightsquigarrow (R, \sqcap, \sqcup)$$
+	each lattice meant as a poset can be thought of uniquely as an algebra and vice versa.\\
+	
+	To do 
+	$$ (R, \leq ) \rightsquigarrow (R, \sqcap, \sqcup) $$
+	we just have to define the operations. For all $a,b \in R$ we need to define:
+	$$ a \sqcap b := \inf \{a, b\}$$
+	$$ a \sqcup b := \sup \{a,b\}$$
+	The rest is an exercise for the reader.\\
+	
+	\newpage
+	
+	While to do
+	$$ (R, \sqcap, \sqcup ) \rightsquigarrow (R, \leq) $$
+	
+	For all $a,b \in R$, $a \leq b$ iff $a = a\sqcap b$ (or, equivalently, $b = a \sqcup b$).\\
+	
+	Check: $a \leq b$ defined as above is such that $\leq$ is 
+	\begin{itemize}
+		\item reflexive: for all $a \in R$, $a \leq a$ iff $a = a \sqcap a$ (by idempotence)
+		\item antisymmetric: ...
+		\item transitive: ...
+	\end{itemize}
+	
+	Doing this we prove that this thing is a poset, but the lattice is a special kind of poset. So now we need to check that the poset $(R, \leq)$ is indeed a lattice. We need to prove that for each pair of element there is an $\inf$ and $\sup$. \textbf{For each} $a,b \in R$ \textbf{there is} $\inf\{a,b\}$ \textbf{and} $\sup \{a,b\}$.\\
+	
+	Letting $c \leq a$ and $c \leq b$ we have to show that $c \leq a \sqcap b$, since it means we've proven that $a \sqcap b$ is $\inf\{a,b\}$, so it exists and is defined, $\inf\{a,b\} = a \sqcap b$.\\
+	
+	$c = a \sqcap c$, by definition of $\leq$, and from the fact that $c \leq b$ and thus $c = b \sqcap c$ so 
+	$$ c = a \sqcap c = a \sqcap (b \sqcap c) = (a \sqcap b) \sqcap c \; \text{ iff } \; c \leq a \sqcap b$$
+	So inf exists and is defined.\\
+	
+	The proof that $\sup\{a,b\} = a \sqcup b$ is analogous.\\
+	
+	We have proved that $(R, \leq)$ is a lattice (as a poset).\\
+	
+	\newpage
+	
+	\subsection{Boolean Algebras}
+	
+	It's an algebra, so a set with some operations and two constants
+	$$ (S, \sqcap, \sqcup, ()^c, 0, 1 ) $$
+	
+	The arity of the operations is:
+	\begin{itemize}
+		\item $\sqcap, \sqcup : S^2 \rightarrow S$
+		\item $()^c: S \rightarrow S$
+		\item $0,1: S^0 \rightarrow S$
+	\end{itemize}
+	(The $()^c$ is the complement).\\
+	
+	\textbf{Additional properties}: $(S, \sqcap, \sqcup)$ is a lattice (has an order), which is 
+	\begin{itemize}
+		\item \textbf{Bounded:} for all $a \in S$ there's a minimum $0 \leq a$ and a maximum $a \leq 1$ such that
+		$$ \begin{cases}
+			a \sqcap 0 = 0 \;\; &  a \sqcup 1  = 1 \\
+			a \sqcup 0 = a & a \sqcap 1 = a
+		\end{cases}$$
+		\nn
+		
+		\item \textbf{Complemented:} for all $a \in S$, such that $a \sqcap a^c = 0$ and $a \sqcup a^c = 1$.\\
+		
+		\item \textbf{Distributive:} for all $a,b,c \in S$, $a \sqcap (b \sqcup c)$
+		$$ \begin{array}{c}
+			a \sqcap (b \sqcup c) = (a \sqcap b) \sqcup (a \sqcap c) \\
+			a \sqcup (b \sqcap c) = (a \sqcup b) \sqcap (a \sqcup c)
+		\end{array}$$
+		\nn
+	\end{itemize}
+	
+	So, boolean algebra is a shorthand name for bounded, complemented and distributive lattices.\\
+	
+	\newpage
+	
+	Examples of boolean algebra: Let $A$ be a set
+	$$ (\mathcal{P}(A), \cap, \cup, \overline{()}, \emptyset, A) $$
+	
+	Let $\mathcal{P}(A)$ be the powerset of $A$ (set of all subsets of $A$).\\
+	Check that this is a boolean algebra. It must be commutative, absorption, bounds, ...\\
+	
+	If $A$ is finite, say $|A| = n$, then $|\mathcal{P}(A)| = 2^n$. $2^A$ is a commonly used notation for the powerset.\\
+	
+	Every finite Boolean algebra has $2^k$ elements for some $k \in \mathbb{N}$.\\
+	
+	\textbf{Every finite boolean algebra} can be conceived/is \textbf{isomorphic with} the \textbf{powerset of some finite set}.\\
+	
+	$(\mathcal{P}(A), \subseteq)$, $S,T$, $S \subseteq T$ iff $S = S \cap T$ (or $T = S \cup T$). This is the lattice isomorphic to the boolean algebra defined above.\\
+	
+	Example:
+	$$A = \{a,b\}, \; |\mathcal{P} (A)| = |2^A| = 2^2 = 4$$
+	$$ 2^A = \{\emptyset, \{a\}, \{b\}, \{a,b\}\} $$
+	So 
+	$$ (2^A, \subseteq)$$
+	is a lattice.\\
+	
+	%Ma basta diocane 
+	
+	\newpage
+	
+	\paragraph{Boolean algebra of truth-values:}
+	$$ (\{0,1\}, I_\wedge = \min, I_\vee = \max, I_\neg = 1-, 0 = I_\bot, 1 = I_\top) $$
+	This is the \textbf{smallest significant boolean algebra} and in the ordering we have that 0 is below 1.\\
+	
+	It's equivalent to:
+	$$ \cong (\mathcal{P}(\{\ast\}), \cap, \cup, \overline{()}, \emptyset, \{\ast\}) $$
+	
+	Boolean algebras of \textbf{$n$-tuples of truth-values}
+	$$ (\{0,1\}^n, \overline{\min}, \overline{\max}, \overline{1-}, (0,0, \, .... \, , 0), (1,1, \, ... \, , 1)) $$
+	
+	Operations are defined pointwise (componentwise):
+	$$ \overline{\min} ((b_1, \, ... \, , b_n), (c_1, \, ... \, c_n)) := (\min \{b_1, c_1\}, \, ... \, , \min \{b_n, c_n\})$$
+	$$ \overline{\max} ((b_1, \, ... \, , b_n), (c_1, \, ... \, c_n)) := (\max \{b_1, c_1\}, \, ... \, , \max \{b_n, c_n\})$$
+	$$ \overline{1 - (b_1, \, ... \, , b_n)} = (1-b_1, \, ... \, , 1-b_n) $$
+	
+	\newpage
+	
+	\subsubsection{Lindembaum Algebras of (equivalence classes of) formulas}
+	%TODO from here
+	It is a boolean algebra.\\
+	
+	$$ (FL/\equiv, ...)$$
+	%What are those symbols? 
+	% Need to find a symbol for big conjunction and stuff
+	
+	Since \\equiv is a congruence with respect to $\wedge, \vee, \neg$ the following definition is well given (does not depend on the representatives of the classes).\\
+	
+	For all $A, B \in FL$:
+	$$ [A]_\equiv \bm{\wedge} [B]_\equiv := [A \wedge B]_\equiv$$
+	% Do the same on other operations, complete
+	$$ \neg [A]_\equiv := [\neg A]_\equiv $$
+	
+	It has an order relation since it's also a lattice: 
+	$$ (FL/\equiv, \leq) \;\;\;\;\; [A]_\equiv \leq [B]_\equiv  \; \text{ iff } \; [A]_\equiv = [A \wedge B]_\equiv \text{ or } [B]_\equiv = [A \vee B]_\equiv $$
+	
+	Some combinatorics about $FL/\equiv$
+	$$ |FL| = |\mathcal{L}| = |\mathbb{N}| = \aleph_0 $$
+	$$ |FL/\equiv| = \aleph_0 $$
+	No powerset has cardinality $\aleph_0$, so $|FL / \equiv|$ is not isomorphic with any powerset algebra.\\
+	
+	By $FL^{(n)}$ we mean the set of all formulas built using only the first $n$ propositional letters $\{p_1, p_2, \, ... \, , p_n\}$. Check that  %Complete
+	$$ |FL^{(n)}/\equiv|$$
+	is a boolean algbera (called Lindenbaum algebra over the first $n$ letters).\\
+	
+	%Complete, idc anymore, just wanna kms 
+	% On the right, after : there is number of assignment that satisfies that shi
+	%TODO To here
 
 \end{document}
