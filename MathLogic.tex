@@ -53,6 +53,9 @@
 	\newcommand{\finsat}{\subseteq_\omega}
 	\newcommand{\FLe}{\sfrac{\mathcal{F}_\mathcal{L}}{\equiv}}
 	\newcommand{\flne}{\sfrac{\mathcal{F}_\mathcal{L}^{(n)}}{\equiv}}
+	\newcommand{\fln}{\mathcal{F}_\mathcal{L}^{(n)}}
+	\newcommand{\hfln}{\hat{\mathcal{F}}_\mathcal{L}^{(n)}}
+	\newcommand{\fle}{\sfrac{\mathcal{F}_\mathcal{L}}{\equiv}}
 	
 	\tableofcontents
 	
@@ -1849,8 +1852,286 @@
 	%Complete, idc anymore, just wanna kms 
 	% On the right, after : there is number of assignment that satisfies that shi
 	
-	%End L 9
+	%End L9
+	
+	\newpage
+	
+	First exercise: taking 
+	$$ (\FLe, \leq)$$
+	thought as a poset, we know that 
+	$$ [A]_\equiv \leq [B]_\equiv $$
+	
+	\begin{itemize}[label*=]
+		\item \textbf{iff} $[A]_\equiv = [A \wedge B]_\equiv $
+		\item \textbf{iff} $A \equiv A \wedge B$
+		\item \textbf{iff} $\models A \leftrightarrow (A \wedge B)$ 
+		\item \textbf{iff} $\models A \rightarrow B$
+	\end{itemize}
+	
+	Looking at the truth table, we can see that it's structured in such a way that no assignment can make $A \rightarrow B$ a tautology.\\
+	
+	Exercise: $F^{(n)}/\equiv$ is isomorphic with 
+	$$2^{2^{n}} \cong (\mathcal{P} (\mathcal{P} (\, ... \, )), \cap, \cup, ()^c, \emptyset, \, ...) $$
+	
+	\nn \nn
+	
+	\paragraph{Some other notable logically equivalent formulas:}
+	\begin{itemize}
+		\item \textbf{De Morgan Laws on $n$ many variables}: 
+		$$ \neg (F_1 \vee F_2 \vee \, ... \, , \vee F_n) \equiv \neg F_1 \wedge \neg F_2 \wedge \, ... \, \wedge \neg F_n $$
+		$$ \neg (F_1 \wedge F_2 \wedge \, ... \, , \wedge F_n) \equiv \neg F_1 \vee \neg F_2 \vee \, ... \, \vee \neg F_n $$
+		\item \textbf{Generalized distributivity}:
+		$$ (F_1 \vee \, ... \, \vee F_u) \wedge (G_1 \vee \, ... \, \vee G_v) \equiv \bigvee_{i=1}^u \bigvee_{j = 1}^v (F_i \wedge G_j) $$
+		$$ (F_1 \wedge \, ... \, \wedge F_u) \vee (G_1 \wedge \, ... \, \wedge G_v) \equiv \bigwedge_{i=1}^u \bigwedge_{j = 1}^v (F_i \vee G_j) $$
+	\end{itemize}
+	
+	\newpage
+	
+	\subsection{Term Function}
+	%Motivations for a new way to look at things.\\
+	Motivations: $\models F$ \textbf{iff} (by definition) for all $\ta$ it holds that $\tilde{v}(F) = 1$.\\
+	
+	We want to look at the \textbf{assignment as a function}, and $F$ \textbf{as the argument}.\\
+	We desire that 
+	\begin{itemize}
+		\item the \textbf{formula} "becomes" the \textbf{function} 
+		\item the \textbf{assignments} "become" the \textbf{arguments}
+	\end{itemize}
+	
+	We fix a \textbf{formula} $A \in \FL$ and let $Var(A)$ be the set of \textbf{propositional letters actually occurring} in $A$ (since assignments are infinite by definition). Now fix a \textbf{suitable natural number} $n \in \mathbb{N}$ such that $Var(A) \subseteq \{p_1, p_2, \, ... \, , p_n\}$ (just take $n$ "large enough" for $A$).\\
+	
+	\textbf{Desideratum} (what we want): we want to \textbf{define a function} $\hat{A}: \{0,1\}^n \rightarrow \{0,1\}$ \textbf{such that} for all assignments $\ta$: 
+	$$ \hat{A} (v(p_1), v(p_2), \, ... \, , v(p_n)) = \tilde{v} (A) $$
+	The \textbf{formula} has \textbf{become a function}, the \textbf{assignment} has become the \textbf{argument}. Sometimes it's more convenient.\\
+	
+	Exercise: verify that assignments, restricted to the first $n$ propositional letters (that is $v: \{p_1, \, .... \, p_n\} \rightarrow \{0,1\}$), are in bijection with points in $\{0,1\}^n$ ($n$-tuples of bits).\\
+	
+	\newpage
+	
+	\textbf{Definition}: of \textbf{term function} $\hat{A}$ associated with the formula $A \in \FL$ with respect to $n \in \mathbb{N}$ ($Var(A) \subseteq \{p_1, \, ... \, , p_n\}$).\\
+	
+	We define this by \textbf{induction on the structure of} $A$:
+	\begin{itemize}
+		\item \textbf{Base}: $A = p_i$, $p_i \in \{p_1, \, ... \, , p_n\}$
+		$$ \hat{A}: \{0,1\}^n \rightarrow \{0,1\}$$
+		$$ \hat{p}_i: \{0,1\}^n \rightarrow \{0,1\}$$
+		
+		for all $(t_1, \, ... \, , t_n) \in \{0,1\}^n$
+		$$ \hat{p}_i (t_1, \, ... \, , t_n) :=  t_i $$
+		
+		so it satisfies the desideratum: 
+		$$ \hat{p}_i (v(p_1), \, ... \, , v(p_i), \, ... \, , v(p_n)) = v(p_i) = \tilde{v} (p_i) $$
+		
+		\item \textbf{Steps}: we have to define the cases: 	
+		\begin{itemize}
+			\item $A = \neg B$
+			$$ \hat{A} (t_1, \, ... \, , t_n) = \hat{(\neg B)} (t_1, \, ... \, , t_n) := I_\neg (\hat B (t_1, \, ... \, , t_n)) =  1 - (\hat B (t_1, \, ... \, , t_n))$$
+			
+			\item $A = B \wedge C$ 
+			$$ \hat{A} (t_1, \, ... \, , t_n) =  \hat{(B \wedge C)} (t_1, \, ... \, , t_n) := I_\wedge (\hat B (t_1, \, ... \, , t_n), \hat C (t_1, \, ... \, , t_n))$$
+			
+			\item $A = B \vee C$ 
+			$$ \hat{A} (t_1, \, ... \, , t_n) =  \hat{(B \vee C)} (t_1, \, ... \, , t_n) := I_\vee (\hat B (t_1, \, ... \, , t_n), \hat C (t_1, \, ... \, , t_n))$$
+			
+			\item $A = B \rightarrow C$ 
+			$$ \hat{A} (t_1, \, ... \, , t_n) =  \hat{(B \rightarrow C)} (t_1, \, ... \, , t_n) := I_\rightarrow (\hat B (t_1, \, ... \, , t_n), \hat C (t_1, \, ... \, , t_n))$$
+		\end{itemize}
+		
+		Check that in any case of the steps the desideratum holds (a lot of stuff is written, idk what it means).
+	\end{itemize}
+	
+	\newpage
+	
+	\subsubsection{Boolean algebra of term functions}
+	
+	$$ \hfln := \left( \left\{\hat F: \{0,1\}^n \rightarrow \{0,1\}: F \in \fln \right\}, \hat \wedge, \hat \vee, \hat \neg, \hat \top, \hat \bot \right)$$
+	where 
+	$$ (\hat F \wedge \hat G) (t_1, \, ... \, , t_n) = I_\wedge \{\hat F (t_1, \, ... \, , t_n), \hat G (t_1, \, ... \, , t_n)\}$$
+	$$ (\hat F \vee \hat G) (t_1, \, ... \, , t_n) = I_\vee \{\hat F (t_1, \, ... \, , t_n), \hat G (t_1, \, ... \, , t_n)\}$$
+	$$ \hat \neg \hat F (t_1, \, ... \, , t_n) = I_\neg (\hat F (t_1, \, ... \, , t_n)) $$
+	
+	We can prove that $\hfln$ is \textbf{isomorphic} with $\flne$ ($\hfln \cong \flne$) via: $\hat F \mapsto [F]_\equiv$ for each $F \in \FL$.\\
+	
+	$$\hfln = \left(\{ \hat F: \{0,1\}^n \rightarrow \{0,1\}: F \in FL\}, \hat \wedge, \hat \vee, \hat \neg, \hat \top, \hat \bot \right)$$
+	
+	Compare with
+	$$ Func^{(n)} = \left(\{ g: \{0,1\}^n \rightarrow \{0,1\} \}, \hat \wedge, \hat \vee, \hat \neg, \hat \top, \hat \bot \right)$$
+	
+	Check that $Func^{(n)}$ \textbf{is a boolean algebra}.\\
+	
+	This
+	$$ \fln \subseteq Func^{(n)}$$
+	is trivially true since each term function belongs to $Func^{(n)}$, while
+	$$ \fln \supseteq Func^{(n)}$$
+	is also true, called \textbf{functional completeness of propositional logic}.\\
+	
+	So
+	$$ \fln = Func^{(n)} $$
+	They're not isomorphic, it's \textbf{literally the same algebra}, they have the same universe and same operations, it's not a bijection.
+	
+	\newpage
+	
+	\subsection{Functional Completeness Theorem}
+	
+	We have to prove that \textbf{for each natural number} $n \in \mathbb{N}$, the set of function $Func^{(n)} \subseteq \hfln$. That is, for each function $g: \{0,1\}^n \rightarrow \{0,1\}$ there exists a formula $F \in \fln$ such that 
+	$$ g = \hat F$$
+	(that is, for each $n$-tuple $(t_1, \, ... \, , t_n) \in \{0,1\}^n$, $g (t_1, \, ... \, , t_n) = \hat F (t_1, \, ... \, , t_n)$).\\
+	
+	\begin{proof}
+		Let $g: \{0,1\}^n \rightarrow \{0,1\}$, let us build $F \in \fln$ such that $g = \hat F$.\\
+		We can build truth tables: 
+		$$
+		\begin{array}{c c c c | c}
+			t_1, & t_2, & \dots \, , & t_n & g (t_1, \, ... \, , t_n) \\
+			\hline 
+			0 & 0 & \dots & 0 & b_0 \\
+			0 & 0 & \dots & 1 & b_1 \\
+			&& \vdots && \vdots \\
+			a_{i1} & a_{i2} & \dots & a_{in} & b_i \\
+			&& \vdots && \vdots \\
+			1 & 1 & \dots & 1 & b_{2^{n}-1} \\
+		\end{array}
+		$$
+		
+		We have $2^n$ possible values and each $b_i$ is the value of the functions, they're just bits ($b_i \in \{0,1\}$).\\
+		
+		Observation: If $g(t_1, \, ... \, , t_n) = 0$ for all $(t_1, \, ... \, , t_n) \in \{0,1\}^n$ ($g$ always $0$), we can take $\bot = F$
+		$$ \hat F = \hat \bot = 0 = g $$
+		
+		Otherwise, at least a bit is 1, let $I \subseteq \{0,1, \, ... \, , 2^{n}-1\}$ be defined by $i \in I$ iff $b_i = 1$, by our earlier observation $I \neq \emptyset$.\\
+		
+		For all $i \in I$ let us consider the $i$-th row of the table:
+		$$ a_{i1} \; a_{i2} \, ... \, a_{in} \; | b_i $$
+		and $b_i =1$ since $i \in I$.\\
+		
+		For each $j \in \{1, \, ... \, , n\}$ we set
+		$$ 
+		\begin{cases}
+			A_{ij}:= p_j & \text{ if } a_{ij} = 1 \\
+			A_{ij}:= \neg p_j & \text{ if } a_{ij} = 0 \\
+		\end{cases}
+		$$
+		
+		We set
+		$$ F := \bigvee_{i \in I} \bigwedge_{j=1}^n A_{ij} $$
+		Note $F \in \fln$.\\
+		
+		We have to prove that $\hat F = g$.\\
+		
+		It's enough to prove that: 
+		$$\widehat{\left(\bigwedge_{j=1}^n A_{ij}\right)} (t_1, \, ... \, , t_n = 1) $$
+		
+		\textbf{iff}
+		$$ (t_1, \, ... \, , t_n) =  (a_{i1}, a_{i2}, \, ... \, , a_{in}) $$
+		As defined, this formula identifies the $i$-th row, evaluates to $1$ just on the $i$-th row call it $(\dag)$. \\
+		
+		Proof of $(\dag)$: Clearly
+		$$ \left(A_{i1} \wedge A_{i2} \wedge \, ... \, \wedge A_{in}\right) (a_{i1}, a_{i2}, \, ... \, , a_{in}) = 1 $$
+		For convenience: 
+		$$ \left(A_{i1} \wedge A_{i2} \wedge \, ... \, \wedge A_{in}\right) = \bigwedge_{j = 1}^n A_{ij} $$
+		
+		Since, by definition of $A_{ij}$
+		$$ \hat A{ij} (a_{i1}, a_{i2}, \, ... \, , a_{in})  = \begin{cases}
+			a_{ij} & \text{ if } a_{ij} = 1\\
+			1 - a_{ij} & \text{ if } a_{ij} = 0
+		\end{cases}$$
+		That is, $\hat A_{ij} (a_{i1}, \, ... \, , a_{in}) = 1$.\\
+		So
+		$$ \widehat \bigwedge{j=1}^n A_{ij} (a_{i1}, a_{i2}, \, ... \, , a_{in}) = 1$$
+		By definition of $I_\wedge$.\\
+		
+		Let now us take $(t_1, \, ... \, , t_n) \in \{0,1\}^n$, with $(t_1, \, ... \, , t_n) \neq (a_{i1}, a_{i2}, \, ... \, , a_{in})$ (so $(t_1, \, ... \, , t_n)$ is not the $i$th row).\\
+		
+		Let $j \in \{1, \, ... \, , n\}$ be such that $t_j \neq a_{ij}$ (there must be at least one position in which they are different, otherwise they would be the same row)
+		$$ 
+		\begin{cases}
+			a_{ij} = 1 & \text{ iff } t_j = 0 \\
+			a_{ij} = 0 & \text{ iff } t_j = 1
+		\end{cases}
+		$$
+		then 
+		$$ \hat A_{ij} (t_1, \, ... \, , t_n) = 
+		\begin{cases}
+			1 - a_{ij} & \text{ iff } a_{ij} = 1 \\
+			a_{ij} & \text{ iff } a_{ij} = 0
+		\end{cases}
+		= 0 
+		$$
+		
+		So 
+		$$ \widehat \bigwedge_{j=1}^n = 0$$
+		By definition of $I_\wedge$ . So we proved $(\dag)$.\\
+		
+		So, by $(\dag)$ 
+		$$ \left( \bigwedge_{j=1}^n A_{ij} \right) (t_1, \, ... \, , t_n) = 1 \; \text{ iff } \; t_1, \, ... \, , t_n \; \text{ is the } i \text{th row} $$
+		So 
+		$$\widehat{\left( \bigvee_{i \in I} \bigwedge_{j=1}^n A_{ij}\right)} (t_1, \, ... \, , t_n)  = 1 $$
+		\textbf{iff} (by definition if $I_\vee$) $(t_1, \, ... \, , t_n)$ is the $i$th row for some $i \in I$\\
+		
+		\textbf{iff } (by definition of $I$) $g(t_1, \, ... \, , t_n) = 1$.\\
+		
+		\newpage
+		
+		So we have concluded that $F$, defined as:
+		$$ F := \bigvee_{i \in I} \bigwedge_{j=1}^n A_{ij}$$
+		is such that 
+		$$ \hat F (t_1, \, ... \, , t_n) = g(t_1, \, ... \, t_n) $$
+		for all $(t_1, \, ... \, t_n) \in \{0,1\}^n$, so
+		$$ \hat F = g $$
+	\end{proof}
+	
+	Exercise: prove that for any $f: \{\}^n \rightarrow \{0,1\}$ there is a formula $G \in \fln$ such that $\hat G = f$ and 
+	$$G = \bigwedge_{i \in J} \bigvee_{j=1}^n B_{ij} $$
+	where $J \subseteq \{0, \, ... \, , 2^n - 1\}$ such that $i \in J$ iff $b_j = 0$ and 
+	$$ 
+	\begin{cases}
+		B_{ij} = \neg p_j & \text{ if } a_{ij} = 1 \\
+		B_{ij} = p_j & \text{ if } a_{ij} = 0
+	\end{cases}
+	$$
+	Dual of before, just switch everything.\\
+	
+	The \textbf{functional completeness theorem} is a typical \textbf{normal form theorem}. We have two "flavors", \textbf{disjunctive and conjunctive normal form} (the two dual thingies proven, respectively).\\
+	
+	Given $f: \{0,1\}^n \rightarrow \{0,1\}$:
+	$$F  =  \bigvee_{i \in I} \bigwedge_{j=1}^n A_{ij} \;\;\;\; G = \bigwedge_{i \in J} \bigvee_{j=1}^n B_{ij} $$
+	Are such that $\hat F = f = \hat G$.\\
+	
+	For  $A \in \fln$ then there are $F_A \vee \wedge A_{ij}$ and $G_A \wedge \vee A_{ij}$ such that 
+	$$ \hat F_A = \hat A = \hat G_A$$
+	it's the same as saying 
+	$$ [F_A]_\equiv = [A]_\equiv [G_A]\equiv \implies$$
+	$$ \implies F_A \equiv A \equiv G_A $$
 	
 	
+	\paragraph{Normal form:} a way of picking a "standard" element in every one of the equivalence classes.\\ 
+	
+	\textbf{Observation}: The functional completeness theorem \textbf{does not hold} (for non classical logic, but also) \textbf{for} the \textbf{set of all formulas} $\FL$. It \textbf{works only when we restrict} to formulas and functions on \textbf{the first} $n$ \textbf{propositional letters}, for any $n \in \mathbb{N}$
+	$$ Func^{(n)} = \hfln \cong \flne $$
+	Functional completeness theorem proves the first $=$.\\
+	
+	If we consider all propositional letters (remember $|\mathcal{L}| = \aleph_0$)
+	$$ Func^{(\omega)} = \{f: \{0,1\}^\omega \rightarrow \{0,1\}\}$$
+	But $\{0,1\}^\omega$ is the set of all infinitely long sequences of bits.\\
+	$$ |Func^{(\omega)}| = |[0,1] \cap \mathbb{R}| = |\mathbb{R}| = 2^{\aleph_0} = \aleph_1 > \aleph_0 = |\fle| $$
+	
+	\vfill
+	
+	The normal forms: 
+	\begin{itemize}
+		\item \textbf{Conjunctive}
+		$$ \bigwedge_{i \in J} \bigvee_{j=1}^n B_{ij} $$
+		\item \textbf{Disjunctive} 
+		$$ \bigvee_{i \in I} \bigwedge_{j=1}^n A_{ij} $$
+	\end{itemize}
+	
+	Are said \textbf{canonical} or \textbf{complete}, conjunctive/disjunctive normal forms, that is every one of the disjuncts/conjuncts \textbf{mentions all the letters} $p_1, p_2, \, ... \, , p_n$.\\
+	
+%	Example: MIA%Write it maybe
+%	
+%	It shows the difference between getting to the formula by observation and with the canonical normal forms.\\
 
+	%End L10
+	
+	
 \end{document}
