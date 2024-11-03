@@ -51,7 +51,8 @@
 	\newcommand{\FL}{\mathcal{F}_\mathcal{L}}
 	\newcommand{\ta}{v: \mathcal{L} \rightarrow \{0,1\}}
 	\newcommand{\finsat}{\subseteq_\omega}
-	\newcommand{\FLe}{\sfrac{mathcal{F}_\mathcal{L}}{\equiv}}
+	\newcommand{\FLe}{\sfrac{\mathcal{F}_\mathcal{L}}{\equiv}}
+	\newcommand{\flne}{\sfrac{\mathcal{F}_\mathcal{L}^{(n)}}{\equiv}}
 	
 	\tableofcontents
 	
@@ -1820,31 +1821,36 @@
 	%TODO from here
 	It is a boolean algebra.\\
 	
-	$$ (FL/\equiv, ...)$$
-	%What are those symbols? 
-	% Need to find a symbol for big conjunction and stuff
+	$$ (\FLe, \bm{\wedge}, \bm{\vee}, \bm{\neg}, [\bot]_\equiv, [\top]_\equiv) $$
 	
-	Since \\equiv is a congruence with respect to $\wedge, \vee, \neg$ the following definition is well given (does not depend on the representatives of the classes).\\
+	Since $\equiv$ is a congruence with respect to $\wedge, \vee, \neg$ the following \textbf{definition is well given} (does not depend on the representatives of the classes).\\
 	
-	For all $A, B \in FL$:
-	$$ [A]_\equiv \bm{\wedge} [B]_\equiv := [A \wedge B]_\equiv$$
-	% Do the same on other operations, complete
+	For all $A, B \in \FL$:
+	$$ [A]_\equiv \bm{\wedge} [B]_\equiv := [A \wedge B]_\equiv $$
+	$$ [A]_\equiv \bm{\vee} [B]_\equiv := [A \vee B]_\equiv $$
 	$$ \neg [A]_\equiv := [\neg A]_\equiv $$
 	
-	It has an order relation since it's also a lattice: 
-	$$ (FL/\equiv, \leq) \;\;\;\;\; [A]_\equiv \leq [B]_\equiv  \; \text{ iff } \; [A]_\equiv = [A \wedge B]_\equiv \text{ or } [B]_\equiv = [A \vee B]_\equiv $$
+	It has an \textbf{order relation} since it's also a \textbf{lattice}: 
+	$$ (\FLe, \leq) \;\;\;\;\; [A]_\equiv \leq [B]_\equiv  \; \text{ iff } \; [A]_\equiv = [A \wedge B]_\equiv \text{ or } [B]_\equiv = [A \vee B]_\equiv $$
 	
-	Some combinatorics about $FL/\equiv$
-	$$ |FL| = |\mathcal{L}| = |\mathbb{N}| = \aleph_0 $$
-	$$ |FL/\equiv| = \aleph_0 $$
-	No powerset has cardinality $\aleph_0$, so $|FL / \equiv|$ is not isomorphic with any powerset algebra.\\
+	Some combinatorics about $\FLe$
+	$$ |\FL| = |\mathcal{L}| = |\mathbb{N}| = \aleph_0 $$
+	$$ |\FLe| = \aleph_0 $$
+	No powerset has cardinality $\aleph_0$, so $|\FLe|$ is \textbf{not isomorphic} with any powerset algebra.\\
 	
-	By $FL^{(n)}$ we mean the set of all formulas built using only the first $n$ propositional letters $\{p_1, p_2, \, ... \, , p_n\}$. Check that  %Complete
+	By $\FL^{(n)}$ we mean the set of all formulas built using only the first $n$ propositional letters $\{p_1, p_2, \, ... \, , p_n\}$. Check that  %Complete
 	$$ |FL^{(n)}/\equiv|$$
-	is a boolean algbera (called Lindenbaum algebra over the first $n$ letters).\\
+	is a boolean algebra (called Lindenbaum algebra over the first $n$ letters).\\
+	
+	\vfill 
+	
+	And he checks that, but I'm not paid enough to write it.\\
 	
 	%Complete, idc anymore, just wanna kms 
 	% On the right, after : there is number of assignment that satisfies that shi
-	%TODO To here
+	
+	%End L 9
+	
+	
 
 \end{document}
