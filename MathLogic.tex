@@ -56,6 +56,7 @@
 	\newcommand{\fln}{\mathcal{F}_\mathcal{L}^{(n)}}
 	\newcommand{\hfln}{\hat{\mathcal{F}}_\mathcal{L}^{(n)}}
 	\newcommand{\fle}{\sfrac{\mathcal{F}_\mathcal{L}}{\equiv}}
+	\newcommand{\nand}{\text{ nand }}
 	
 	\tableofcontents
 	
@@ -2132,6 +2133,324 @@
 %	It shows the difference between getting to the formula by observation and with the canonical normal forms.\\
 
 	%End L10
+	
+	\subsection{Functionally complete set of connectives}
+	
+	A \textbf{set} $C \subseteq \{\wedge, \vee, \rightarrow, \neg, \leftrightarrow, \top, \bot, \, \dots \, \}$ (subset of connectives) is \textbf{functionally complete} iff for all $F \in \fln$ (for all $n \in \mathbb{N}$) there is some $G \in \fln$ written using only the connectives in $C$ such that $\hat F = \hat G$ (or $F \equiv G$, or $[F]_\equiv = [G]_\equiv$, or $\models F \leftrightarrow G$, they're all equivalent).\\
+	
+	The set 
+	$$ \{\wedge, \vee, \neg \}$$
+	is \textbf{functionally complete}, by the \textbf{functionally completeness theorem}.\\
+	
+	Other functionally complete sets: 
+	\begin{itemize}
+		\item $\{\neg, \wedge\}$: same as above, use De Morgan laws to obtain this set
+		\item $\{\neg, \vee\}$: also De Morgan
+		\item $\{\neg, \rightarrow\}$: can be proven remembering that $A \wedge B \equiv (\neg A) \rightarrow B$
+		\item $\{\rightarrow, \bot\}$: equivalent to $\neg A \equiv A \rightarrow \bot$
+	\end{itemize}
+	
+	\paragraph{NAND:} Operator defined as negation of AND, it's usually defined as: 
+	$$ A \nand B := \neg (A \wedge B) $$
+	$$ I_{\nand} = \{0,1\}^2 \rightarrow \{0,1\} $$
+	$$ I_{\nand} (x,y) = 1 - \min\{x,y\}$$
+	$$
+	\begin{array}{c c | c c | c}
+		A & B & \neg & (A \wedge B) & \nand \\
+		\hline
+		0 & 0 & 1 & 0 & 1 \\
+		0 & 1 & 1 & 0 & 1 \\
+		1 & 0 & 1 & 0 & 1 \\
+		1 & 1 & 0 & 1 & 0 \\
+	\end{array}
+	$$
+	
+	
+	Recalling that $\{\neg, \wedge\}$ is functionally complete, the set only composed by \textbf{nand} is \textbf{functionally complete}:
+	$$
+	\begin{cases}
+		\neg A \equiv A \text{ nand } A \\
+		A \wedge B \equiv \neg (A \text{ nand } B) \equiv (A \text{ nand } B) \text{ nand } (A \text{ nand } B)
+	\end{cases}
+	$$
+	
+	\newpage
+	
+	Exercise: prove that nor is functionally complete, $(A \text{ nor } B \equiv \neg (A \wedge B))$.\\
+	
+	Exercise: are
+	\begin{itemize}
+		\item $\{\wedge, \rightarrow\}$
+		\item $\{\wedge, \vee\}$
+		\item $\{\neg, \bot\}$
+	\end{itemize}
+	
+	functionally complete? \\
+	
+	They're not, there are functions that cannot be expressed with these sets.\\
+	
+	The last one doesn't have any binary operators, so it can't be functionally complete, how do I express binary operators? You can't build functions depending on more that one variable.\\
+	
+	While for the first two, we don't have the negation, we just have "increasing" functions.\\
+	
+	So we can't express \textit{everything}, for example a formula
+	$$ F(1,1, \, \dots \, , 1) = 0 $$
+	is impossible, since we can't produce a zero starting from ones only.\\
+	
+	\newpage
+	
+	\subsection{Normal Forms}
+	
+	We have seen canonical/complete normal forms (CNF, DNF) and they are \textbf{generally too long}.\\
+	We want to produce CNFs and DNFs without their being canonical, in order to obtain shorter formulas.\\
+	
+	\subsubsection{Implication Free Normal Form IFNF:} 
+	
+	We're getting rid of implication.\\
+	
+	\paragraph{Definition:} a Formula $F \in \FL$ is in IFNF ($F \in IFNF$) \textbf{iff} $F$ \textbf{does not contain} any occurrence \textbf{of} $\rightarrow$.\\
+	
+	To do that we just replace every $\rightarrow$ (we've seen it can be replaced, we'll see some transformations below).\\
+	
+	\subsubsection{Negation Normal Form NNF}
+	
+	\paragraph{Definition:} A formula $F \in IFNF$ is in NNF ($F \in NNF$) iff the \textbf{negation connective} is applied \textbf{only to propositional letters} (if $\neg B$ is a sub-formula of $F$, then $B = p_i$ for some $p_i \in \mathcal{L}$).\\
+	
+	Examples: 
+	\begin{itemize}
+		\item Is $p_1 \wedge (p_2 \vee p_3$ in NNF?
+		Obviously no, but its equivalent $p_1 \wedge (\neg p_2 \wedge \neg p_3$
+		\item Is $p_1 \rightarrow \neg p_2$ in NNF? No, since it's not $\in IFNF$ (the negation is only on letters though)
+	\end{itemize}
+	
+	
+	We have "subsets" of Normal Forms: 
+	$$ 
+	\begin{array}{c c}
+		CNF & \subseteq \\
+		DNF & \subseteq
+	\end{array}
+	NNF \subseteq IFNF
+	$$
+	
+	\newpage
+	
+	%Check below
+	
+	\paragraph{Notation:} $G \preceq F$, $G$ is a \textbf{Subformula} of $F$ (for $G,F \in \FL$) if $G$ occurs in every $L$-construction of $F$ (you need $G$ to build $F$, get the minimal $L$-construction and check if $G$ is in there).\\
+	
+	\paragraph{Transformations:} We shall use the following equivalences to \textbf{replace subformulas} with \textbf{equivalent ones}:
+	\begin{enumerate}
+		\item $C \rightarrow D \equiv (\neg C) \vee D$
+		\item $\neg \neg C \equiv C$
+		\item $\neg (C \vee D) \equiv \neg C \wedge \neg D$ (De Morgan)
+		\item $\neg (C \wedge D) \equiv \neg C \vee \neg D$ (De Morgan)
+	\end{enumerate}
+	
+	We shall use these logical equivalences to transform subformulas of a given formula $F \in \FL$ using these from left to right, we're \textbf{using them as transformation rules} (we could do the opposite, but goes against our normal forms).\\
+	
+	\paragraph{Lemma:} For any $F \in \FL$ we can build another formula $G \in \FL$ (in finite number of steps) such that $F \equiv G$ and $G \in IFNF$. Any formula can be "transformed" into an equivalent one in IFNF.\\
+	
+	\begin{proof}
+		For any $E \in \FL$ we introduce an index of complexity, every step it decreases and it goes at 0 only when $E \in IFNF$.\\
+		
+		Let $i(E)$ be the number of occurrences of $\rightarrow$ in $E$. We can observe that $E \in IFNF$ iff $i(E) = 0$. If $E \notin IFNF$ then $i(E) > 0$.\\
+		
+		Take $C \rightarrow D \preceq E$ (which exists for any $E$ with $i(E) > 0$).\\
+		
+		Replace $C \rightarrow D$ with $(\neg C) \vee D$ and call $E'$ the formula obtained.\\
+		$$ E' = E\left[\sfrac{(\neg C) \vee D}{C \rightarrow D}\right]$$
+		(with a small abuse of notation, I think we defined the substitution only for letters but I think it's admissible).\\
+		
+		Now $E \equiv E'$ for the transformation $(1)$ and substitution theorem and 
+		$$ i(E) > i(E')$$
+		since we removed at least one implication.\\
+		
+		So, given in input $F \in \FL$ with $F \notin IFNF$, we build a sequence 
+		$$ (\dag) \;\;\;\;\;\;\;\; F = F_0 \equiv F_1\equiv \, \dots \, \equiv F_u \in IFNF $$
+		and 
+		$$ i(F_0) > i(F_1) > \, \dots \, > i(F_n) = 0 $$
+		Since we're strictly descending natural numbers since each $F_{i+1}$ is obtained from $F_i$ by substituting some $C \rightarrow D \preceq F$ with $(\neg C) \vee D$.\\
+		
+		Trivially, the sequence $(\dag)$ ends in a finite number of steps $u$ with $u \leq i(F_0) = i(F)$, producing a formula $F_u$ such that $F_u \equiv F$, $F_u \in IFNF$.\\
+	\end{proof}
+	
+	\paragraph{Lemma:} for any $F \in IFNF$ we can build, in a finite number of steps, a \textbf{sequence} 
+	$$ F = F_0 \equiv F_1 \equiv \, \dots \, \equiv F_v = G $$
+	\textbf{such that} $G \equiv F$ \textbf{and} $G \in NNF$.\\
+	This is \textit{kinda} the same as before, but with the NNF. Starting from a formula $\in IFNF$ we can transform it into NNF.\\
+	
+	The \textbf{measure of complexity} is not as simple, we can't just \textit{count the instances} of $\neg$, usually the raw number increases but the negation goes closer to the propositional letters.\\
+	
+	For any $A \in IFNF$ let $\ell(A) :=$ the \textbf{number of} occurrences of \textbf{connectives in} $\{\wedge, \vee, \neg\}$ in $A$.\\
+	
+	For any $E \in IFNF$ let 
+	$$m (E):= \sum_{\neg A \preceq E} \ell(A)$$
+	
+	So $m(E) = 0$ iff $E \in NNF$.\\
+	
+	If $E \in NNF$ then $\neg A \preceq E$ iff $A = p$ for some $p \in \mathcal{L}$, so if $A$ is a propositional letter, it contains no connectives $\ell (A) = 0$, so $m(E) = \sum_{\neg A \preceq E} 0 = 0$.\\
+	
+	if $m(E) = 0$ then $\sum_{\neg A \preceq E} 0$ then $\ell(A) = 0$ for all $\neg A \preceq E$, then $A = p$ for some $p \in \mathcal{L}$, then $E \in NNF$ (by definition of NNF).\\
+	
+	% TODO Wtf
+	I don't really know what happened here, the definition of $m$ is still a bit of mystery to me. I would really appreciate a simple explanation.\\
+	
+	We have to show that each application of our second, third and fourth transformation is such that one step from $F_i$ to $F_{i+1}$ has $m(F_i) > m(F_{i+1})$.\\
+	
+	Cases: 
+	\begin{itemize}
+		\item we use $\neg \neg C \preceq F_i$ , so we need to prove
+		$$ m(\neg \neg C) > m(C) $$
+		
+		By definition: 
+		$$ m(C) = \sum_{\neg A \preceq C} \ell(A) $$
+		$$ m(\neg \neg C) = \sum_{\neg A \preceq \neg \neg C} \ell(A) = \ell (\neg C) + \sum_{\neg A \preceq \neg C} \ell (A) =$$ 
+		$$ = \ell (C) + 1 + \ell (C) + \sum_{\neg A \preceq C} \ell (A) $$
+		
+		So $m(\neg \neg C) > m(C)$ by at least $1$.\\
+		
+		\newpage
+		
+		\item we use $\neg (C \wedge D) \preceq F_i$, we need to prove:
+		$$ m(\neg (C \wedge D)) > m(\neg C \vee \neg D) $$
+		
+		So 
+		$$ m(\neg (C \wedge D)) = \sum_{\neg A \preceq \neg (C \wedge D)} \ell(A) = \ell (C \wedge D) + \sum_{\neg A \preceq C} \ell(A) + \sum_{\neg A \preceq D} \ell(A) = $$
+		$$ = \ell (C) + 1 + \ell (D) + \sum_{\neg A \preceq C} \ell(A) + \sum_{\neg A \preceq D} \ell(A) $$
+		
+		And 
+		$$ m(\neg C \vee \neg D) = \sum_{\neg A \preceq \neg C \vee \neg D} \ell (A) = \ell (C) + \ell(D) + \sum_{\neg A \preceq C} \ell(A) + \sum_{\neg A \preceq D} \ell(A) $$
+		
+		then $m(\neg (C \wedge D)) > m(\neg C \vee \neg D)$.\\
+		
+		\item we use $\neg (C \vee D) \preceq F_i$, we need to prove:
+		$$ m(\neg (C \vee D)) > m(\neg C \wedge \neg D) $$
+		Same as before, just switch symbols.\\
+		
+	\end{itemize}
+	
+	\textbf{Observe}: if $G \preceq F$, going from $G$ to $H$ and subsequently from $F$ to $F'$, $F' = F[\sfrac{H}{G}]$
+	$$ \text{if } \; m (G) > m(H) \; \text{ then } \; m(F) > m(F')$$
+	
+	As a matter of fact 
+	$$m(F) = \sum_{\neg A \preceq F} \ell(A) = \sum_{\neg A \preceq G} \ell(A) + \sum_{\neg A \preceq F, \neg A \not \preceq G} \ell (A)  = m(G) + \sum_{\neg A \preceq F, \neg A \not \preceq G} \ell (A) $$
+	$$ m(F') = \sum_{\neg A \preceq F'} \ell(A) = \sum_{\neg A \preceq H} \ell(A) + \sum_{\neg A \preceq F, \neg A \not \preceq H} \ell (A)  = m(H) + \sum_{\neg A \preceq F, \neg A \not \preceq G} \ell (A)$$
+	$$ \implies m(F) > m(F') $$
+	
+	\newpage
+	
+	We have \textbf{proved that} if $F \in IFNF$ we can build a sequence 
+	$$ F = F_0 \equiv F_1 \equiv \, \dots \, \equiv F_v = G$$
+	
+	such that $G \in NNF$ and $G \equiv F$ since 
+	$$ m(F_0) > m(F_1) > \, \dots \, > m(F_v) = 0 $$
+	
+	The \textbf{number of steps} is \textbf{at most} the \textbf{initial complexity} of $F$, $m(F) = m(F_0)$. Which scales the complexity in a linear fashion.\\
+	
+	We have, by the proofs of the previous Lemmas, \textbf{efficient} (linear time) \textbf{algorithms} to put a \textbf{formula} $F \in \FL$ into an \textbf{equivalent one in IFNF and} then \textbf{NNF}. \\
+	
+	$F$ can be efficiently transformed in an $F^{IF} \in IFNF$, which can be transformed, still efficiently, in an $F^{N} \in NNF$, taking at most $i(F) + m(F)$ steps.\\
+	
+	The $IF$ and $N$ mean, respectively, that the formula is $\in IFNF$ and $\in NNF$.\\
+	
+%	%Add the IF and N supscripts
+%	
+%	Example:
+%	%Complete, if you care enough.\\
+	
+	\newpage
+	
+	\subsubsection{Conjunctive Normal Form CNF}
+	
+	But I hear you saying "\textit{we've already seen this}", do we have to look at it again? We already know the \textit{canonical} CNF and DNF but now they're the \textit{star of the show}, so let them shine (this gives "What about second breakfast?" vibes).\\
+	
+	\paragraph{Terminology: }
+	\begin{itemize}
+		\item \textbf{Definition: Literal}, by literal we mean a formula in the form $p$ or $\neg p$ for some $p \in \mathbb{L}$. A letter or a negation of one.\\
+		
+		\item \textbf{Definition: Opposite Literal}, if $A$ is a literal, then we denote by $\overline{A}$, called opposite of $A$, the literal so defined:
+		$$ 
+		\begin{cases}
+			\text{if } \; A = p & \text{ then } \overline{A} = \neg p \\
+			\text{if } \; A = \neg p & \text{ then } \overline{A} = p
+		\end{cases}
+		$$
+		Equivalently
+		$$ \overline{A} := (\neg A)^N$$
+		An opposite literal is the opposite of a literal, do you really need a definition?\\
+		
+		\item \textbf{Definition: Clause}, a clause is a disjunction of a finite number of literals: 
+		$$ l_1 \vee l_2 \vee \, \dots \, \vee l_k $$
+		where each $l_i$ is a literal.\\
+		
+		\item \textbf{Definition: CNF}, a CNF is a conjunction of a finite number of clauses: 
+		$$ C_1 \wedge C_2 \wedge \, \dots \, \wedge C_n$$
+		where each $C_j$ is a clause.\\
+		
+		\item \textbf{Definition: Empty Clause}, an empty clause ($\square$) is, by definition, a disjunction of zero literals.\\
+		
+		\item \textbf{Definition: Empty CNF}, the empty CNF ($\emptyset$) is the conjunction of zero clauses. Very much different from the last one.\\
+	\end{itemize}
+	
+	Thinking about $l_1$ as a literal, and the disjunctions 
+	$$ l_1 $$
+	$$ l_1 \vee l_2 $$
+	$$ l_1 \vee l_2 \vee l_3 $$
+	and so on
+	$$ l_1 \vee l_2 \vee l_3 \vee \, \dots \, l_k \vee \, \dots $$
+	
+	If any of these is satisfiable, then all of the ones below are satisfiable, so it makes sense to put $\square$ on top of the first literal $l_1$, so, by definition, the empty literal $\square$ \textbf{is unsatisfiable and a contradiction}.\\
+	
+	Same game with clauses and empty CNF $\emptyset$:
+	$$ C_1 $$
+	$$ C_1 \wedge C_2 $$
+	$$ C_1 \wedge C_2 \wedge \, \dots \, \wedge C_n \wedge \, \dots $$
+	
+	But here the satisfiability flows upwards, if one is satisfied then all of the above are satisfied. The empty CNF $\emptyset$ is still above all, and as such is satisfied by all assignments and is a tautology
+	
+	\subsubsection{Disjunctive Normal Form DNF}
+	
+	A DNF is a disjunction of a finite number of formulas: 
+	$$ D_1 \vee D_2 \vee \, \dots \, \vee D_h $$
+	where each $D_i$ (dual of a clause, hasn't got a proper name, maybe co-clause) is a conjunction of a finite number of literals (or the dual of a literal, but it's still a literal):
+	$$ l_1 \wedge l_2 \wedge \, \dots \, \wedge l_m $$
+	
+	Every definition stated before has a DNF dual but they don't have a proper name since \textit{nobody cares}.\\
+	
+	\paragraph{Lemma:} Every formula $F \in \FL$ is \textbf{logically equivalent to} a formula $F^C \in CNF$ and to a formula $F^D \in DNF$
+	$$ (CNF \ni F^C \equiv F \equiv F^D \in DNF )$$
+	
+	\begin{proof}
+		By structural induction of $F$: 
+		\begin{itemize}
+			\item \textbf{Base}: $F = p$, $p \in \mathcal{L}$ then $p^C \equiv p \equiv p^D$. A single literal is already in CNF and DNF, $p^C = p = p_D$.\\
+			
+			\item \textbf{Step}: the case $F = \neg G$, by I.H., there are $G^c \in CNF$, $G^D \in DNF$ with $G^C \equiv G \equiv F^D$
+			$$ F = \neg G \equiv (\neg(G^D))^N \in CNF $$
+			
+			$$ F = \neg G $$
+			$$ \neg (G^D) = \neg (D_1 \vee D_2 \vee \, \dots \, \vee D_v) $$
+			
+			with each $D_i$
+			$$ D_i = l_{i1} \wedge l_{i2} \wedge \, \dots \, \wedge l_{iq}$$
+			
+			but by De Morgan
+			$$ \equiv \neg D_1 \wedge \neg D_2 \wedge \, \dots \, \wedge \neg D_v $$
+			
+			And, still by De Morgan, each $\neg D_i$
+			$$ 	\equiv (\overline{l}_{i1} \vee \overline{l}_{i2} \vee \, \dots \, \vee \overline{l}_{iu_i}) $$
+		\end{itemize}
+		
+		So $(\neg (G^D))^N$ is the conjunction $\neg D_1 \neg D_2 \wedge \, \dots \, \neg D_v$ of a finite number of formulas $(\neg D_i)$, each one equivalent to a disjunction of a finite number of literals, that is $(\neg (G^D))^N \in CNF$, and $F \equiv \neg G \equiv (\neg (G^D))^N$.\\
+	\end{proof}
+	
+	Exercise: prove that if $F = \neg G$ then 
+	$$ F \equiv (\neg (G^C))^N, \;\;\;\; (\neg (G^C))^N \in DNF $$
+	
+	\newpage
+	
+	% End L11
 	
 	
 \end{document}
