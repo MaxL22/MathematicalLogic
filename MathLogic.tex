@@ -2452,5 +2452,168 @@
 	
 	% End L11
 	
+	For the \textbf{other connectives}: \begin{proof}
+		Case: $F = (G \wedge H)$, by I.H.
+		$$  G^C, H^C \in CNF, \;\;\;\; G^D, H^D \in DNF $$
+		$$ \text{with } \; G^C \equiv G \equiv G^D, \;\; H^C \equiv H \equiv H^D $$
+		
+		We want to build \textbf{2 new formulas}:
+		\begin{itemize}
+			\item $F \equiv F^D$, defining $F^D$ as  $:= G^D \vee H^D \in DNF$, then by definition is $ \in DNF$, and by construction $G^D \vee H^D \equiv F$. Disjunction of disjunctions of finitely many co-clauses, so still $\in DNF$.\\
+			
+			\item $F \equiv F^C$, then 
+			$$ G^C = G_1 \wedge G_2 \wedge \, \dots \, \wedge G_u $$
+			$$ H^C = H_1 \wedge H_2 \wedge \, \dots \, \wedge H_v $$
+			So
+			$$ G \vee H \equiv G^C \vee H^C \equiv (G_1 \wedge G_2 \wedge \, \dots \, \wedge G_u) \vee (H_1 \wedge H_2 \wedge \, \dots \, \wedge H_v) \equiv $$
+			Using generalized distributivity:
+			$$ \equiv \bigwedge_{i=1}^u \bigwedge_{j=1}^v (G_i \wedge H_j) $$
+		\end{itemize}
+		
+		
+		Each $G_i$ and each $H_j$ are clauses, i.e., disjunctions of finitely many literals, so each term in the form $G_i \vee H_j$ is again a clause, and then the whole formula is a finite conjunction of clauses and, by definition, a CNF, also $\equiv G \vee H = F$.\\
+	\end{proof}
+	
+	Then we have the case $(G \wedge H)$, which is left as an exercise to the reader.\\
+	
+	Case (to complete our set of connectives): $(G \rightarrow H)$, which is also left as an exercise, because implication can be reduced to $G \rightarrow H \equiv (\neg G) \vee H$.\\
+	
+	\newpage
+	
+	\textbf{Transforming example:} 
+	$$ p_1, p_2, p_3, q_1, q_2, q_3 \in \mathcal{L}$$
+	Then 
+	$$ (p_1 \wedge q_1) \vee (p_2 \wedge q_2) \vee (p_3 \wedge q_3) \in DNF$$
+	
+	We want to \textbf{convert} these 3 disjuncts of 2 literals each \textbf{to CNF}. We want to distribute the first conjunction over the rest:
+	$$ \equiv [p_1 \vee ((p_2 \wedge q_2) \vee (p_3 \wedge q_3))] \wedge [p_2 \vee ((p_2 \wedge q_2) \vee (p_3 \wedge q_3))] $$
+	
+	Now we do the same thing with the second conjunction
+	$$ \equiv (p_1 \vee p_2 \vee (p_3 \wedge q_3)) \wedge (p_1 \vee q_2 \vee (p_3 \wedge q_3)) \wedge
+	(q_1 \vee p_2 \vee (p_3 \wedge q_3)) \vee
+	(p_1 \vee q_2 \vee (p_3 \wedge q_3)) $$
+	
+	Distributivity:
+	$$ \equiv
+	(p_1 \vee p_2 \vee p_3) \wedge 
+	(p_1 \vee p_2 \vee q_3) \wedge
+	(p_1 \vee q_2 \vee p_3) \wedge
+	(p_1 \vee q_2 \vee q_3) \wedge
+	$$
+	$$
+	\wedge
+	(q_1 \vee p_2 \vee p_3) \wedge
+	(q_1 \vee p_2 \vee q_3) \wedge
+	(q_1 \vee q_2 \vee p_3) \wedge
+	(q_1 \vee q_2 \vee q_3)
+	$$
+	And this is $\in CNF$, having 8 conjuncts of 3 literals each.\\
+	
+	\textbf{Exercise}: generalize to every $n \in \mathbb{N}$.\\
+	
+	A DNF of $n$ disjuncts of 2 literals each, becomes a CNF with $2^n$ c+onjuncts with $n$ literals each.\\
+	
+	Doing the inverse (CNF to DNF) has the same exponential dilation.\\
+	
+	\newpage
+	
+	\section{Notions of computational complexity}
+	
+	We want to reason about the \textbf{complexity of a decision problem} (has an answer which is either \textit{yes} or \textit{no}).\\
+	
+	\paragraph{Definition:} A (decision) \textbf{problem} (or "\textit{language}") is a subset $L \subseteq \Sigma^\ast$, i.e., a subset $L$ of the set of all finite strings (words) over a finite alphabet (set) $\Sigma$.\\
+	
+	For instance, formulas of $\FL$ can be written over the alphabet
+	$$ \Sigma = \{\wedge, \vee, \neg, \rightarrow\} \cup \{),(\} \cup \{p, |\} \;\;\;\; p_i \in \mathcal{L} $$
+	
+	So we can say that:
+	$$ \fl \subseteq \Sigma^\ast $$
+	
+	Given a $w \in \Sigma^\ast$, to know if it belongs to $\FL$, so $w \in \fl$, then \textbf{iff} $w$ is a formula, there is an $L$-construction for $w$.\\
+	
+	There are other decision problems we've seen, as defined: 
+	$$ NNF \subseteq \Sigma^\ast,  \;\;\; CNF \subseteq \Sigma^\ast,  \;\;\; DNF \subseteq \Sigma^\ast $$
+	These happen to be \textbf{syntactical problem} which are (\textit{usually}) \textbf{easy}.\\
+	
+	But there are \textbf{semantics problems}, which are (\textit{usually}) \textbf{not so easy}. For instance: 
+	$$ SAT \subseteq \Sigma^\ast$$
+	Input $w \in \Sigma^\ast$, definition: $w \in SAT$ iff $w \in \fl$ and $w$ is satisfiable.\\
+	We can decide if a formula is satisfiable, but it's long (think of a truth table, it's exponential in length).\\
+	
+	Another semantical problem:
+	$$ TAUTO \subseteq \Sigma^\ast$$
+	Same as before, but all entries must be 1, not  at least one.\\
+	
+	Same with checking if a formula is unsatisfiable:
+	$$ UNSAT \subseteq \Sigma^\ast $$
+	and complement of SAT, which is checking if it's unsatisfiable but it doesn't have to be a formula
+	$$ SAT^C \subseteq \Sigma^\ast $$
+	
+	We can solve these problems, although inefficiently.\\
+	
+	\subsection{Computational Model}
+	We want to \textbf{fix a computational model} which will provide a reasonable notion of \textbf{elementary step of computation}.\\
+	
+	\paragraph{Church-Turing (extended) Thesis:} There are \textbf{many} different reasonable \textbf{computational models}, but the \textbf{set of computable functions} (what can actually be computed on these models) \textbf{is always the same}. \\
+	Every "reasonable" computational model is "equivalent", in the sense that every one of these models defines the same set of efficiently computable functions (decidable problems).\\
+	
+	We choose the \textbf{model of Turing Machines}, which comes in several flavors: 
+	\begin{itemize}
+		\item Vanilla: \textbf{Deterministic Turing Machines DTM}
+		\item Chocolate: \textbf{Non-Deterministic Turing machines NDTM}
+	\end{itemize}
+	
+	Which will be useful to define complexity classes.\\
+	
+	I'm not going to describe a Turing machine, you got here, you know Turing machines, always the same quintuple $(q,b,q',b',s)$.\\
+	
+	\newpage
+	
+	The computation goes on until it reaches a state declared (in the definition of the machine) to be final, and accepts the input if this final state is declared to be accepting.\\
+	The machine could also never stop, thus not accepting the input, and it could also explicitly reject the input.\\
+	
+	%Check here, maybe, idk what's happening
+	
+	\textbf{Distinction} between \textbf{deterministic} (vanilla) and \textbf{non-deterministic} (chocolate) Turing machines:
+	\begin{itemize}
+		\item \textbf{Deterministic} (called DTM): means that for \textbf{any state-symbol pair} $(q,b)$ there is \textbf{at most one instruction} of the form $q,b \rightarrow \dots$.\\
+		
+		\item \textbf{Non-Deterministic} (called NDTM): there may be \textbf{several distinct instruction for any state-symbol pair} of the form $q,b \rightarrow \dots$; several instruction for the same state and symbol. When such an instruction is reached, there's a universe for each possible instruction the machine can execute. A DTM is a sequence of steps, a NDTM is a tree of possibilities and an input is accepted when at least one of the leafs in the NDTM tree reaches an accepting state.\\
+	\end{itemize}
+	
+	\newpage
+	
+	\subsection{Computational Complexity Classes}
+	
+	Decision problems which are \textbf{efficiently} decidable.\\
+	
+	\paragraph{Class $\mathcal{P}$:} problems decidable in deterministic polynomial time.\\
+	
+	A problem $L \subseteq \Sigma^\ast$ is in $\mathcal{P}$ ($L \in \mathcal{P}$) \textbf{iff} there exists a Deterministic Turing Machine $T$ and a polynomial $p: \mathbb{N} \rightarrow \mathbb{N}$ such that for each possible input $w \in \Sigma^\ast$ 
+	\begin{itemize}
+		\item the computation of $T$ on input $w$ ($T(w)$) ends within $p(||w||)$ steps (with $||w||$ meaning the length of $w$, the number of characters composing $w$).
+		\item for each $w \in L$, $T(w)$ accepts. For each $w \notin L$, $T(w)$ does not accept.
+	\end{itemize}
+	
+	A polynomial $p$ is a polynomial if it can be expressed as a polynomial.\\
+	
+	\paragraph{Class $\mathcal{NP}$:} problems decidable in non-deterministic polynomial time.\\
+	
+	\newpage
+	
+	\subsection{Notion of Efficiency}
+	
+	The \textbf{composition of polynomials is a polynomial}, so multiple polynomials together are still a polynomial and thus efficient (but with a \textbf{higher degree}, useful for combining algorithms).\\
+	Composition of polynomials of a fixed degree (if greater than 1) is not a polynomial of that degree.\\
+	
+	\textbf{Multiplication of polynomials is}, again, \textbf{a polynomial}, but, again, the result is of a \textbf{different degree}.\\
+	
+	We want that our notion of "\textbf{efficient computation}" to be \textbf{robust under composition, multiplication and change of the computational model}. So we're lead to \textbf{use polynomial} (with no fixed bound on the degree).\\
+	
+	\textbf{TL;DR}: polynomials are efficient.\\
+	
+	Previously seen syntactical problems are $\in \mathcal{P}$.\\
+	
+	% End L12
 	
 \end{document}
