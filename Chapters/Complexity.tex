@@ -1,0 +1,460 @@
+% TeX root = ../MathLogic.tex
+
+	\chapter{Notions of computational complexity}
+
+	We want to reason about the \textbf{complexity of a decision problem} (has an answer which is either \textit{yes} or \textit{no}).\\
+
+	\paragraph{Definition:} A (decision) \textbf{problem} (or "\textit{language}") is a subset $L \subseteq \Sigma^\ast$, i.e., a subset $L$ of the set of all finite strings (words) over a finite alphabet (set) $\Sigma$.\\
+
+	For instance, formulas of $\FL$ can be written over the alphabet
+	$$ \Sigma = \{\wedge, \vee, \neg, \rightarrow\} \cup \{),(\} \cup \{p, |\} \;\;\;\; p_i \in \mathcal{L} $$
+
+	So we can say that:
+	$$ \fl \subseteq \Sigma^\ast $$
+
+	Given a $w \in \Sigma^\ast$, to know if it belongs to $\FL$, so $w \in \fl$, then \textbf{iff} $w$ is a formula, there is an $L$-construction for $w$.\\
+
+	There are other decision problems we've seen, as defined:
+	$$ NNF \subseteq \Sigma^\ast,  \;\;\; CNF \subseteq \Sigma^\ast,  \;\;\; DNF \subseteq \Sigma^\ast $$
+	These happen to be \textbf{syntactical problem} which are (\textit{usually}) \textbf{easy}.\\
+
+	But there are \textbf{semantics problems}, which are (\textit{usually}) \textbf{not so easy}. For instance:
+	$$ SAT \subseteq \Sigma^\ast$$
+	Input $w \in \Sigma^\ast$, definition: $w \in SAT$ iff $w \in \fl$ and $w$ is satisfiable.\\
+	We can decide if a formula is satisfiable, but it's long (think of a truth table, it's exponential in length).\\
+
+	Another semantical problem:
+	$$ TAUTO \subseteq \Sigma^\ast$$
+	Same as before, but all entries must be 1, not  at least one.\\
+
+	Same with checking if a formula is unsatisfiable:
+	$$ UNSAT \subseteq \Sigma^\ast $$
+	and complement of SAT, which is checking if it's unsatisfiable but it doesn't have to be a formula
+	$$ SAT^C \subseteq \Sigma^\ast $$
+
+	We can solve these problems, although inefficiently.\\
+
+	\section{Computational Model}
+	We want to \textbf{fix a computational model} which will provide a reasonable notion of \textbf{elementary step of computation}.\\
+
+	\paragraph{Church-Turing (extended) Thesis:} There are \textbf{many} different reasonable \textbf{computational models}, but the \textbf{set of computable functions} (what can actually be computed on these models) \textbf{is always the same}. \\
+	Every "reasonable" computational model is "equivalent", in the sense that every one of these models defines the same set of efficiently computable functions (decidable problems).\\
+
+	We choose the \textbf{model of Turing Machines}, which comes in several flavors:
+	\begin{itemize}
+		\item Vanilla: \textbf{Deterministic Turing Machines DTM}
+		\item Chocolate: \textbf{Non-Deterministic Turing machines NDTM}
+	\end{itemize}
+
+	Which will be useful to define complexity classes.\\
+
+	I'm not going to describe a Turing machine, you got here, you know Turing machines, always the same quintuple $(q,b,q',b',s)$.\\
+
+	\newpage
+
+	The computation goes on until it reaches a state declared (in the definition of the machine) to be final, and accepts the input if this final state is declared to be accepting.\\
+	The machine could also never stop, thus not accepting the input, and it could also explicitly reject the input.\\
+
+	%Check here, maybe, idk what's happening
+
+	\textbf{Distinction} between \textbf{deterministic} (vanilla) and \textbf{non-deterministic} (chocolate) Turing machines:
+	\begin{itemize}
+		\item \textbf{Deterministic} (called DTM): means that for \textbf{any state-symbol pair} $(q,b)$ there is \textbf{at most one instruction} of the form $q,b \rightarrow \dots$.\\
+
+		\item \textbf{Non-Deterministic} (called NDTM): there may be \textbf{several distinct instruction for any state-symbol pair} of the form $q,b \rightarrow \dots$; several instruction for the same state and symbol. When such an instruction is reached, there's a universe for each possible instruction the machine can execute. A DTM is a sequence of steps, a NDTM is a tree of possibilities and an input is accepted when at least one of the leafs in the NDTM tree reaches an accepting state.\\
+	\end{itemize}
+
+	\newpage
+
+	\section{Computational Complexity Classes}
+
+	Decision problems which are \textbf{efficiently} decidable.\\
+
+	\paragraph{Class $\mathcal{P}$:} problems decidable in deterministic polynomial time.\\
+
+	A problem $L \subseteq \Sigma^\ast$ is in $\mathcal{P}$ ($L \in \mathcal{P}$) \textbf{iff} there exists a Deterministic Turing Machine $T$ and a polynomial $p: \mathbb{N} \rightarrow \mathbb{N}$ such that for each possible input $w \in \Sigma^\ast$
+	\begin{itemize}
+		\item the computation of $T$ on input $w$ ($T(w)$) ends within $p(||w||)$ steps (with $||w||$ meaning the length of $w$, the number of characters composing $w$).
+		\item for each $w \in L$, $T(w)$ accepts. For each $w \notin L$, $T(w)$ does not accept.
+	\end{itemize}
+
+	A polynomial $p$ is a polynomial if it can be expressed as a polynomial.\\
+
+	\paragraph{Class $\mathcal{NP}$:} problems decidable in non-deterministic polynomial time.\\
+
+	\newpage
+
+	\section*{Notion of Efficiency}
+
+	The \textbf{composition of polynomials is a polynomial}, so multiple polynomials together are still a polynomial and thus efficient (but with a \textbf{higher degree}, useful for combining algorithms).\\
+	Composition of polynomials of a fixed degree (if greater than 1) is not a polynomial of that degree.\\
+
+	\textbf{Multiplication of polynomials is}, again, \textbf{a polynomial}, but, again, the result is of a \textbf{different degree}.\\
+
+	We want that our notion of "\textbf{efficient computation}" to be \textbf{robust under composition, multiplication and change of the computational model}. So we're lead to \textbf{use polynomial} (with no fixed bound on the degree).\\
+
+	\textbf{TL;DR}: polynomials are efficient.\\
+
+	Previously seen syntactical problems are $\in \mathcal{P}$.\\
+
+	% End L12
+
+	\vfill
+
+	\paragraph{Class $\mathcal{NP}$:} Like $P$ but on NDTM, a problem $L \subseteq \Sigma^\ast$ is $\in \mathcal{NP}$ \textbf{iff} there exists a deterministic Turing Machine $T$ and two polynomials $p,q:\mathbb{N} \rightarrow \mathbb{N}$ such that for all $w \in \Sigma^\ast$ and each $z \in \Gamma^\ast$ ($\Gamma$ may be the same as $\Sigma$) we have:
+	\begin{itemize}
+		\item $T(w,z)$ ends within $p(||w||)$ steps
+		\item For each $w \in L$ there is additional information $z \in \Gamma^\ast$ such that $||z|| \leq q (||w||)$ (is polynomial with respect to the length of $w$) and $T(w,z)$ accepts
+		\item For each $w \notin L$ and for all $z \in \Gamma^\ast$ such that $||z|| \leq q(||w||)$, $T(w,z)$ does not accept
+	\end{itemize}
+
+	Equivalently: A problem $L$ is in $\mathcal{NP}$ iff there \textbf{exists a NDTM} $T$ and a \textbf{polynomial} $p: \mathbb{N} \rightarrow \mathbb{N}$ such that $w \in L$ iff $T(w)$ accepts in a number of steps $\leq p(||w||)$.\\
+
+	\newpage
+
+	The class $\mathcal{NP}$ as the class of \textbf{polynomially verifiable guess and check procedures}: if $w \in L$, guess an information $z \in \Gamma^\ast$ witnessing that $w$ is actually in $L$. Basically, class of problems in which, given an answer I can check that said answer confirms that $w \in L$.\\
+	Check in deterministic polynomial time that $z$ witnesses that $w \in L$.\\
+
+	\paragraph{Example:} SAT, taking $w \in \Sigma^\ast$ with the alphabet:
+	$$ \Sigma = \{\wedge, \vee, \neg, \rightarrow\} \cup \{),(\} \cup \{p, |\} \;\;\;\; p_i \in \mathcal{L} $$
+	$w \in SAT$ \textbf{iff} $w \in fl$ and $w$ is \textbf{satisfiable}.\\
+
+	Is $SAT \in \mathcal{P}$? Nobody knows (since nobody knows whether $\mathcal{P} = \mathcal{NP}$, we can guess no).\\
+
+	Is $SAT \in \mathcal{NP}$? Looking at the definitions given for the class, can I guess and check? If a relevant truth assignment \textit{descended from above}, could I \textbf{check that assignment in polynomial time}? Of course I can. We can guess a (restricted, obviously) assignment and check in deterministic polynomial time in $||w||$ that the assignment equals 1 (satisfies satisfiability).\\
+
+	\textbf{Clearly} $\mathcal{P} \subseteq \mathcal{NP}$.\\
+	What about the other way around? It would mean that $\mathcal{P} = \mathcal{NP}$, and it's part of the millennium problems. You probably ain't solving that.\\
+
+	What about \textbf{other problems}? \\
+
+	$UNSAT \in co-\mathcal{NP}$, i.e., it's in the complement of $\mathcal{NP}$, the set of problems for which I can't guess and check. I can't say that something is $UNSAT$ only from a random assignment.\\
+	Same for $SAT \in co-\mathcal{NP}$, $TAUTO \in co-\mathcal{NP}$ (since we can just check that the negation of the input is unsat).\\
+
+	On $\mathcal{NP}$ \textbf{problems} we can do \textbf{guess and check if an answer is correct}, while on $co-\mathcal{NP}$ \textbf{problems} we can't do that, equivalently we can \textbf{guess and check if the answer is NOT correct}.\\
+
+
+	\paragraph{$\mathcal{NP}$-complete ($\mathcal{NP}c \subseteq \mathcal{NP}$):} we say that $L$ is $\mathcal{NP}c$ \textbf{iff}
+	\begin{itemize}
+		\item $L \in \mathcal{NP}$
+		\item Every $L' \in \mathcal{NP}$ is such that $L'$ is \textbf{polynomially reducible to} $L$ (we say that $L$ is $\mathcal{NP}$-hard)
+	\end{itemize}
+
+	\section{Polynomially reducible}
+
+	A problem $L_1 \subseteq \Sigma^\ast$ is \textbf{polynomially reducible} to a problem $L_2 \subseteq \Gamma^\ast$ \textbf{iff} there exists a \textbf{DTM} $T_{L_1, L_2}$ and a polynomial $p : \mathbb{N} \rightarrow \mathbb{N}$ such that for all $w \in \Sigma^\ast$, $T_{L_1, L_2}$ transforms $w$ into $w' \in \Gamma^\ast$ using a number of steps $\leq p (||w||)$ and such that $w \in L_1$ iff $w' \in L_2$. We write $L_1 \preceq_p L_2$.\\
+
+	This means that solving problem $L_2$ means solving $L_1$, each input of one problem can be \textbf{efficiently} (in polynomial time) \textbf{transformed} into an instance of the other.\\
+
+	If $L \in \mathcal{NP}c$ and $L \in \mathcal{P}$ then $\mathcal{NP} = \mathcal{P}$, since every other problem $\in \np$ could be reduced to a problem $\np c$, making $\mathcal{P}$ and $\np$ collapse.\\
+
+	\newpage
+
+	\subsection{Cook-Levin Theorem}
+
+	Basically, it says that there are $\mathcal{NP}c$ problems.\\
+
+	Cook proved this with $CNF-SAT$, so $CNF-SAT \in \mathcal{NP}c$ (and thus SAT, since it's the \textit{deluxe extended version}).\\
+
+	Polynomial reduction \textbf{example:}
+	\begin{itemize}
+		\item Tauto and UNSAT
+		$$ TAUTO \preceq_p UNSAT $$
+		$$ w \mapsto \neg w $$
+		$$ w \in TAUTO \; \text{ iff } \; \neg w \in UNSAT $$
+		C'mon, flip the input and it's the same.\\
+
+		\item CNFSAT to SAT: $w \in \Sigma^\ast$, $w \in CNFSAT$ iff $w \in CNF$ and $w \in SAT$
+		$$ CNFSAT \preceq_p SAT $$
+		$$ w \mapsto \begin{cases}
+			w & \text{ if } w \in CNF \\
+			\bot & \text{ if } w \notin CNF
+		\end{cases}$$
+		\nn
+	\end{itemize}
+
+
+	By Cook-Levin Theorem $CNFSAT \pr SAT$ and $SAT \preceq_p CNFSAT$.\\
+
+	The proof given by Cook of the Cook-Levin theorem is by "simulation".\\
+
+	Given a problem $L \subseteq \Sigma^\ast$, $L \subseteq \mathcal{NP}$, we have to show that $L \preceq_p CNFSAT$. By def of $\mathcal{NP}$ there is a NDTM $T_L$ deciding $L$ in non-deterministic polynomial time.\\
+
+	The idea of the proof is, for each $w \in \Sigma^\ast$ to build a CNF which mimics the computation of $T_L$ on $w$.\\
+	Finally, the produced CNF is satisfiable \textbf{iff} $T_L (w)$ accepts.\\
+
+	\newpage
+
+	Since $T_L$ works in polynomial time with respect to $||w||$, a careful analysis of the produced CNF shows that its length is polynomial with respect to $||w||$.\\
+
+	Cook-Levin theorem \textbf{shows that} $L \preceq_p CNFSAT$ \textbf{for any} $L \in \mathcal{NP}$ (equivalent to saying that $CNFSAT \in \mathcal{NP}c$).\\
+
+	There's a big graph of complexity and computability classes here, \textit{I ain't doing all that}.\\
+
+	\nn
+
+	Some \textbf{problems} and their \textbf{relative classes}
+	\begin{itemize}
+		\item $CNFSAT \pr DNFUNTAUTO \in \np c$.\\
+
+		\item $CNFTAUTO \pr DNFUNSAT \in \mathcal{P}$.\\
+
+		\item $CNFUNTAUTO \pr DNFSAT \in \mathcal{P}$.\\
+
+		\item $DNFTAUTO \pr CNFUNSAT \in co-\np c$.\\
+
+	\end{itemize}
+
+	\paragraph{Questions/Observations: }
+	\begin{itemize}
+		\item Is it computationally efficient transforming a CNF into a logically equivalent DNF? It's \textit{very unlikey} since it would means reducing CNFSAT to DNFSAT efficiently thus making $\mathcal{P} = \mathcal{NP}$. $CNFSAT \preceq_p DNFSAT \implies \mathcal{P} = \mathcal{NP}$.\\
+
+		\item Is it computationally efficient transforming a DNF into a logically equivalent CNF? No, same as above but with $\mathcal{NP}c \ni DNFUNTAUTO \preceq_p CNFUNTAUTO \in \mathcal{P}$
+	\end{itemize}
+
+	Nonetheless, we'll show a poly reduction from SAT to CNFSAT
+	$$ SAT \preceq_p CNFSAT $$
+	If $SAT \pr DNFSAT$ then $\pnp$.\\
+
+	\newpage
+
+	\section{Equisatisfiability}
+
+	\paragraph{Definition:} Let $A,B \in fl$, then $A$ is equisatisfiable with $B$ ($A$ and $B$ are equisatisfiable) \textbf{iff} $A$ is satisfiable \textbf{iff} $B$ is satisfiable.\\
+
+	That is: either $A$ and $B$ are both satisfiable xor $A$ and $B$ are both unsatisfiable (might not be the same assignments, just same satisfiability level).\\
+
+	%Examples? Complete? Who cares?
+
+	% End L13
+
+	%Continuation of equisatisfiability
+
+	Equisat \textbf{considers only satisfiability}, it doesn't care about logical equivalence (but the latter always implies the former).\\
+
+	\paragraph{Is equisat an equivalence relation?} We need to prove reflexivity, symmetry and transitivity.\\
+	So we can confidently say that \textbf{it's an equivalence relation}.\\
+
+	\paragraph{Is equisat a congruence with respect to the operations considered (connectives)?} We can find equisat formulas not always satisfied by all the same assignments (we can prove this for any of the connectives).\\
+	So it's \textbf{not a congruence}.\\
+
+	Exercises:
+	\begin{itemize}
+		\item is equisat a congruence with respect to $\wedge$?
+		\item is equisat a congruence with respect to $\vee$?
+		\item is equisat a congruence with respect to $\rightarrow$?
+	\end{itemize}
+
+	$A \equiv B$ implies that $A$ equisat $B$. $\equiv$ is, as a relation, more refined than equisat (i.e., equisat is rougher than $\equiv$).\\
+
+	The \textbf{equivalence classes of equisat} are \textbf{unions} of \textbf{equivalence classes of} $\equiv$, more specifically, equisat cares only between unsatisfiable and satisfiable (takes the $\bot$ class and the union of all the rest), while $\equiv$ has classes for each assignment.\\
+
+	\newpage
+
+	\subsection{SAT to CNFSAT}
+	We shall \textbf{reduce} $SAT$ polynomially $\preceq_p$ to $CNFSAT$ \textbf{using preservation of equisatisfiability} instead of preservation of logical equivalence.\\
+
+	\paragraph{Observation:} Recall that $SAT \preceq_p NNFSAT$, preserving logical equivalence (since transforming a formula to $NNF$ can be done in polynomial time while preserving logical equivalence).\\
+
+	\paragraph{Observation:} If $A \in NNF$ and assume that $A \notin CNF$ then $A$ contains at least one subformula of the following form:
+	$$ (\dag) \;\;\; C \vee (D_1 \wedge D_2) \; \text{ or } \;  (D_1 \wedge D_2) \vee C \;\;\; (\dag \dag) $$
+	for some $C, D_1, D_2 \in NNF$.\\
+
+	Since $A \in NNF$, $A$ is a $\wedge$-$\vee$ combination of literals. If every occurrence of $\vee$ is in a subformula with the main connective $\wedge$ then $A \in CNF$. If $A \notin CNF$ there must be a subformula of the shape $(\dag)$ or $(\dag \dag)$.\\
+
+	We call any occurrence of $(\dag)$ or $(\dag \dag)$ a "\textbf{violation}".\\
+	Preliminary step: since $(\dag) \equiv (\dag \dag)$, we use substitution theorem to \textbf{replace every occurrence of the kind} $(\dag \dag)$ \textbf{with} $(\dag)$. This requires constant time.\\
+
+	We can now assume that \textbf{every violation is in the form} $(\dag)$.\\
+
+	Let $A \in NNF$ and let $B = (\dag)$ with $B \preceq A$. Then $B$ is a violation.\\
+
+	The \textbf{original formula} may contain a \textbf{finite number} $n$ \textbf{of violations}, so we \textbf{eliminate at least one at a time}, while \textbf{maintaining equisatisfiability} and doing this in \textbf{efficient time}, to obtain something equisat.\\
+
+	\newpage
+
+	For \textbf{each violation} $B$ we \textbf{introduce} a new (not occurring in $A$) propositional \textbf{letter} $a_B \in \mathcal{L}$.\\
+
+	We \textbf{define }
+	$$ B' := B \left[\sfrac{a_b}{D_1 \wedge D_2}\right] \wedge (\neg \vee D_1) \wedge (\neg a_b \vee D_2) $$
+	And we call the part after the first $\wedge$ "\textbf{tail}".\\
+	Where
+	$$ B'' := \left[\sfrac{a_b}{D_1 \wedge D_2}\right] $$
+	is the formula obtained by replacing in $B$ every occurrence of $D_1 \wedge D_2$ with the letter $a_B$.\\
+
+	So
+	$$B' = (C' \vee a_b) \wedge (\neg \vee D_1) \wedge (\neg a_b \vee D_2) $$
+	with
+	$$ C' = C \left[\sfrac{a_b}{D_1 \wedge D_2}\right] $$
+
+	We shall prove that $A$ \textbf{and} $A'$ obtained by \textbf{replacing} $B$ \textbf{in} $A$ \textbf{with} $B'$ are \textbf{equisat} (while, in general, not being $\equiv$).\\
+
+	Examples $p,q,r \in \mathcal{L}$ and a fresh $a \in \mathcal{L}$ ($a \neq p, a \neq q, a \neq r$).\\
+	We can show how a simple violation can be removed:
+	$$ p \vee (q \wedge r) \mapsto (p \vee a) \wedge (\neg \vee q) \wedge (\neg a \vee r) $$
+	The first is not a CNF, while the second is $\in CNF$. We now have to show that they're equisat.\\
+
+	With the assignment
+	$$ v(q) = v(r) = v(a) = 1, \;\;\; v(p) = 0$$
+	we can see that
+	$$ \tilde v (p \vee (q \wedge r)) = 1 $$
+	$$ \tilde v ((p \vee a) \wedge (\neg \vee q) \wedge (\neg a \vee r)) = 1$$
+	So they're \textbf{both satisfiable} $\implies$ they're \textbf{equisat}.
+
+	\newpage
+
+	But \textit{are they logical equivalent?} Considering
+	$$ w(q) = w(r) = 1, \;\;\; w(p) = w(a) = 0$$
+	Then
+	$$ \tilde w (p \vee (q \wedge r)) = 1 $$
+	$$ \tilde w ((p \vee a) \wedge (\neg \vee q) \wedge (\neg a \vee r)) = 0$$
+
+	So they're equisat, but \textbf{not} $\equiv$.\\
+
+	We \textbf{can generalize this process} with not only letters but formulas in general, composed of $n$ literals.\\
+
+	Transforming \textbf{from DNF} of $n$ disjuncts of 2 literals each \textbf{to CNF} while maintaining logical equivalence takes $2^n$ conjuncts, while \textbf{maintaining just equisatisfiability} only \textbf{takes} $2n+1$ (so it's \textbf{linear} instead of exponential).\\
+
+	\paragraph{Algorithm:}
+	\begin{itemize}
+		\item Let $F \in \fl$.\\
+
+		\item Let $A \in NNF$ such that $A \equiv F$. $A$ is built in polynomial time with respect to $||F||$.\\
+
+		\item Build a sequence
+		$$ F \equiv A := A_0 \rightsquigarrow A_1 \rightsquigarrow\, \dots \, \rightsquigarrow A_u \in CNF $$
+		where $u \leq$ the number of violations occurring in $A$ ($u \leq ||A||$, max number of steps) and $A_{i+1}$ is obtained from $A_i$ by removing at least one violation as follows: remove a violation $B = C \vee (D_1 \wedge D_2)$ by substituting in $A_i$, $B$ with $B'$: the outcome is $A_{i+1}$. Then we shall guarantee that for each step $A_i$ equisat $A_{i+1}$. \\
+		Note that $F \equiv A$ equisat with $A_u \in CNF$.\\
+	\end{itemize}
+
+	\newpage
+
+	Notice that in passing \textbf{from} $A_i$ \textbf{to} $A_{i+1}$ (from $B$ to $B'$) we have a \textbf{dilatation of the formulas} $||A_{i+1}|| \geq ||A_i||$. But by \textbf{how much}? Remembering that
+	$$ B \rightsquigarrow B' = B \left[\sfrac{a_b}{D_1 \wedge D_2}\right] \wedge (\neg \vee D_1) \wedge (\neg a_b \vee D_2) $$
+
+	So $||B'|| \leq ||B|| + k$ where $k$ is a constant (12 counting all symbols).\\
+	So $||A_{i+1}|| \leq ||A_i|| + k$.\\
+
+	If the initial number of violations in $A=A_0$ is $v$, after at most $u \leq v$ steps we have produced $A_u \in CNF$, and $||A_u|| \leq ||A|| + u \cdot k \leq (k+1) ||A||$. It increases by a constant number of symbols $k$, for at most $u$ times.\\
+
+	So the \textbf{algorithm runs in deterministic polynomial time}.\\
+
+	\paragraph{Proving correctness:} To prove the correctness of the algorithm it suffices to prove that \textbf{for each index} $i = 0,1, \, \dots \, , u-1$, $A_i$ \textbf{equisat} $A_{i+1}$, then by the transitivity of equisat $F \equiv A_0$ equisat $A_u \in CNF$, $F$ equisat $A_u$.\\
+
+	Let $B \preceq A_i$ be a violation for $A$. Then \\
+	$$ B = C \vee (D_1 \wedge D_2) $$
+	$$ B' = B'' \wedge (\neg a_b \vee D_1) \wedge (\neg a_B \vee D_2) \; \text{ with } \; B'' = \left[\sfrac{a_b}{D_1 \wedge D_2}\right] $$
+
+	Then we can say that
+	$$
+	\begin{cases}
+		A & := A_i \left[\sfrac{q}{B}\right] \\
+		A_i & := A \left[\sfrac{B}{q}\right] \\
+		A_{i+1} & := A \left[\sfrac{B'}{q}\right]
+	\end{cases}
+	$$
+	where $q$ is a fresh propositional letter.\\
+
+	\paragraph{Observation:} Take the tail $(\neg a_b \vee D_1) \wedge (\neg a_B \vee D_2)$, we can see that
+	$$  (\neg a_b \vee D_1) \wedge (\neg a_B \vee D_2) \equiv a_b \rightarrow (D_1 \wedge D_2) $$
+	So $a_B$ is always $\leq$ than $(D_1 \wedge D_2)$, which is sufficient, but we could force $a_B \leftrightarrow (D_1 \wedge D_2)$, but the tail becomes longer (and I don't care tbh).
+
+	\newpage
+
+	Assume $A_i$ is \textbf{satisfiable} and we prove that $A_{i+1}$ is \textbf{satisfiable too}. Se there's at least a $\ta$ such that $\tilde v (A_i) = 1$ ($v$ exists by assumption that $A_i \in SAT$).\\
+
+	\paragraph{Definition:} the assignment $v_{a_B}: \mathcal{L} \rightarrow \{0,1\}$ such that it's
+	$$
+	\begin{cases}
+		v_{a_B} := v(p) & \text{ for all } p \in \mathcal{L}, p \neq a_B \\
+		v_{a_B} := \tilde v (D_1 \wedge D_2) & \text{ otherwise }
+	\end{cases}
+	$$
+	It's well defined.\\
+
+	Notice that $\tilde v_{a_B} (a_B \rightarrow (D_1 \wedge D_2)) = 1$, by the semantics of implication ($\tilde v_{a_B}$ satisfies the tail).\\
+
+	Then $(\dag) = \tilde v_{a_B} (B') = \tilde v_{a_B} (B'')$, by the semantics of $\wedge$, since $B' = B'' \wedge$ tail.\\
+
+	Now
+	$$
+	\begin{cases}
+		B & = \left(B \left[\sfrac{a_B}{D_1 \wedge D_2}\right]\right) \left[\sfrac{D_1 \wedge D_2}{a_B}\right] \\
+		B'' & = \left(\left[\sfrac{a_B}{D_1 \wedge D_2}\right]\right) \left[\sfrac{a_B}{a_B}\right]
+	\end{cases}
+	$$
+
+	Since $a_b$ does not occur in $D_1 \wedge D_2$.\\
+
+	We can now do
+	$$ \tilde v_{a_B} (a_B) = v_{a_B} (a_B) = \tilde v (D_1 \wedge D_2) = \tilde v_{a_B} (D_1 \wedge D_2)$$
+	Apply to first and last the substitution Lemma:
+	$$ \tilde v_{a_B} (B) = \tilde v_{a_B} (B'') \;\;\;\;(\dag \dag)$$
+
+	\newpage
+
+	Now
+	\begin{flalign*}
+		1 & = \tilde v (A_i) \\
+		& = \tilde v_{a_B} (A_i) \\
+		& = \tilde v_{a_B} \left(A\left[\sfrac{B}{q}\right]\right) \\
+		& = \tilde v_{a_B} \left(A\left[\sfrac{B''}{q}\right]\right) \\
+		& = \tilde v_{a_B}  \left(A\left[\sfrac{B'}{q}\right]\right) \\
+		& = \tilde v_{a_B} (A_{i+1})
+	\end{flalign*}
+
+	And each equivalence, in order, is:
+	\begin{itemize}
+		\item by current assumption (of smth, idk)
+		\item $a_B$ doesn't occur in $A_i$
+		\item by definition of $A_i$
+		\item by substitution lemma and $(\dag \dag)$
+		\item by substitution lemma and $(\dag)$
+		\item by definition of $A_{i+1}$
+	\end{itemize}
+
+	So $\tilde v_{a_B} (A_{i+1}) = 1$, and thus $A_{i+1} \in SAT$.\\
+
+
+
+	Assume now, \textbf{for the other way around}, that $A_{i+1} \in SAT$ with the aim of proving that $A_i$ is $SAT$ too.\\
+
+	Two cases:
+	\begin{itemize}
+		\item \textbf{First, lucky, case:} Assume further that $A_{i+1}$ is satisfied by an assignment $w: \mathcal{L} \rightarrow \{0,1\}$ of the form $\tilde v_{a_B}$, that is
+		$$ w(a_b) = \tilde w (D_1 \wedge D_2) $$
+		at least one satisfying assignment has this property. Then we \textit{kinda} reverse the earlier chain:
+		\begin{flalign*}
+			1 & = \tilde w (A_{i+1}) \\
+			& = \tilde w \left(\left[\sfrac{B'}{q}\right]\right) \\
+			& = \tilde w \left(\left[\sfrac{B''}{q}\right]\right) \\
+			& = \tilde w \left(\left[\sfrac{B}{q}\right]\right) \\
+			& = \tilde w (A_i)
+		\end{flalign*}
+		So $\tilde (A_i) = 1$, that is $A_i \in SAT$.\\
+
+		\item \textbf{Second, unlucky, case:} $A_{i+1}$ is satisfiable but all satisfying assignments $w: \mathcal{L} \rightarrow \{0,1\}$ ($\tilde w (A_{i+1}) = 1$) are such that $\tilde w(a_b) \neq \tilde w (D_1 \wedge D_2)$.\\
+		The condition
+		$$ \tilde w(a_b) \neq \tilde w (D_1 \wedge D_2) $$
+		implies that
+		$$ w(a_B) = 0 \; \text{ and } \; \tilde w (D_1 \wedge D_2) = 1$$
+		or
+		$$ w(a_B) = 1 \; \text{ and } \; \tilde w (D_1 \wedge D_2) = 0$$
+		By bivalence, but the second one can be ruled out since $\tilde w$ satisfies the tail, which means that $w (a_B \rightarrow (D_1 \wedge D_2)) = 1$.\\
+
+	\end{itemize}
+
+	\newpage
+
+	%Smth missing I guess
+
+	%Wtf
+%	Exercise/Digression: Let $E$ be an expression formed using only $0,1,\min,\max$. Observations:
+%	* the value of $E$ is either 0 or 1
+%	* Let $E'$ be obtained by replacing zero or more occurrences of 0 in $E$ with 1, then $E \leq E'$
+
+	%End L14
+
+%%% Local Variables:
+%%% TeX-master: "../MathLogic.tex"
+%%% End:

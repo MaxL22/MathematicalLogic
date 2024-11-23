@@ -1,0 +1,1705 @@
+% TeX root = ../MathLogic.tex
+
+	\chapter{Semantics notions for sets of formulas}
+
+	Let $\Gamma \subseteq \fl$ ($\Gamma$ is a subset of the set of all formulas), then $\Gamma$ is called a \textbf{theory}.\\
+
+	\paragraph{Definition:} a \textbf{theory} $\Gamma \subseteq FL$ is \textbf{satisfiable} iff it exists a truth value assignment $v: \mathcal{L} \rightarrow \{0,1\}$ such that for all $\gamma \in \Gamma$ then $\tilde{v} (\gamma) = 1$ (in symbols $v \models \gamma$ we mean $v$ satisfies $\gamma$ as a formula) .\\
+
+	\paragraph{Definition:} $\Gamma \subseteq \mathcal{F}_\mathcal{L}$ is \textbf{unsatisfiable} iff for all assignments $v: \mathcal{L} \rightarrow \{0,1\}$ there exists at least $\gamma \in \Gamma$ such that $\tilde{v} (\gamma) = 0$.\\
+
+	$v \not \models \Gamma$ for all $\ta$. $v \not \models \gamma$ if $\tilde{v} (\gamma) = 0$.\\
+
+	\newpage
+
+	\section{Logical consequence}
+	Of a formula $F \in \fl$ from a theory $\Gamma \subseteq \fl$).\\
+
+	\paragraph{Definition:} let $\Gamma \subseteq \FL$, $F \in \FL$ , then $F$ \textbf{is a logical consequence of} $\Gamma$, $\Gamma \models F$, iff for every assignment $\ta$ satisfying $\Gamma$ it holds that $v$ satisfies $F$ too:
+	$$ v \models \Gamma \implies v \models F $$
+
+	\vfill
+
+	To express the fact that a given formula $F \in \FL$ \textbf{is a tautology} by means of the notion of logical consequence there are several ways, for example
+	$$ T \models F $$
+	with $T$ being an always true constant.\\
+	Another solution: let $\Omega$ be a set of tautologies:
+	$$\Omega \models F$$
+	Or even:
+	$$ \emptyset \models F$$
+	since you can't falsify a formula in the $\emptyset$, there's no formula.\\
+	For a \textbf{tautology} is also commonly used:
+	$$ \models F$$
+	with no operand on the left side.\\
+
+	\newpage
+
+	\subsection{Fundamental semantic properties of theories with respect to logical consequence}
+
+	\paragraph{Lemma:} let $\Gamma \subseteq \FL$ be a theory and $A \in \FL$, then $\Gamma \models A$ \textbf{iff} $\Gamma \cup \{\neg A\}$ is unsatisfiable.\\
+
+	\begin{proof}
+		$\Gamma \models A$ \textbf{iff} (by def of $\models$) for all assignments $\ta$, $\tilde{v} (\gamma) =1$ for all $\gamma \in \Gamma$ implies $\tilde{v} (A) = 1$.\\
+
+		\textbf{Iff} for all $\ta$ either it is not the case that $\tilde{v} (\gamma) = 1$ for all $\gamma \in \Gamma$, or $\tilde{v} (A) = 1$.\\
+
+		\textbf{Iff} for all $\ta$ there exists $\gamma \in \Gamma$ such that $\tilde{v} (\gamma) = 0$ or $\tilde{v} (\neg A) = 0$.\\
+
+		\textbf{Iff} (by definition of unsatisfiability) $\Gamma \cup \{\neg A\}$ is unsatisfiable.\\
+	\end{proof}
+
+	Basically, if $A$ is a logical consequence of $\Gamma$ then there's no case in which  $\Gamma \cup \{\neg A\}$ can be true, since for all assignments in which $\Gamma$ is satisfied $A$ is also satisfied and thus $\neg A$ is always false.\\
+
+	\newpage
+
+	\paragraph{Lemma (Semantical deduction Lemma):} Let $P,Q \in \FL$, $\{P\} \models Q$ iff $P \rightarrow Q$.  The logical consequence relation can be internalized using the logical implication connective.\\
+
+	\begin{proof}
+		$P \models Q$ \textbf{iff} (by definition of $\models$) for all $\ta$, $\tilde{v} (P) = 1$ implies $\tilde{v} (Q) = 1$.\\
+
+		\textbf{Iff} (by definition of $I_\rightarrow$) $\tilde{v} (P \rightarrow Q) = 1$ for all $\ta$ that is $P \rightarrow Q$ is a tautology.\\
+	\end{proof}
+
+	Saying $P \models Q$ or $P \rightarrow Q$ is kinda the same.\\
+
+	\paragraph{Theorem (Semantical deduction):} Let $\Gamma \subseteq \FL$ and $P,Q \in \FL$, then $\Gamma \cup \{P\} \models Q$ (which will be also written as $\Gamma, P \models Q$) iff $\Gamma \models P \rightarrow Q$.\\
+
+	\begin{proof}
+		$\Gamma, P \models Q$ \textbf{iff} (by definition of $\models$) for all assignments $\ta$ such that $v \models \Gamma$ and $\tilde{v}(P) = 1$ (all assignments that satisfy both $\Gamma$ and $P$) then $\tilde{v}(Q) = 1$ (also satisfy $Q$).\\
+
+		\textbf{Iff} (by definition of $I_\rightarrow$) for all $\ta$ such that $v \models \Gamma$ it holds that $\tilde{v}(P \rightarrow Q) =1$.\\
+
+		\textbf{Iff} (by definition of $\models$) $\Gamma \models P \rightarrow Q$.\\
+	\end{proof}
+
+	This is a stronger version of the lemma presented earlier.\\
+
+	\newpage
+
+	\section{Compactness Theorem}
+	It's one of the theorems that lies at the foundation of logic. \\
+
+	Let $\Gamma \subseteq \FL$, $\Gamma$ \textbf{is satisfiable iff} for all $\Gamma' \subseteq \Gamma$, with $\Gamma'$ finite, then $\Gamma'$ \textbf{is satisfiable}. Every subset of a set of satisfiable formulas is satisfiable.\\
+
+	Do we \textit{really} need to consider the case $\Gamma$ is infinite (contains infinitely many formulas)? Yeah, kinda, it will be shown that in first order logic a single formula may contain the amount of information of infinitely many propositional formulas (whatever this means).\\
+
+	Compactness theorem allows us to \textbf{reduce the analysis of satisfiability} of a possibly infinite theory \textbf{to the analysis of its finite sub-theories}, but observe that \textbf{there are infinitely many finite sub-theories of an infinite theory}.\\
+
+	Rewriting the theorem: $\Gamma \subseteq \FL$ \textbf{is satisfiable iff} for all $\Gamma' \subseteq_{\omega} \Gamma$ then $\Gamma'$ is satisfiable (with $\subseteq_{\omega}$ meaning finite subset). The non-trivial case is when $\Gamma$ is infinite.\\
+
+	\begin{proof}
+		Proving the statement \textbf{from left to right} is trivial, if $v \models \Gamma$ then, clearly, by the definition of satisfiability and the notion of subset, $v \models \Gamma'$, for each $\Gamma' \subseteq \Gamma$ too (not even $\subseteq_\omega$, just any subset, even infinite).\\
+	\end{proof}
+	Proving right to left is not so trivial.\\
+
+	Consider the statement \textbf{equivalent} to the theorem \textbf{obtained via contraposition} ($A \rightarrow B$ says the same thing as $\neg B \rightarrow \neg A$). Again from left to right: if there is $\Gamma' \subseteq_\omega$ is unsatisfiable then clearly $\Gamma$ is unsatisfiable.\\
+
+	From right to left: if $\Gamma$ \textbf{is unsatisfiable}, then there \textbf{exists} $\Gamma' \subseteq_\omega \Gamma$ such that $\Gamma'$ is \textbf{unsatisfiable}.\\
+
+	\newpage
+
+	\paragraph{Some terminology} before the proof: we say that a given theory $\Gamma \subseteq \FL$ is \textbf{finitely satisfiable} (fin sat) \textbf{iff} for all finite sub-theories $\Gamma' \subseteq_\omega \Gamma$, $\Gamma'$ \textbf{is satisfiable}.
+
+	The proof of the non trivial part consists of $\Gamma$ fin sat, implies $\Gamma$ sat.\\
+
+	%TODO proof should maybe start here
+	\begin{proof}
+		We need some facts before the proof.\\
+
+		\paragraph{Preparation:} we fix any \textbf{arbitrarily chosen listing} $F_1, F_2, \, ... \, , F_k , \, ...$ (enumerably infinite, without repetitions) of all formulas $\in \FL$. To concretely implement such an enumeration we have two issues to face:
+
+		\begin{itemize}
+			 \item $1^{st}$ issue: the \textbf{alphabet of} $\FL$: $\{\wedge, \vee, \neg, \rightarrow\} \cup \{),(\} \cup \mathcal{L}$. This contains an infinite set an thus is an \textbf{infinite alphabet}. To \textbf{switch to a finite alphabet}:
+			$$ \{\wedge, \vee, \neg, \rightarrow\} \cup \{),(\} \cup \{p,l\} $$
+
+			with $p_k \in \mathcal{L}$ written as $p_k = plll \, ... \, l$, with $k$ many $l$s (just a unary encoding, we just need some kind of finite encoding, let it be a unary encoding, binary, base 10, hex, ...).\\
+
+			\newpage
+
+			\item $2^{nd}$ issue: take the alphabet $\{a,b, \, ... \, , \}$: list all the words on this alphabet, but they are infinite and we must define an order. If we use a lexicographic ordering we get:
+
+			\begin{center}
+				\begin{tabular}{| c |}
+					\hline
+					$\epsilon$ (empty word)\\
+					$a$\\
+					$aa$\\
+					$a...aa$\\
+					...\\
+					$b \leftarrow$ never reached\\
+					\hline
+				\end{tabular}
+			\end{center}
+
+			So the letter $b$ appears after an infinite amount of words. Using a short-lex ordering might be fairer (each word appears at a finite stage):
+			\begin{center}
+				\begin{tabular}{| c |}
+					\hline
+					$\epsilon$ (empty word)\\
+					$a$\\
+					... \\
+					$z$ \\
+					$aa$\\
+					$ab$\\
+					...\\
+					$zz$\\
+					\hline
+				\end{tabular}
+			\end{center}
+			First word of length 1, then length 2, ecc.
+		\end{itemize}
+
+		\newpage
+
+		\paragraph{The construction:} we \textbf{define} an \textbf{infinite succession of theories} (sets of formulas) as follows: the succession
+		$$ D_0, D_1, \, ... \, , D_k , \, ... $$
+
+		Which is inductively defined as follows:
+		\begin{itemize}
+			\item \textbf{Base:}
+			$$D_0 := \Gamma$$
+
+			\item \textbf{Step:}
+			$$ D_{n+1} := \begin{cases}
+				D_n \cup \{F_{n+1}\} \; & \text{ if } D_n \cup \{F_{n+1}\} \text{ is fin sat} \\
+				D_n \cup \{\neg F_{n+1}\}  & \text{ otherwise }
+			\end{cases}
+			$$
+		\end{itemize}
+		And we also define:
+		$$ D := \bigcup_{i \in \mathbb{N}} D_i$$
+
+		Note that this definition is well given and does not directly imply that $D_n \cup \{\neg F_{n+1}\}$ is fin sat, but just that $D_n \cup \{F_{n+1}\}$ is not fin sat.\\
+
+		Now we shall prove some facts about the sequence
+		$$ \Gamma = D_0 \subseteq D_1 \subseteq D_2 \subseteq \, ... \, \subseteq D_k \subseteq \, ... \, \subseteq D $$
+
+		To prove $\Gamma$ fin sat implies $\Gamma$ sat, we first need to prove some facts about the sequence above.\\
+
+		\newpage
+
+		\paragraph{Fact 1:} \textbf{every member of the sequence} $D_n$ (for all $n \in \mathbb{N}$) is himself \textbf{fin sat}.
+
+		\begin{proof}
+			By induction on $n$
+			\begin{itemize}
+				\item \textbf{Base:} $n=0$, $D_0$ is fin sat, by definition, since $D_0 = \Gamma$ and $\Gamma$ is fin sat.
+
+				\item \textbf{Step:} assume that Fact 1 is true for $D_0, D_1, \, ... \, , D_n$ and prove it for $D_{n+1}$. To prove this we shall proceed by contradiction. So we assume $D_{n+1}$ is not fin sat with the aim of finding a contradiction. \\
+
+				Absurdum Hypothesis: $D_{n+1}$ is not fin sat. \\
+
+				Hence by the definition of the sequence, $D_n \cup \{F_{n+1}\}$ and $D_n \cup \{\neg F_{n+1}\}$ are both NOT fin sat.\\
+
+				Now we use the definition of fin sat, they are not fin sat
+				\begin{itemize}[label=]
+					\item \textbf{iff} there exists
+					$$ D' \subseteq_\omega D_{n} \cup \{F_{n+1}\} $$
+					such that $D'$ is unsatisfiable.\\
+
+					\item \textbf{Iff} there exists
+					$$ D'' \subseteq_\omega D_{n} \cup \{ \neg F_{n+1}\} $$
+					such that $D''$ is unsatisfiable.\\
+				\end{itemize}
+
+				"Lazy" version, we can assume, without loss of generality that $F_{n+1} \in D'$, $\neg F_{n+1} \in D''$. We can argue that they are already in there, otherwise we can add them without major problems (if it's unsatisfiable adding something keeps it that way).\\
+				The actual version: if $F_{n+1} \notin D'$ then $D' \subseteq D_n$, but $D_n$ is fin sat, so $D'$ is fin sat, which is a contradiction.\\
+
+				That is we can display $D'$ and $D''$ as follows
+				$$ D' = E' \cup \{F_{n+1}\}, \;\; D'' = E'' \cup \{\neg F_{n+1}\}$$
+				with $E' = D' \setminus \{F_{n+1}\}$ and $E'' = D'' \setminus \{\neg F_{n+1}\}$.\\
+
+				We observe that by construction that $E', E'' \subseteq_\omega D_n$ they are subsets of $D_n$.\\
+
+				%End of L5
+
+				\newpage
+
+				\textbf{Note}: if we take the \textbf{theory} $E' \cup E'' \cup \{F_{n+1}\}$ this is \textbf{unsatisfiable}, since it contains $D'$. For the same reason $E' \cup E'' \cup \{F_{n+1}\}$ is \textbf{also unsatisfiable} since it contains $D''$. \\
+
+				But $E' \cup E''$ is a finite subset of $D_n$, $\finsat D_n$, so they \textbf{must be fin sat} since we know that $D_n$ is fin sat by I.H. $E' \cup E''$ \textbf{is satisfiable}.\\
+
+				This \textbf{satisfiable} set \textbf{differs} from the \textbf{unsatisfiable} ones by \textbf{one formula}, notably the same formula.\\
+
+				If we find an assignment that satisfies $F_{n+1}$ then $D'$ is satisfiable, otherwise $\neg F_{n+1}$ is satisfied and $D''$ becomes satisfiable.\\
+
+				So, we have:
+				\begin{itemize}
+					\item $E' \cup E''$ \textbf{satisfiable}
+					\item $E' \cup E'' \cup \{F_{n+1}\}$ \textbf{unsatisfiable} ($\dag$)
+					\item $E' \cup E'' \cup \{\neg F_{n+1}\}$ \textbf{unsatisfiable} ($\dag \dag$)
+				\end{itemize}
+
+				And there exists (by definition of satisfiability) $\ta$ such that $v \models E' \cup E''$ ($\tilde{v}(F) =  1$ for all $F \in E' \cup E''$). We can have a \textbf{truth assignment} that \textbf{satisfies} all formulas in that \textbf{set}.\\
+
+				What about $\tilde{v}(F_{n+1})$?
+				\begin{itemize}
+					\item if it's $0$ it will satisfy $\tilde{v} (\neg F_{n+1})$ and then $v \models E' \cup E'' \cup \{\neg F_{n+1}\}$, \textbf{contradicting} ($\dag \dag$)
+					\item If it's $1$ it will satisfy $\tilde{v} (F_{n+1})$ and then $v \models E' \cup E'' \cup \{F_{n+1}\}$, \textbf{contradicting} ($\dag$)
+				\end{itemize}
+				And, by \textbf{bivalence}, there are \textbf{no other cases to consider}. We have reached in any case the contradiction that proves the induction step ($D_{n+1}$ is actually fin sat).\\
+				This concludes the proof by induction of Fact 1.\\
+
+				We have proved that \textbf{each set} in our construction $D_i$ \textbf{is fin sat}.\\
+			\end{itemize}
+		\end{proof}
+
+		\newpage
+
+		\paragraph{Fact 2:} remembering the definition of $D$, $D$ is fin sat. We proved that \textbf{each set is fin sat}, now we need to \textbf{prove} that \textbf{their union is fin sat}
+		$$ D = \bigcup_{i \in \mathbb{N}} D_i \;\; \text{ id fin sat } $$
+
+		Do we \textit{really} need to prove this? Yes, there are some properties of some sets, such as finiteness, that don't live into their union (with a collection of finite sets, their union might not be a finite set). \textbf{Properties of the members don't automatically carry over to their union}.\\
+
+		\begin{proof}
+			Let $D'$ be a finite subset of $D$ ($D' \subseteq_\omega D$). It is sufficient to prove that $D'$ is satisfiable.\\
+
+			We can display the finite set $D'$ by listing its formulas:
+			$$ D' = \{F_{i1}, F_{i2}, \, ... \, , F_{im}\} \; \text{for some } m \in \mathbb{N} $$
+
+			We give these indexes since we don't know exactly what formulas are inside $D'$, but there must be a maximum, whatever that number is and whatever the numbers in the set are.\\
+
+			Let $k$ be the maximum index
+			$$ k = \max_{j=1}^m (ij) $$
+
+			Then
+			$$ D' \subseteq \{F_1, F_2, \, ... \, , F_k\} \cap D \subseteq D_k$$
+
+			The set $D'$ must be a subset of all the formulas between $1$ and its highest index $k$, which is a subset of $D_k$, by definition f $D_k$.\\
+
+			So $D' \subseteq_\omega D_k$ (as $D_k$ is defined in our sequence), but by Fact 1 $D_k$ is fin sat. So $D'$ is satisfiable since it's one of its sub-theories.\\
+			%End proof
+		\end{proof}
+
+		\newpage
+
+		\paragraph{Fact 3:} For each formula $F_t \in \FL$ , \textbf{exactly one among} $F_t$ and $\neg F_t$ \textbf{belongs to} $D$.\\
+
+		\begin{proof}
+			By construction of the sequence, $F_t \in D_t$ or $\neg F_t \in D_t$. Since $D_t \subseteq D$: $F_t \in D$ or $\neg F_t \in D$. This proves that at least one is in the set. \\
+
+			We now have to exclude that both of them are in the set: ($\{F_t, \neg F_t\} \subseteq D$).\\
+			But $D$ is satisfiable, and clearly $\{F_t, \neg F_t\}$ would contradict Fact 2 since it can't be satisfiable, by the definition of $I_\neg$.\\
+
+			So $F_t \in D$ or $\neg F_t \in D$ and $\{F_t, \neg F_t\} \notin D$. Exactly one is $\in D$.\\
+		\end{proof}
+
+		\paragraph{Construction:} we define the following \textbf{assignment} $v_D: \mathcal{L} \rightarrow \{0,1\}$.\\
+		For all $p \in \mathcal{L}$, $v_D (p) = 1$ iff $p \in D$.\\
+
+		Notice that $v_D$ is \textbf{well defined} (either $p \in D$ or $p \notin D$ for each possible $p \in \mathcal{L}$).\\
+
+		\paragraph{Fact 4:} $v_D \models D$ (for all $F \in D$, $\tilde{v}_D (F) = 1$); it's an assignment that satisfies $D$. If we can \textbf{prove this} then we have \textbf{proved that} $v_D \models \Gamma$ \textbf{since} $\Gamma \subseteq D$ (by construction of $D$). So $\Gamma$ is sat.\\
+
+		\begin{proof}
+			By structural induction, we prove that for all formulas $F \in \FL: \, \tilde{v}_D (F) = 1$ \textbf{iff} $F \in D$.\\
+
+			Notice: it would suffice to prove just one side of the iff, namely the side that says if $F \in D$ then $\tilde{v}_D (F) = 1$ (but the stronger proof is easier). We ask for the biconditional (iff)  for better using the I.H.\\
+
+			\textbf{Base:} $F = p$, with $p \in \mathcal{L}$: so the statement we need to prove is the very definition of $\tilde{v}_D (p)$:
+			$$\tilde{v}_D (p) = v_D (p) = 1 \; \text{ iff } \; p \in D $$
+
+			\textbf{Step(s):} we need to consider each way that we can decompose a formula and prove that it's $\in D$:
+			\begin{itemize}
+				\item $F = (\neg G)$, $F$ is the negation of some formula $G$. \\
+				$\tilde{v}_D (F) = 1$ \textbf{iff} (by definition of $I_\neg$) $\tilde{v}_D (G) = 0$ \textbf{iff} (by I.H.) $G \notin D$ \textbf{iff} (by Fact 3) $\neg G \in D$ \textbf{iff} $F \in D$ (since $\neg G$ is $F$).\\
+
+				\item $F = (G \wedge H)$.\\
+				$\tilde{v}_D (F) = 1$ \textbf{iff} $\tilde{v}_D (G \wedge H) = 1$ \textbf{iff} (by definition of $I_\wedge$) $\tilde{v}_D (G) = 1$ and $\tilde{v}_D (H) = 1$ \textbf{iff} (by I.H.) $G \in D$ and $H \in D$ \textbf{iff} $G \wedge H \in D$ \textbf{iff} $F \in D$.\\
+				To say that $G \wedge H \in D$ we can observe (by contradiction) that if $G \wedge H \notin D$ \textbf{iff} (by Fact 3) $\neg (G \wedge H) \in D$, then $\{G,H, \neg (G \wedge H)\} \subseteq_\omega D$ and this is a contradiction since by Fact 2 $D$ is fin sat, and this subset is unsatisfiable.\\
+				Then if $G \wedge H \in D$ then $G,H \in D$ (otherwise $G \notin D$ or $H \notin D$). Assume $G \notin D$ (the case $H \notin D$ is analogous), by Fact 3, $\neg G \in D$ and then $\{G \wedge H, \neg G\} \subseteq_\omega D$, which is unsatisfiable, contradicting Fact 2 again. So $F \in D$.\\
+
+				\item $F = (G \vee H)$.\\
+				$\tilde{v}_D (G \vee H) = 1$ iff (by definition of $I_\vee$) $\tilde{v}_D (G) = 1$ or $\tilde{v}_D (H) = 1$ \textbf{iff} (by I.H.) $G \in D$ or $H \in D$ \textbf{iff} $G \vee H \in D$ \textbf{iff} $F \in D$.\\
+				If $G \in D$ or $H \in D$ then $(G \vee H) \in D$. By contradiction $(G \vee H) \notin D$, then, by Fact 3, $\neg (G \vee H) \in D$, then
+				\begin{itemize}
+					\item if $G \in D$ then $\{G, \neg (G \vee H)\} \finsat D$, which contradicts Fact 2
+					\item if $H \in D$ then $\{H, \neg (G \vee H)\} \finsat D$, which contradicts Fact 2
+				\end{itemize}
+				If $(G \vee H) \in D$ then $G \in D$ or $H \in D$. By contradiction $G \notin D$ and $H \notin D$ and thus $\{\neg G, \neg H, (G \vee H)\} \finsat D$, which is unsatisfiable and contradicts Fact 2.\\
+
+				\item Prove implication for fun (remember that $G \rightarrow H$ has the same truth table as $(\neg G) \vee H$)
+				%TODO
+			\end{itemize}
+		\end{proof}
+		We have proved Fact 4: $v_D \models D$.\\
+
+		\newpage
+
+		Then a fortiori (for stronger reasons) $v_D \models \Gamma$ (the assignment satisfies $D$, which is larger that $\Gamma$, so $v_D$ must satisfy $\Gamma$).\\
+
+		So we have proved that:
+		$$ \Gamma \; \text{ fin sat } \Leftrightarrow \; \Gamma \; \text{ sat } $$
+	\end{proof}
+	%End of compactness proof
+
+	By \textbf{contraposition}:
+	$$ \Gamma \; \text{ unsat } \; \implies \text{ there exists } \; \Gamma ' \subseteq_\omega \Gamma, \;\; \Gamma' \; \text{ unsat } $$
+
+	\paragraph{Remarks on Compactness Theorem:}
+	$$ \Gamma \subseteq \FL  \;\;\;\;\; \Gamma' \subseteq \Gamma $$
+	We \textbf{proved the theorem} not by looking inside $\Gamma$, but by \textbf{enlarging it} with our sequence of $D_i$s, and \textbf{proved that} $v_D \models D$, and so $v_D \models \Gamma$, since $\Gamma \subseteq D$.\\
+
+	$D$ is "large" and satisfiable. We \textbf{cannot expand $D$ further without losing} the property of $D$ \textbf{being satisfiable}.\\
+
+	\begin{proof}
+		First of all, is $D$ everything? Does it contain it all? No, it doesn't, look at Fact 3, so $D \neq \FL$. \\
+
+		Let $F_t \notin D$. By Fact 3: $\overline{D} = D \cup \{F_t\}$, and thus $\neg F_t \in D$. \\
+		Then $\{F_t, \neg F_t\} \subseteq_\omega \overline{D}$ so $\overline{D}$ is unsatisfiable.\\
+		If I add anything not already in $D$, the negation of that formula must already be in $D$ so the set cannot remain satisfiable if I add anything else.\\
+	\end{proof}
+
+	$D$ is a \textbf{maximal expansion}, with respect to \textbf{satisfiability}, of $\Gamma$.\\
+
+	\newpage
+
+	We call a set $E$ of formulas \textbf{maximally satisfiable} if it has the same property of $D$: \textbf{iff} $E$ is a set and for all $F \in \FL$, $F \notin E$ the set $E \cup \{F\}$ is unsatisfiable (if I add anything the set cannot remain satisfiable).\\
+
+	$D$ is \textbf{a} maximal expansion of $\Gamma$, there can be \textbf{many}, in our proof $D$ is fixed, after fixing the listing of formulas.\\
+
+	Let us see that there are \textbf{different maximal expansions} of $\Gamma$. For instance $\Gamma = \{p_{27}\}$, we have 2 listings:
+	\begin{itemize}
+		\item listing 1: $p_{13}$, $p_{14}$
+		\item listing 2: $\neg p_{13}$, $\neg p_{14}$
+	\end{itemize}
+
+	Then for listing 1: $D_1$ is expanded with $p_{13}$ while the $D_1$ made from listing 2 is expanded with $\neg p_{13}$ so, in the final set $D$, for listing 1 $p_{13} \in D$ while for listing 2 $\neg p_{13} \in D$. We can expand our set in different ways, based on which listing I choose.\\
+
+	% End L6
+
+	If we reason about the \textbf{information contained} inside a \textbf{maximally satisfiable theory} $D$ we notice that it carries the \textbf{same amount of information} as a \textbf{truth value assignment} $\ta$.\\
+
+	$D$ max sat theory, from this we defined $v_D$ as $v_D (p) = 1$ iff $p \in D$ for all $p \in \mathcal{L}$. We can go the other way around, \textbf{starting from any assignment} $\ta$ and \textbf{construct the set of formulas} $D_v$:
+	$$ D_v := \{F \in \FL : \, \tilde{v} (F) = 1\}$$
+
+	This way
+	\begin{itemize}
+		\item $D_v$ is a max sat theory
+		\item $v_{D_{w}} = w$, with $w$ truth assignment $w: \rightarrow \{0,1\}$
+		\item same thing with: $D_{v_E} = E$ with $E$ a max sat theory
+	\end{itemize}
+
+	Associated with every max sat theory there is an assignment satisfying the theory ($v_D \models D$), and similarly for every assignment there can be a max sat theory satisfied by that assignment.\\
+
+	%Make it make sense, end of compactness theory
+
+	\newpage
+
+	How can we tell if:
+	$$(\Gamma \subseteq \FL, \, A \in \FL) \;\;\;\;\; \Gamma \models A ?$$
+	All formulas in $\Gamma$ must satisfy also $A$, so $A$ it's a logical consequence.\\
+
+	Already proven Lemma: $\Gamma \models A$ iff we can \textbf{reduce this problem to} the unsatisfiability problem: $\Gamma \cup \{\neg A\}$ \textbf{is unsatisfiable}.\\
+
+	Assume $\Gamma$ is a finite theory ($\Gamma$ contains finitely many formulas)
+	$$ \Gamma = \{B_1, B_2, \, ... \, , B_u \} $$
+
+	There are finitely many formulas, so there's a last element $B_u$
+
+	$$ \Gamma \models A \text{ iff }$$
+	$$ \{B_1, B_2, \, ... \, , B_u \} \models A \text{ iff } $$
+	$$ \{B_1, B_2, \, ... \, , B_u, \neg A \} \text{ is unsat, as a theory, iff}$$
+
+	by  the definition of $\wedge$ ($I_\wedge$)
+	$$ B_1 \wedge B_2 \wedge \, ... \, \wedge B_u \wedge \neg A \text{ is unsat, as a formula}$$
+	And this is decidable in finite time, however long it may be.\\
+
+	What if $\Gamma$ is infinite? The conjunction of infinitely many things it's not a formula and its satisfiability it's not decidable in finite time. So
+	$$ \Gamma  \cup \{\neg A\} \text{ is unsat}$$
+
+	By compactness theorem, there is
+	$$ \Gamma' \finsat \Gamma \cup \{\neg A\} \text{ is unsat} $$
+
+	Good news: we can have a finite theory which is unsatisfiable. Bad news: we don't know how to find it since there are infinitely many.\\
+	$\rightarrow$ "Semidecidability". If the input is infinite, it's improper speaking of decidability, it's semidecidability. We may be able to tell if it's satisfiable in finite time, or the algorithm could not end.\\
+
+	\newpage
+
+	\section{Semantic Equivalence (logical equivalence)}
+
+	Are these the same?
+	$$ A \wedge B \;\;\;\;\;\; B \wedge A $$
+	These are syntactically different, they are different strings of symbols.\\
+
+	Semantically, \textbf{for all assignments} $\ta$ it holds that $\tilde{v} (A \wedge B) = \tilde{v} (B \wedge A)$, by the definition of $I_\wedge$. They always \textbf{get the same resulting truth values}.\\
+
+	\subsection{Equivalence relation}
+	%We need to introduce the equivalence relation: they're not the same formula, but the resulting value is always the same.\\
+
+	\paragraph{What is a relation?} An $n$-ary relation $R$ on a set $S$ is just a subset of the $n$-th Cartesian power $S^n$ of $S$:
+	$$ R \subseteq S^n$$
+	A relation, mathematically, is just this.\\
+
+	The \textbf{equivalence relation}: considering $R$ on a set $S$, $R$ is a \textbf{binary relation} ($R \subseteq S^2$) such that it \textbf{satisfies 3 conditions}:
+	\begin{itemize}
+		\item $R$ is \textbf{reflexive}: for all $s \in S$, $(s,s) \in R$
+		\item $R$ is \textbf{symmetric}: for all $s_1, s_2 \in S$ if $(s_1, s_2) \in R$ then also $(s_2, s_1) \in R$
+		\item $R$ is \textbf{transitive}: for all $s_1, s_2, s_3 \in S$ if $(s_1, s_2) \in R$ and $(s_2, s_3) \in R$ then $(s_1, s_3 \in R)$
+	\end{itemize}
+
+	\paragraph{Equivalence classes:} Let $R \subseteq S^2$ be an equivalence relation, then for each $s \in S$ the \textbf{equivalence class} of $s$, called ($[s]_R$ or $\sfrac{s}{R}$) is \textbf{defined as}
+	$$ [s]_R := \{t \in S: \, (s,t) \in R\} $$
+	Basically, all elements equivalent to $s$.\\
+
+	Observe: if $(s,t) \in R$ then $[s]_R = [t]_R$ and vice versa, if $[s]_R = [t]_R$ then $(s,t) \in R$.
+
+	\newpage
+
+	\paragraph{Partitions of a set:} A partition of $S$ is a set $\{B_1, B_2, \, ... \, , B_k , \, ... \, \} = \{B_i : \, i \in  I\}$ of subsets of $S$ (not necessarily finite, $B_i \subseteq S$) such that:
+	\begin{itemize}
+		\item $B_i \cap B_j = \emptyset$ for all $i \neq j \in I$
+		\item $\bigcup_{i \in I} B_i = S$
+	\end{itemize}
+
+	A partition is a way of \textbf{cutting $S$ into blocks}.\\
+%
+%	A partition is a set $\{B_i : \, i \in I\}$ of $S$ ($B_i \subseteq S$) such that
+%	* same as
+%	* above, same definition
+%
+
+	Every \textbf{equivalence relation} $R \subseteq S^2$ \textbf{determines uniquely a partition} $P_R$ of $S$
+	$$ P_R = \{[s]_R : \, s \in S \}$$
+	The blocks of $P_R$ are the equivalence classes of $R$.\\
+
+	We can go the other way around, every \textbf{partition} $P$ of $S$ \textbf{determines uniquely an equivalence relation} $R_P$ on $S$ ($R_P \subseteq S^2$)
+	$$ R_p : (s,t) \in R_P \text{ iff } s,t \text{ belong to the unique same block } B_i \in P$$
+
+	\nn
+
+	\subsection{Definition of Semantic equivalence}
+	Let us verify the the following \textbf{is an equivalence relation on} $\FL$
+	$$ \equiv \subseteq \FL^2$$
+
+	For each $(A, B) \in \FL^2$ (or simpler, $A, B \in \FL$), then $(A, B) \in \equiv$, also written as $A \equiv B$ ($A$ is \textbf{logically equivalent to} $B$) \textbf{iff}, for any $\ta$, $\tilde{v}(A) = \tilde{v} (B)$.\\
+
+	For all $A \in \FL$:
+	\begin{itemize}
+		\item $\equiv$ is \textbf{reflexive}: for all $A \in \FL$, $A \equiv A$, for each $\ta$ $\tilde{v} (A) = \tilde{v}(A)$
+
+		\item $\equiv$ is \textbf{symmetric}: for all $A,B \in \FL$, $A \equiv B$ implies $B \equiv A$, for all $\ta$: $\tilde{v}(A) = \tilde{v}(B)$ implies $\tilde{v}(A) = \tilde{v}(B)$
+
+		\item $\equiv$ is \textbf{transitive}: for all $A,B,C \in \FL$, $A \equiv B$ and $B \equiv C$ implies $A \equiv C$, for all $\ta$: $\tilde{v}(A) = \tilde{v}(B)$ and $\tilde{v}(B) = \tilde{v}(C)$ implies $\tilde{v}(A) = \tilde{v}(C)$
+	\end{itemize}
+
+	\newpage
+
+	$\equiv$ \textbf{determines a partition of} $\FL$. We subdivided the world in such a way that formulas that say the same thing are in the same block
+	$$ P_\equiv = \{[A]_\equiv : \, A \in \FL\}$$
+	$$ \sfrac{\FL}{\equiv} = \{[A]_\equiv : \, A \in \FL\}$$
+
+	$[A \wedge B]_\equiv = [B \wedge A]_\equiv$ says that the formulas are equivalent, which is the same as saying $A \wedge B \equiv B \wedge A$.\\
+
+	Two formulas are \textbf{logically equivalent} if they have the \textbf{same truth value under any assignment}.\\
+
+	In general if $R \subseteq S^2$ is an equivalence relation, we write $\sfrac{S}{R} = \{[S]_R : s \in S\}$. This is called "$S$ modulo $R$" or "the quotient of $S$ over $R$".\\
+
+	\vfill
+
+	We eventually will enrich the set of logical equivalence classes $\sfrac{\FL}{\equiv}$ with operations which shall confer to the enriched set the status of an algebraic structure (namely: Boolean algebra).\\
+
+	\newpage
+
+	\section{Substitution (letter with a formula)}
+
+	\textbf{Substitution} of a \textbf{propositional letter with a formula} (inside a formula). We want to get new formula from another one, while remaining semantically equivalent.\\
+
+%	%Wtf, a cosa serve la prima parte
+%	Intuitive idea: we have $(p \wedge \neg q)\left[t \rightarrow q/ p\right] = ((t \rightarrow q) \wedge q)$.
+%	We substituted ...
+
+	For each $A \in \FL$, for each $p \in \mathcal{L}$, for each $B \in \FL$, let us define the formula obtained by \textbf{replacing in} $A$ \textbf{each occurrence of} $p$ \textbf{with} $B$, $A\left[\sfrac{B}{p}\right] \in \FL$. Define it inductively as follows:
+	\begin{itemize}
+		\item \textbf{Base:} $A = q$, $Q \in \mathcal{L}$, define
+		$$q[\sfrac{B}{p}] := \begin{cases}
+			B \; & q = p  \\
+			q \;  & q \neq p
+		\end{cases}
+		$$
+		If $q=p$ then it becomes $B$, otherwise nothing changes.
+
+		\item \textbf{Step:} cases, if we have to substitute:
+		$$ (\neg A)[\sfrac{B}{p}] := \neg(A[\sfrac{B}{p}]) $$
+		$$ (A_1 \wedge A_2) [\sfrac{B}{p}] := A_1 [\sfrac{B}{p}] \wedge A_2 [\sfrac{B}{p}] $$
+		$$ (A_1 \vee A_2) [\sfrac{B}{p}] := A_1 [\sfrac{B}{p}] \vee A_2 [\sfrac{B}{p}] $$
+		$$ (A_1 \rightarrow A_2) [\sfrac{B}{p}] := A_1 [\sfrac{B}{p}] \rightarrow A_2 [\sfrac{B}{p}] $$
+	\end{itemize}
+
+	\newpage
+
+	\paragraph{Lemma (substitution):} let $\ta$ be an assignment and $S,T \in \FL$. If $\tilde{v}(S) = \tilde{v} (T)$, then for all $A \in \FL$, and all $p \in \mathcal{L}$
+	$$ \tilde{v} (A [\sfrac{S}{p}]) = \tilde{v} (A[\sfrac{T}{p}]) $$
+
+	\begin{proof}
+		By induction on $A$:
+		\begin{itemize}
+			\item \textbf{Base:} $A = q$, $q \in \mathcal{L}$, two cases:
+			\begin{itemize}
+				\item $q \neq p$, then $q [\sfrac{S}{p}] = q = q [\sfrac{T}{p}]$, then
+				$$\tilde{v}(q[\sfrac{S}{p}]) = \tilde{v}(q) = \tilde{v} (q[\sfrac{T}{p}])$$
+
+				\item $q = p$, then $q[\sfrac{S}{p}] = S$ and $q[\sfrac{T}{p}] = T$, so
+				$$ \tilde{v} (q [\sfrac{S}{p}]) = \tilde{v} (S) = \tilde{v} (T) = \tilde{v} (q[\sfrac{T}{p}]) $$
+			\end{itemize}
+
+			\item \textbf{Step:} cases are:
+			\begin{itemize}
+				\item $A = \neg B$, by I.H. $\tilde{v} (B [\sfrac{S}{p}]) = \tilde{v} (B [\sfrac{T}{p}])$ and then
+				$$ \tilde{v} ((\neg B) [\sfrac{S}{p}])  = I_\neg \left(\tilde{v} (B [\sfrac{S}{p}])\right) = I_\neg \left(\tilde{v} (B [\sfrac{T}{p}])\right) = \tilde{v} ((\neg B) [\sfrac{T}{p}])$$
+				\item $A = (B \wedge C)$
+				\item $A = (B \vee C)$
+				\item $A = (B \rightarrow C)$
+			\end{itemize}
+			The other cases are left as an exercise for the reader.\\
+		\end{itemize}
+		%TODO Complete
+	\end{proof}
+
+	\paragraph{Theorem (substitution):} Let $S, T \in \FL$, if $S \equiv T$, then for all $A \in \FL$ and all $p \in \mathcal{L}$:
+	$$ A[\sfrac{S}{p}] \equiv A[\sfrac{T}{p}] $$
+	If in a single formula we \textbf{replace a formula with an equivalent} one we get a \textbf{distinct} formula \textbf{but still equivalent}.\\
+
+	\begin{proof}
+		For all $\ta$ it holds that $\tilde{v} (s) = \tilde{v} (T)$, since $S \equiv T$. So by the substitution Lemma, for all $\ta$ we have $\tilde{v} (A [\sfrac{S}{p}]) = \tilde{v} (A[\sfrac{T}{p}])$, and then, by definition of $\equiv$
+		$$ A[\sfrac{S}{p}] \equiv A[\sfrac{T}{p}] $$
+	\end{proof}
+
+	\newpage
+
+	\paragraph{Theorem:} Given $F,G,H \in \FL$ the following are logical equivalences:
+	\begin{itemize}
+		\item \textbf{Idempotence}: $F \wedge F \equiv F$, $F \vee F \equiv F$
+		\item \textbf{Commutativity}: $F \vee G \equiv G \vee F$, $F \wedge G \equiv G \wedge F$
+		\item \textbf{Associativity}: $F \wedge (G \wedge H) \equiv (F \wedge G) \wedge H$, $F \vee (G \vee H) \equiv (F \vee G) \vee H$
+		\item \textbf{Distributivity}: $F \wedge (G \vee H) \equiv (F \wedge G) \vee (F \wedge H)$, $F \vee (G \wedge H) \equiv (F \vee G) \wedge (F \vee H)$
+		\item \textbf{Absorption}: $F \vee (F \wedge G) \equiv F$, $F \wedge (F \vee G) \equiv F$
+	\end{itemize}
+
+	% End L7
+
+	Exercise: prove that idempotence $F \vee F \equiv F$, $F \wedge F \equiv F$ follows only by absorption (using substitution theorem).\\
+
+	\begin{itemize}
+		\item \textbf{Double negation} (involutiveness of negation): $\neg \neg F \equiv F$
+
+		\item \textbf{De Morgan}:
+		$$ \begin{cases}
+			\neg (F \vee G) \equiv \neg F \wedge \neg G \\
+			\neg (F \wedge G) \equiv \neg F \vee \neg G
+		\end{cases}$$
+
+		\item \textbf{Interdefinability}:
+		$$ \begin{cases}
+			F \rightarrow G \equiv (\neg F) \vee G  \\
+			F \rightarrow G \equiv \neg (F \wedge \neg G) \\
+			F \vee G \equiv (\neg F) \rightarrow G \\
+			F \wedge G \rightarrow \neg (F \rightarrow \neg G) \\
+			F \vee G \equiv \neg (\neg F \wedge \neg G) \\
+			F \wedge G \equiv \neg (\neg F \vee \neg G) \\
+		\end{cases}$$
+	\end{itemize}
+
+	\begin{proof}
+		Just one case (the remaining ones are left as an exercise for the reader). We want to show that
+		$$ \neg (F \vee G) \equiv \neg F \wedge \neg G$$
+		For all $\ta$ $\tilde{v} (\neg (F \vee G)) = 1$
+		\begin{itemize}[label*=]
+			\item \textbf{iff} by the semantics of $\neg$: $I_\neg$: $\tilde{v} (F \vee G) = 0$
+			\item \textbf{iff} by the semantics of $\wedge$: $\tilde{v} (F) = 0$ and $\tilde{v}(G) = 0$
+			\item \textbf{iff} by the semantics of $\neg$: $\tilde{v} (\neg F) = 1$ and $\tilde{v} (\neg G) = 1$
+			\item \textbf{iff} by the semantics of $\wedge$: $\tilde{v} (\neg F \wedge \neg G) = 1$
+		\end{itemize}
+
+		By bivalence $\neg (F \vee G) \equiv \neg F \vee \neg G$ (we've proved that it holds for 1, the only other possible value is 0 so we don't need to prove that).\\
+	\end{proof}
+
+	\newpage
+
+	\section{Derived connectives}
+	We define these operators as \textbf{shortened versions of longer formulas}.\\
+
+	We define $F \leftrightarrow G$, as $(F \rightarrow G) \wedge (G \rightarrow F)$. Specify
+	$$ I_\leftrightarrow: \, \{0,1\}^2 \rightarrow \{0,1\} $$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \leftrightarrow b$ \\
+			\hline
+			0 & 0 & 1 \\
+			0 & 1 & 0\\
+			1 & 0 & 0\\
+			1 & 1 & 1
+		\end{tabular}
+	\end{center}
+
+	\paragraph{Observation:} $\models F \leftrightarrow G$ (is a tautology) \textbf{iff} $F \equiv G$ \textbf{iff} $\models \neg F \leftrightarrow \neg G$ \textbf{iff} $\models G \leftrightarrow F$ \textbf{iff} $\models \neg G \leftrightarrow \neg F$.\\
+
+	\paragraph{Observation:} $F \models G$ and $G \models F$ \textbf{iff} $F \equiv G$.\\
+
+	We define other derived connectives $\bot, \top$. Technically they are zero-ary connectives (and as such they are formulas in themselves), they're \textbf{logical constants}, don't need arguments to be complete to a formula.\\
+	$$ \bot, \top \in \FL $$
+	$$ I_\bot: \, \{0,1\}^0 \rightarrow \{0,1\}\;\; \text{ identify with } 0$$
+	$$I_\top: \, \{0,1\}^0 \rightarrow \{0,1\} \;\; \text{ identify with } 1$$
+
+	The $\{0,1\}^0$ represents the singleton set, so we can \textbf{identify the function with the result}. So
+	$$ I_\bot := 0 \;\;\;\;\; I_\top := 1$$
+
+	The $\top$ is in the \textbf{equivalence class of tautologies}:
+	$$ \top \equiv A \;\; \text{ iff } A \text{ is any tautology } (\models A), \text{ e.g. } \top := p \rightarrow p$$
+
+	And $\bot$ is in the \textbf{equivalence class of contradictions}:
+	$$ \bot \equiv A \;\; \text{ iff } A \text{ is any contradiction } (\models \neg A), \text{ e.g. } \bot := p \wedge \neg p$$
+
+	\newpage
+
+	Some things \textbf{about these constants}:
+	$$ \neg \top \equiv \bot, \;\;\; \neg \bot \equiv \top $$
+
+	If $\models A$
+	$$ \neg A \equiv A \rightarrow \bot $$
+	$$ A \equiv \top \rightarrow A $$
+
+	Some other equivalences:
+	\begin{itemize}
+		\item \textbf{Complementation}
+		$$ A \wedge \neg A \equiv \bot $$
+		$$ A \wedge \neg A \equiv \top $$
+
+		\item \textbf{Unit} and \textbf{neutral elements}
+		$$ A \wedge \bot \equiv \bot $$
+		$$ A \vee \bot \equiv A $$
+		$$ A \wedge \top \equiv A $$
+		$$ A \vee \top \equiv \top $$
+	\end{itemize}
+
+	\newpage
+
+	\section{$\equiv$ as a congruence}
+
+	$\equiv$ is \textbf{more than} simply being an \textbf{equivalence relation}. \\
+
+	$\equiv$ is a \textbf{congruence} with respect to $\vee, \wedge, \rightarrow, \neg$ \textbf{thought as operations}, so if the operands are thought as
+	$$ \wedge : \, \FL^2/\equiv \rightarrow \sfrac{\FL}{\equiv} $$
+	$$ ([A]_\equiv, [B]_\equiv) \rightarrow [A \wedge B]_\equiv $$
+
+	$\equiv$ is a congruence with respect to $\wedge$ as defined above.\\
+	If $A \equiv B$ and $C \equiv D$ then $A \wedge B \equiv C \wedge D$.\\
+
+	Exercise: verify that $\equiv$ is a congruence with respect to all the connectives $\wedge, \vee, \rightarrow, \neg$ (also $\top, \bot, \leftrightarrow$ even if they're derived so there would technically be no need).\\
+
+	\begin{proof}
+		We demonstrate just the case of $\equiv$ being a congruence with respect to $\neg$.\\
+		$A \equiv B$ \textbf{iff} $\neg A \equiv \neg B$. For all $\ta$, $\tilde{v}(A) = \tilde{v}(B)$ \textbf{iff} $T_\neg (\tilde{v}(A)) = I_\neg (\tilde{v}(B))$ \textbf{iff} $\tilde{v}(\neg A) = \tilde{v}(\neg B)$.\\
+	\end{proof}
+
+	Note: it is not true that every equivalence relation is a congruence (with respect to some operations).\\
+
+	We've started by considering the set of particular strings $\FL$, now we have a set of classes of logical equivalence $\FLe$ and the operator $\equiv$ can be thought as a congruence.\\
+
+	\newpage
+
+	\section{Partial order relation}
+
+	Let $R$ be a \textbf{binary relation} on $S$, $R \subseteq S^2$ such that
+	\begin{itemize}
+		\item $R$ is reflexive $(s, s) \in R$ for all $s \in S$
+		\item $R$ is \textbf{antisymmetric} for all $(s,t) \in R$, if $(s,t) \in R$ and $(t,s) \in R$ then $s = t$
+		\item $R$ is transitive $(s,t) \in R$ and $(t,r) \in R$ then $(s,r) \in R$
+	\end{itemize}
+	Any \textbf{relation with these properties is a partial order relation}. The difference between this and an equivalence relation is the antisymmetric property, which states that if two elements are in the relation in a certain order, the opposite ordering can't be in the relation as well.\\
+
+	Symbols: $\leq, \preceq, \sqsubseteq$.\\
+
+	Some examples of partial orderings for the naturals:
+	$$ (\mathbb{N}, \leq) $$
+	$a \leq b$ if it exists $c \in \mathbb{N}$ such that $a + b = c$.\\
+	This relation has a minimum element, which is $0$.\\
+
+	$$ (\mathbb{N}, \geq) $$
+	$a \geq b$ if it exists $c \in \mathbb{N}$ such that $a - b = c$.\\
+	In this relation $0$ is the maximum element.\\
+
+	$$ (\mathbb{N}, =) $$
+	In this relation every element is on the same level.\\
+
+	\newpage
+
+	Divisibility order:
+	$$ (\mathbb{N}, |) $$
+	$a|b$ ($a$ divides $b$) if there is $c \in \mathbb{N}$ such that $a \cdot c = b$.\\
+
+	\begin{center}
+			\begin{tikzpicture}[scale=0.7]
+			\node (1) at (2,0) {1};
+			\node (2) at (-2,2) {2};
+			\node (3) at (2,2) {3};
+			\node (4) at (-2,4) {4};
+			\node (6) at (2,4) {6};
+			\node (0a) at (2,5) {...};
+			\node (1b) at (6,2) {...};
+			\node (0b) at (-2,5) {...};
+			\node (0c) at (6,5) {...};
+			\node (0) at (2,7) {0};
+
+			\draw (0) -- (0a);
+			\draw (0) -- (0b);
+			\draw (0) -- (0c);
+			\draw (1) -- (2);
+			\draw (1) -- (3);
+			\draw (1) -- (1b);
+			\draw (2) -- (4);
+			\draw (2) -- (6);
+			\draw (3) -- (6);
+		\end{tikzpicture}
+	\end{center}
+
+	This order has $1$ as a minimum, all the prime numbers in the first level (atoms), then all numbers created just by primes and so on until the maximal element, which is zero since there's always a number such that $n \cdot 0 = 0$.\\
+
+	A \textbf{set} $P$, \textbf{equipped with a partial order relation} $\leq \subseteq P^2$ is called a \textbf{partially ordered set}, for short \textbf{poset} $(P, \leq)$.\\
+
+	\newpage
+
+	\section{Lattice}
+	To be a \textbf{lattice} there must be, \textbf{for each element in the poset}, a \textbf{greatest lower bound} and a \textbf{lowest upper bound}.\\
+
+	Considering $S \subseteq P$, $P$ poset, $(P, \leq)$. \\
+
+	We can define the \textbf{infimum} (greatest lower bound): $\inf S$ if it exists is the element $t \in P$ such that for all $z \in P$, if $z \leq s$ for all $s \in S$ then $z \leq t$ ($t$ is the greatest lower bound).\\
+
+	We can also define the \textbf{supremum} $\sup S$: if it exists is the element $t \in P$ such that for all $z \in P$, if $s \leq z$ for all $s \in S$ then $t \leq z$ ($t$ is the lowest upper bound).\\
+
+	$$ \inf S = \max \{z \in P: z \leq s \;\text{ for all } s \in S\}$$
+	$$ \sup S = \min \{z \in P : s \leq z ; \text{ for all } s \in S\}$$
+	If they exist.\\
+
+	We can also define:
+	$$ \min S = t \text{ iff } t = \inf S \text{ and } t \in S$$
+	$$ \max S = t \text{ if } t = \sup S \text{ and } t \in S$$
+
+	\newpage
+
+	\textbf{Example} of a set lacking $\sup$ (and then lacking $\max$)
+	$$ S \subseteq \mathbb{Q} \;\;\;\;\; S := \{x : x^2 \leq 2\}$$
+	This has a $\sup$, but not in the rationals. It would be $\sqrt{2} \in \mathbb{R} \setminus \mathbb{Q}$.\\
+
+	While
+	$$ S' \subseteq \mathbb{Q} \;\;\;\;\; S' := \{x : x \lneq 1\}$$
+	Has a $\sup$ but not a $\max$, $\sup S' = 1$ but $1 \notin S'$, so $\max S'$ does not exist.\\
+
+	$$ S'' \subseteq \mathbb{Q} \;\;\;\;\; S'' := \{x : x \leq 1\}$$
+	$\sup S'' = 1$, $1 \in S''$ so $\max S'' = 1$
+
+	\paragraph{Definition of Lattice (as poset):} A poset $(R, \leq)$ \textbf{is a lattice iff} for all $x,y \in R$ there \textbf{exists both} $\inf \{x,y\}$ \textbf{and} $\sup\{x,y\}$.\\
+
+	\vfill
+
+	Exercise: is our poset a lattice?
+	$$ (\mathbb{N}, \leq) $$
+	is a lattice because every pair has an greatest lower bound (the smaller number) and a lowest upper bound (the largest number).
+
+	$$ (\mathbb{N}, |) $$
+	Divisibility is a lattice, the inf is the greatest common divisor, while the sup is the lowest common multiple.\\
+
+	$$ (\mathbb{N}, =) $$
+	Is NOT a lattice, every element is on the same level, there is no $\inf$ or $\sup$.\\
+
+	%End of  L8
+
+%	Esercizio random?
+%
+%	Prove idempotence, follows from absorption
+%	%Check and try to prove this from notes
+%
+%
+%	Using explicitly the substitution theorem:
+%
+%	Take p \in L not occurring in $F$
+%	$$ (F \wedge p) [F/p] = F \wedge F \equiv (F \wedge p)[F \wedge (F \vee F)/p] = F \vee (F \wedge (F \vee F)) \equiv F$$
+%
+%	By absorption and substitution theorem we can say that $F \vee F \equiv F$.\\
+%
+%	***
+
+	\newpage
+
+	\section{Algebraic Structure}
+
+	%Lattices are not only posets with an order structure, but they're also an algebraic structure, each boolean algebra can be considered ...
+
+	\paragraph{(Very sketchy) Definition of Algebraic Structure:} Let $S$ be a set, and $\ast_1, \ast_2, \, ... \, , \ast_n$ a number of operations (can be infinite) on $S$ (that is functions $\ast_i : S^{\nu(i)} \rightarrow S$, where $\nu(i)$ gives the arity of the operation).\\
+
+	Then $(S, \ast_1, \ast_2, \, ... \, , \ast_n)$ is an \textbf{algebraic structure}, or is an algebra. \\
+
+	By algebra we basically mean a set of operations.\\
+
+	Example:
+	$$ (\mathbb{Z}, +, -, 0) $$
+	$$ + : \mathbb{Z}^2 \rightarrow \mathbb{Z} \;\;\;\; (a,b) \rightarrow a + b $$
+	$$ - : \mathbb{Z}^1 \rightarrow \mathbb{Z} \;\;\;\; a \rightarrow - a $$
+	$$ 0 : \mathbb{Z}^0 \rightarrow \mathbb{Z} \;\;\;\; 0 \text{ the constant/integer number } 0 $$
+
+	The arity of these operations is, respectively: $\nu(+) = 2$, $\nu(-) = 1$, $\nu(0) = 0$.\\
+
+	\newpage
+
+	\subsection{Isomorphism}
+	Two \textbf{structures} are \textbf{isomorphic}
+	$$(S, \ast_1, \ast_2, \, ... \, , \ast_n) \cong (R, \circledcirc_1, \circledcirc_2, \, ... \, , \circledcirc_m) $$
+
+	If they mathematically behave in the same manner, i.e. \textbf{iff}
+
+	$$ m = n $$
+
+	$$ \nu_S^{(i)} = \nu_R^{(i)} \;\; \text{ for each } i = 1,2, \, ... \, , n $$
+
+	$$ \text{there exists } f : S \rightarrow R \text{ such as: } $$
+	$$\begin{cases}
+		f : \text{ injective: } & x \neq y \in S \implies f(x) \neq f(y) \\
+		f: \text{ surjective: }  & \text{ for all } y \in R \text{ there is } x \in S \text{ s.th. } f(x) = y
+	\end{cases}$$
+	$$\implies f \text{ is bijective (1-1 correspondance)} $$
+
+	$$ f: \text{ is a homomorphism}: f(\ast_i (s_1, \, ... \, , s_k)) = \circledcirc_i(f(s_1), f(s_2), \, ... \, , f(s_k))$$
+	$$ \nu_S (i) = k, \text{ for all } (s_1, \, ... \, s_k) \in S^k $$
+
+	TLDR: The structures are the same, except for their physical nature, they behave the same as far as those operations are concerned.\\
+
+	\newpage
+
+	\subsection{Lattices as algebraic structures}
+
+	A \textbf{lattice as an algebraic structure} is a \textbf{set with binary operations}
+	$$ (R, \sqcap, \sqcup) \;\;\;\;\;
+	\begin{array}{c}
+		\sqcap: R^2 \rightarrow R\\
+		\sqcup: R^2 \rightarrow R
+	\end{array}
+	 $$
+
+	such that \textbf{both} these \textbf{operations} are \textbf{associative and commutative}.\\
+
+	$\sqcap, \sqcup$ are related by absorption:
+	$$
+	\text{for all }\; x, y \in R \;\;\;\;\;
+	\begin{cases}
+		x \sqcap (x \sqcup y) = x \\
+		x \sqcup (x \sqcap y) = x
+	\end{cases}$$
+
+	A \textbf{lattice as a poset} can be \textbf{redefined as/associated} to a \textbf{lattice as an algebraic structure}
+	$$ (R, \leq ) \leftrightsquigarrow (R, \sqcap, \sqcup)$$
+	each lattice meant as a poset can be thought of uniquely as an algebra and vice versa.\\
+
+	To do
+	$$ (R, \leq ) \rightsquigarrow (R, \sqcap, \sqcup) $$
+	we just have to define the operations. For all $a,b \in R$ we need to define:
+	$$ a \sqcap b := \inf \{a, b\}$$
+	$$ a \sqcup b := \sup \{a,b\}$$
+	The rest is an exercise for the reader.\\
+
+	\newpage
+
+	While to do
+	$$ (R, \sqcap, \sqcup ) \rightsquigarrow (R, \leq) $$
+
+	For all $a,b \in R$, $a \leq b$ iff $a = a\sqcap b$ (or, equivalently, $b = a \sqcup b$).\\
+
+	Check: $a \leq b$ defined as above is such that $\leq$ is
+	\begin{itemize}
+		\item reflexive: for all $a \in R$, $a \leq a$ iff $a = a \sqcap a$ (by idempotence)
+		\item antisymmetric: ...
+		\item transitive: ...
+	\end{itemize}
+
+	Doing this we prove that this thing is a poset, but the lattice is a special kind of poset. So now we need to check that the poset $(R, \leq)$ is indeed a lattice. We need to prove that for each pair of element there is an $\inf$ and $\sup$. \textbf{For each} $a,b \in R$ \textbf{there is} $\inf\{a,b\}$ \textbf{and} $\sup \{a,b\}$.\\
+
+	Letting $c \leq a$ and $c \leq b$ we have to show that $c \leq a \sqcap b$, since it means we've proven that $a \sqcap b$ is $\inf\{a,b\}$, so it exists and is defined, $\inf\{a,b\} = a \sqcap b$.\\
+
+	$c = a \sqcap c$, by definition of $\leq$, and from the fact that $c \leq b$ and thus $c = b \sqcap c$ so
+	$$ c = a \sqcap c = a \sqcap (b \sqcap c) = (a \sqcap b) \sqcap c \; \text{ iff } \; c \leq a \sqcap b$$
+	So inf exists and is defined.\\
+
+	The proof that $\sup\{a,b\} = a \sqcup b$ is analogous.\\
+
+	We have proved that $(R, \leq)$ is a lattice (as a poset).\\
+
+	\newpage
+
+	\section{Boolean Algebras}
+
+	It's an algebra, so a set with some operations and two constants
+	$$ (S, \sqcap, \sqcup, ()^c, 0, 1 ) $$
+
+	The arity of the operations is:
+	\begin{itemize}
+		\item $\sqcap, \sqcup : S^2 \rightarrow S$
+		\item $()^c: S \rightarrow S$
+		\item $0,1: S^0 \rightarrow S$
+	\end{itemize}
+	(The $()^c$ is the complement).\\
+
+	\textbf{Additional properties}: $(S, \sqcap, \sqcup)$ is a lattice (has an order), which is
+	\begin{itemize}
+		\item \textbf{Bounded:} for all $a \in S$ there's a minimum $0 \leq a$ and a maximum $a \leq 1$ such that
+		$$ \begin{cases}
+			a \sqcap 0 = 0 \;\; &  a \sqcup 1  = 1 \\
+			a \sqcup 0 = a & a \sqcap 1 = a
+		\end{cases}$$
+		\nn
+
+		\item \textbf{Complemented:} for all $a \in S$, such that $a \sqcap a^c = 0$ and $a \sqcup a^c = 1$.\\
+
+		\item \textbf{Distributive:} for all $a,b,c \in S$, $a \sqcap (b \sqcup c)$
+		$$ \begin{array}{c}
+			a \sqcap (b \sqcup c) = (a \sqcap b) \sqcup (a \sqcap c) \\
+			a \sqcup (b \sqcap c) = (a \sqcup b) \sqcap (a \sqcup c)
+		\end{array}$$
+		\nn
+	\end{itemize}
+
+	So, boolean algebra is a shorthand name for bounded, complemented and distributive lattices.\\
+
+	\newpage
+
+	Examples of boolean algebra: Let $A$ be a set
+	$$ (\mathcal{P}(A), \cap, \cup, \overline{()}, \emptyset, A) $$
+
+	Let $\mathcal{P}(A)$ be the powerset of $A$ (set of all subsets of $A$).\\
+	Check that this is a boolean algebra. It must be commutative, absorption, bounds, ...\\
+
+	If $A$ is finite, say $|A| = n$, then $|\mathcal{P}(A)| = 2^n$. $2^A$ is a commonly used notation for the powerset.\\
+
+	Every finite Boolean algebra has $2^k$ elements for some $k \in \mathbb{N}$.\\
+
+	\textbf{Every finite boolean algebra} can be conceived/is \textbf{isomorphic with} the \textbf{powerset of some finite set}.\\
+
+	$(\mathcal{P}(A), \subseteq)$, $S,T$, $S \subseteq T$ iff $S = S \cap T$ (or $T = S \cup T$). This is the lattice isomorphic to the boolean algebra defined above.\\
+
+	Example:
+	$$A = \{a,b\}, \; |\mathcal{P} (A)| = |2^A| = 2^2 = 4$$
+	$$ 2^A = \{\emptyset, \{a\}, \{b\}, \{a,b\}\} $$
+	So
+	$$ (2^A, \subseteq)$$
+	is a lattice.\\
+
+	%Ma basta diocane
+
+	\newpage
+
+	\paragraph{Boolean algebra of truth-values:}
+	$$ (\{0,1\}, I_\wedge = \min, I_\vee = \max, I_\neg = 1-, 0 = I_\bot, 1 = I_\top) $$
+	This is the \textbf{smallest significant boolean algebra} and in the ordering we have that 0 is below 1.\\
+
+	It's equivalent to:
+	$$ \cong (\mathcal{P}(\{\ast\}), \cap, \cup, \overline{()}, \emptyset, \{\ast\}) $$
+
+	Boolean algebras of \textbf{$n$-tuples of truth-values}
+	$$ (\{0,1\}^n, \overline{\min}, \overline{\max}, \overline{1-}, (0,0, \, .... \, , 0), (1,1, \, ... \, , 1)) $$
+
+	Operations are defined pointwise (componentwise):
+	$$ \overline{\min} ((b_1, \, ... \, , b_n), (c_1, \, ... \, c_n)) := (\min \{b_1, c_1\}, \, ... \, , \min \{b_n, c_n\})$$
+	$$ \overline{\max} ((b_1, \, ... \, , b_n), (c_1, \, ... \, c_n)) := (\max \{b_1, c_1\}, \, ... \, , \max \{b_n, c_n\})$$
+	$$ \overline{1 - (b_1, \, ... \, , b_n)} = (1-b_1, \, ... \, , 1-b_n) $$
+
+	\newpage
+
+	\subsection{Lindembaum Algebras of (equivalence classes of) formulas}
+	%TODO from here
+	It is a boolean algebra.\\
+
+	$$ (\FLe, \bm{\wedge}, \bm{\vee}, \bm{\neg}, [\bot]_\equiv, [\top]_\equiv) $$
+
+	Since $\equiv$ is a congruence with respect to $\wedge, \vee, \neg$ the following \textbf{definition is well given} (does not depend on the representatives of the classes).\\
+
+	For all $A, B \in \FL$:
+	$$ [A]_\equiv \bm{\wedge} [B]_\equiv := [A \wedge B]_\equiv $$
+	$$ [A]_\equiv \bm{\vee} [B]_\equiv := [A \vee B]_\equiv $$
+	$$ \neg [A]_\equiv := [\neg A]_\equiv $$
+
+	It has an \textbf{order relation} since it's also a \textbf{lattice}:
+	$$ (\FLe, \leq) \;\;\;\;\; [A]_\equiv \leq [B]_\equiv  \; \text{ iff } \; [A]_\equiv = [A \wedge B]_\equiv \text{ or } [B]_\equiv = [A \vee B]_\equiv $$
+
+	Some combinatorics about $\FLe$
+	$$ |\FL| = |\mathcal{L}| = |\mathbb{N}| = \aleph_0 $$
+	$$ |\FLe| = \aleph_0 $$
+	No powerset has cardinality $\aleph_0$, so $|\FLe|$ is \textbf{not isomorphic} with any powerset algebra.\\
+
+	By $\FL^{(n)}$ we mean the set of all formulas built using only the first $n$ propositional letters $\{p_1, p_2, \, ... \, , p_n\}$. Check that  %Complete
+	$$ |FL^{(n)}/\equiv|$$
+	is a boolean algebra (called Lindenbaum algebra over the first $n$ letters).\\
+
+	\vfill
+
+	And he checks that, but I'm not paid enough to write it.\\
+
+	%Complete, idc anymore, just wanna kms
+	% On the right, after : there is number of assignment that satisfies that shi
+
+	%End L9
+
+	\newpage
+
+	First exercise: taking
+	$$ (\FLe, \leq)$$
+	thought as a poset, we know that
+	$$ [A]_\equiv \leq [B]_\equiv $$
+
+	\begin{itemize}[label*=]
+		\item \textbf{iff} $[A]_\equiv = [A \wedge B]_\equiv $
+		\item \textbf{iff} $A \equiv A \wedge B$
+		\item \textbf{iff} $\models A \leftrightarrow (A \wedge B)$
+		\item \textbf{iff} $\models A \rightarrow B$
+	\end{itemize}
+
+	Looking at the truth table, we can see that it's structured in such a way that no assignment can make $A \rightarrow B$ a tautology.\\
+
+	Exercise: $F^{(n)}/\equiv$ is isomorphic with
+	$$2^{2^{n}} \cong (\mathcal{P} (\mathcal{P} (\, ... \, )), \cap, \cup, ()^c, \emptyset, \, ...) $$
+
+	\nn \nn
+
+	\paragraph{Some other notable logically equivalent formulas:}
+	\begin{itemize}
+		\item \textbf{De Morgan Laws on $n$ many variables}:
+		$$ \neg (F_1 \vee F_2 \vee \, ... \, , \vee F_n) \equiv \neg F_1 \wedge \neg F_2 \wedge \, ... \, \wedge \neg F_n $$
+		$$ \neg (F_1 \wedge F_2 \wedge \, ... \, , \wedge F_n) \equiv \neg F_1 \vee \neg F_2 \vee \, ... \, \vee \neg F_n $$
+		\item \textbf{Generalized distributivity}:
+		$$ (F_1 \vee \, ... \, \vee F_u) \wedge (G_1 \vee \, ... \, \vee G_v) \equiv \bigvee_{i=1}^u \bigvee_{j = 1}^v (F_i \wedge G_j) $$
+		$$ (F_1 \wedge \, ... \, \wedge F_u) \vee (G_1 \wedge \, ... \, \wedge G_v) \equiv \bigwedge_{i=1}^u \bigwedge_{j = 1}^v (F_i \vee G_j) $$
+	\end{itemize}
+
+	\newpage
+
+	\section{Term Function}
+	%Motivations for a new way to look at things.\\
+	Motivations: $\models F$ \textbf{iff} (by definition) for all $\ta$ it holds that $\tilde{v}(F) = 1$.\\
+
+	We want to look at the \textbf{assignment as a function}, and $F$ \textbf{as the argument}.\\
+	We desire that
+	\begin{itemize}
+		\item the \textbf{formula} "becomes" the \textbf{function}
+		\item the \textbf{assignments} "become" the \textbf{arguments}
+	\end{itemize}
+
+	We fix a \textbf{formula} $A \in \FL$ and let $Var(A)$ be the set of \textbf{propositional letters actually occurring} in $A$ (since assignments are infinite by definition). Now fix a \textbf{suitable natural number} $n \in \mathbb{N}$ such that $Var(A) \subseteq \{p_1, p_2, \, ... \, , p_n\}$ (just take $n$ "large enough" for $A$).\\
+
+	\textbf{Desideratum} (what we want): we want to \textbf{define a function} $\hat{A}: \{0,1\}^n \rightarrow \{0,1\}$ \textbf{such that} for all assignments $\ta$:
+	$$ \hat{A} (v(p_1), v(p_2), \, ... \, , v(p_n)) = \tilde{v} (A) $$
+	The \textbf{formula} has \textbf{become a function}, the \textbf{assignment} has become the \textbf{argument}. Sometimes it's more convenient.\\
+
+	Exercise: verify that assignments, restricted to the first $n$ propositional letters (that is $v: \{p_1, \, .... \, p_n\} \rightarrow \{0,1\}$), are in bijection with points in $\{0,1\}^n$ ($n$-tuples of bits).\\
+
+	\newpage
+
+	\textbf{Definition}: of \textbf{term function} $\hat{A}$ associated with the formula $A \in \FL$ with respect to $n \in \mathbb{N}$ ($Var(A) \subseteq \{p_1, \, ... \, , p_n\}$).\\
+
+	We define this by \textbf{induction on the structure of} $A$:
+	\begin{itemize}
+		\item \textbf{Base}: $A = p_i$, $p_i \in \{p_1, \, ... \, , p_n\}$
+		$$ \hat{A}: \{0,1\}^n \rightarrow \{0,1\}$$
+		$$ \hat{p}_i: \{0,1\}^n \rightarrow \{0,1\}$$
+
+		for all $(t_1, \, ... \, , t_n) \in \{0,1\}^n$
+		$$ \hat{p}_i (t_1, \, ... \, , t_n) :=  t_i $$
+
+		so it satisfies the desideratum:
+		$$ \hat{p}_i (v(p_1), \, ... \, , v(p_i), \, ... \, , v(p_n)) = v(p_i) = \tilde{v} (p_i) $$
+
+		\item \textbf{Steps}: we have to define the cases:
+		\begin{itemize}
+			\item $A = \neg B$
+			$$ \hat{A} (t_1, \, ... \, , t_n) = \hat{(\neg B)} (t_1, \, ... \, , t_n) := I_\neg (\hat B (t_1, \, ... \, , t_n)) =  1 - (\hat B (t_1, \, ... \, , t_n))$$
+
+			\item $A = B \wedge C$
+			$$ \hat{A} (t_1, \, ... \, , t_n) =  \hat{(B \wedge C)} (t_1, \, ... \, , t_n) := I_\wedge (\hat B (t_1, \, ... \, , t_n), \hat C (t_1, \, ... \, , t_n))$$
+
+			\item $A = B \vee C$
+			$$ \hat{A} (t_1, \, ... \, , t_n) =  \hat{(B \vee C)} (t_1, \, ... \, , t_n) := I_\vee (\hat B (t_1, \, ... \, , t_n), \hat C (t_1, \, ... \, , t_n))$$
+
+			\item $A = B \rightarrow C$
+			$$ \hat{A} (t_1, \, ... \, , t_n) =  \hat{(B \rightarrow C)} (t_1, \, ... \, , t_n) := I_\rightarrow (\hat B (t_1, \, ... \, , t_n), \hat C (t_1, \, ... \, , t_n))$$
+		\end{itemize}
+
+		Check that in any case of the steps the desideratum holds (a lot of stuff is written, idk what it means).
+	\end{itemize}
+
+	\newpage
+
+	\subsection{Boolean algebra of term functions}
+
+	$$ \hfln := \left( \left\{\hat F: \{0,1\}^n \rightarrow \{0,1\}: F \in \fln \right\}, \hat \wedge, \hat \vee, \hat \neg, \hat \top, \hat \bot \right)$$
+	where
+	$$ (\hat F \wedge \hat G) (t_1, \, ... \, , t_n) = I_\wedge \{\hat F (t_1, \, ... \, , t_n), \hat G (t_1, \, ... \, , t_n)\}$$
+	$$ (\hat F \vee \hat G) (t_1, \, ... \, , t_n) = I_\vee \{\hat F (t_1, \, ... \, , t_n), \hat G (t_1, \, ... \, , t_n)\}$$
+	$$ \hat \neg \hat F (t_1, \, ... \, , t_n) = I_\neg (\hat F (t_1, \, ... \, , t_n)) $$
+
+	We can prove that $\hfln$ is \textbf{isomorphic} with $\flne$ ($\hfln \cong \flne$) via: $\hat F \mapsto [F]_\equiv$ for each $F \in \FL$.\\
+
+	$$\hfln = \left(\{ \hat F: \{0,1\}^n \rightarrow \{0,1\}: F \in FL\}, \hat \wedge, \hat \vee, \hat \neg, \hat \top, \hat \bot \right)$$
+
+	Compare with
+	$$ Func^{(n)} = \left(\{ g: \{0,1\}^n \rightarrow \{0,1\} \}, \hat \wedge, \hat \vee, \hat \neg, \hat \top, \hat \bot \right)$$
+
+	Check that $Func^{(n)}$ \textbf{is a boolean algebra}.\\
+
+	This
+	$$ \fln \subseteq Func^{(n)}$$
+	is trivially true since each term function belongs to $Func^{(n)}$, while
+	$$ \fln \supseteq Func^{(n)}$$
+	is also true, called \textbf{functional completeness of propositional logic}.\\
+
+	So
+	$$ \fln = Func^{(n)} $$
+	They're not isomorphic, it's \textbf{literally the same algebra}, they have the same universe and same operations, it's not a bijection.
+
+	\newpage
+
+	\section{Functional Completeness Theorem}
+
+	We have to prove that \textbf{for each natural number} $n \in \mathbb{N}$, the set of function $Func^{(n)} \subseteq \hfln$. That is, for each function $g: \{0,1\}^n \rightarrow \{0,1\}$ there exists a formula $F \in \fln$ such that
+	$$ g = \hat F$$
+	(that is, for each $n$-tuple $(t_1, \, ... \, , t_n) \in \{0,1\}^n$, $g (t_1, \, ... \, , t_n) = \hat F (t_1, \, ... \, , t_n)$).\\
+
+	\begin{proof}
+		Let $g: \{0,1\}^n \rightarrow \{0,1\}$, let us build $F \in \fln$ such that $g = \hat F$.\\
+		We can build truth tables:
+		$$
+		\begin{array}{c c c c | c}
+			t_1, & t_2, & \dots \, , & t_n & g (t_1, \, ... \, , t_n) \\
+			\hline
+			0 & 0 & \dots & 0 & b_0 \\
+			0 & 0 & \dots & 1 & b_1 \\
+			&& \vdots && \vdots \\
+			a_{i1} & a_{i2} & \dots & a_{in} & b_i \\
+			&& \vdots && \vdots \\
+			1 & 1 & \dots & 1 & b_{2^{n}-1} \\
+		\end{array}
+		$$
+
+		We have $2^n$ possible values and each $b_i$ is the value of the functions, they're just bits ($b_i \in \{0,1\}$).\\
+
+		Observation: If $g(t_1, \, ... \, , t_n) = 0$ for all $(t_1, \, ... \, , t_n) \in \{0,1\}^n$ ($g$ always $0$), we can take $\bot = F$
+		$$ \hat F = \hat \bot = 0 = g $$
+
+		Otherwise, at least a bit is 1, let $I \subseteq \{0,1, \, ... \, , 2^{n}-1\}$ be defined by $i \in I$ iff $b_i = 1$, by our earlier observation $I \neq \emptyset$.\\
+
+		For all $i \in I$ let us consider the $i$-th row of the table:
+		$$ a_{i1} \; a_{i2} \, ... \, a_{in} \; | b_i $$
+		and $b_i =1$ since $i \in I$.\\
+
+		For each $j \in \{1, \, ... \, , n\}$ we set
+		$$
+		\begin{cases}
+			A_{ij}:= p_j & \text{ if } a_{ij} = 1 \\
+			A_{ij}:= \neg p_j & \text{ if } a_{ij} = 0 \\
+		\end{cases}
+		$$
+
+		We set
+		$$ F := \bigvee_{i \in I} \bigwedge_{j=1}^n A_{ij} $$
+		Note $F \in \fln$.\\
+
+		We have to prove that $\hat F = g$.\\
+
+		It's enough to prove that:
+		$$\widehat{\left(\bigwedge_{j=1}^n A_{ij}\right)} (t_1, \, ... \, , t_n = 1) $$
+
+		\textbf{iff}
+		$$ (t_1, \, ... \, , t_n) =  (a_{i1}, a_{i2}, \, ... \, , a_{in}) $$
+		As defined, this formula identifies the $i$-th row, evaluates to $1$ just on the $i$-th row call it $(\dag)$. \\
+
+		Proof of $(\dag)$: Clearly
+		$$ \left(A_{i1} \wedge A_{i2} \wedge \, ... \, \wedge A_{in}\right) (a_{i1}, a_{i2}, \, ... \, , a_{in}) = 1 $$
+		For convenience:
+		$$ \left(A_{i1} \wedge A_{i2} \wedge \, ... \, \wedge A_{in}\right) = \bigwedge_{j = 1}^n A_{ij} $$
+
+		Since, by definition of $A_{ij}$
+		$$ \hat A{ij} (a_{i1}, a_{i2}, \, ... \, , a_{in})  = \begin{cases}
+			a_{ij} & \text{ if } a_{ij} = 1\\
+			1 - a_{ij} & \text{ if } a_{ij} = 0
+		\end{cases}$$
+		That is, $\hat A_{ij} (a_{i1}, \, ... \, , a_{in}) = 1$.\\
+		So
+		$$ \widehat \bigwedge{j=1}^n A_{ij} (a_{i1}, a_{i2}, \, ... \, , a_{in}) = 1$$
+		By definition of $I_\wedge$.\\
+
+		Let now us take $(t_1, \, ... \, , t_n) \in \{0,1\}^n$, with $(t_1, \, ... \, , t_n) \neq (a_{i1}, a_{i2}, \, ... \, , a_{in})$ (so $(t_1, \, ... \, , t_n)$ is not the $i$th row).\\
+
+		Let $j \in \{1, \, ... \, , n\}$ be such that $t_j \neq a_{ij}$ (there must be at least one position in which they are different, otherwise they would be the same row)
+		$$
+		\begin{cases}
+			a_{ij} = 1 & \text{ iff } t_j = 0 \\
+			a_{ij} = 0 & \text{ iff } t_j = 1
+		\end{cases}
+		$$
+		then
+		$$ \hat A_{ij} (t_1, \, ... \, , t_n) =
+		\begin{cases}
+			1 - a_{ij} & \text{ iff } a_{ij} = 1 \\
+			a_{ij} & \text{ iff } a_{ij} = 0
+		\end{cases}
+		= 0
+		$$
+
+		So
+		$$ \widehat \bigwedge_{j=1}^n = 0$$
+		By definition of $I_\wedge$ . So we proved $(\dag)$.\\
+
+		So, by $(\dag)$
+		$$ \left( \bigwedge_{j=1}^n A_{ij} \right) (t_1, \, ... \, , t_n) = 1 \; \text{ iff } \; t_1, \, ... \, , t_n \; \text{ is the } i \text{th row} $$
+		So
+		$$\widehat{\left( \bigvee_{i \in I} \bigwedge_{j=1}^n A_{ij}\right)} (t_1, \, ... \, , t_n)  = 1 $$
+		\textbf{iff} (by definition if $I_\vee$) $(t_1, \, ... \, , t_n)$ is the $i$th row for some $i \in I$\\
+
+		\textbf{iff } (by definition of $I$) $g(t_1, \, ... \, , t_n) = 1$.\\
+
+		\newpage
+
+		So we have concluded that $F$, defined as:
+		$$ F := \bigvee_{i \in I} \bigwedge_{j=1}^n A_{ij}$$
+		is such that
+		$$ \hat F (t_1, \, ... \, , t_n) = g(t_1, \, ... \, t_n) $$
+		for all $(t_1, \, ... \, t_n) \in \{0,1\}^n$, so
+		$$ \hat F = g $$
+	\end{proof}
+
+	Exercise: prove that for any $f: \{\}^n \rightarrow \{0,1\}$ there is a formula $G \in \fln$ such that $\hat G = f$ and
+	$$G = \bigwedge_{i \in J} \bigvee_{j=1}^n B_{ij} $$
+	where $J \subseteq \{0, \, ... \, , 2^n - 1\}$ such that $i \in J$ iff $b_j = 0$ and
+	$$
+	\begin{cases}
+		B_{ij} = \neg p_j & \text{ if } a_{ij} = 1 \\
+		B_{ij} = p_j & \text{ if } a_{ij} = 0
+	\end{cases}
+	$$
+	Dual of before, just switch everything.\\
+
+	The \textbf{functional completeness theorem} is a typical \textbf{normal form theorem}. We have two "flavors", \textbf{disjunctive and conjunctive normal form} (the two dual thingies proven, respectively).\\
+
+	Given $f: \{0,1\}^n \rightarrow \{0,1\}$:
+	$$F  =  \bigvee_{i \in I} \bigwedge_{j=1}^n A_{ij} \;\;\;\; G = \bigwedge_{i \in J} \bigvee_{j=1}^n B_{ij} $$
+	Are such that $\hat F = f = \hat G$.\\
+
+	For  $A \in \fln$ then there are $F_A \vee \wedge A_{ij}$ and $G_A \wedge \vee A_{ij}$ such that
+	$$ \hat F_A = \hat A = \hat G_A$$
+	it's the same as saying
+	$$ [F_A]_\equiv = [A]_\equiv [G_A]\equiv \implies$$
+	$$ \implies F_A \equiv A \equiv G_A $$
+
+
+	\paragraph{Normal form:} a way of picking a "standard" element in every one of the equivalence classes.\\
+
+	\textbf{Observation}: The functional completeness theorem \textbf{does not hold} (for non classical logic, but also) \textbf{for} the \textbf{set of all formulas} $\FL$. It \textbf{works only when we restrict} to formulas and functions on \textbf{the first} $n$ \textbf{propositional letters}, for any $n \in \mathbb{N}$
+	$$ Func^{(n)} = \hfln \cong \flne $$
+	Functional completeness theorem proves the first $=$.\\
+
+	If we consider all propositional letters (remember $|\mathcal{L}| = \aleph_0$)
+	$$ Func^{(\omega)} = \{f: \{0,1\}^\omega \rightarrow \{0,1\}\}$$
+	But $\{0,1\}^\omega$ is the set of all infinitely long sequences of bits.\\
+	$$ |Func^{(\omega)}| = |[0,1] \cap \mathbb{R}| = |\mathbb{R}| = 2^{\aleph_0} = \aleph_1 > \aleph_0 = |\fle| $$
+
+	\vfill
+
+	The normal forms:
+	\begin{itemize}
+		\item \textbf{Conjunctive}
+		$$ \bigwedge_{i \in J} \bigvee_{j=1}^n B_{ij} $$
+		\item \textbf{Disjunctive}
+		$$ \bigvee_{i \in I} \bigwedge_{j=1}^n A_{ij} $$
+	\end{itemize}
+
+	Are said \textbf{canonical} or \textbf{complete}, conjunctive/disjunctive normal forms, that is every one of the disjuncts/conjuncts \textbf{mentions all the letters} $p_1, p_2, \, ... \, , p_n$.\\
+
+%	Example: MIA%Write it maybe
+%
+%	It shows the difference between getting to the formula by observation and with the canonical normal forms.\\
+
+	%End L10
+
+	\section{Functionally complete set of connectives}
+
+	A \textbf{set} $C \subseteq \{\wedge, \vee, \rightarrow, \neg, \leftrightarrow, \top, \bot, \, \dots \, \}$ (subset of connectives) is \textbf{functionally complete} iff for all $F \in \fln$ (for all $n \in \mathbb{N}$) there is some $G \in \fln$ written using only the connectives in $C$ such that $\hat F = \hat G$ (or $F \equiv G$, or $[F]_\equiv = [G]_\equiv$, or $\models F \leftrightarrow G$, they're all equivalent).\\
+
+	The set
+	$$ \{\wedge, \vee, \neg \}$$
+	is \textbf{functionally complete}, by the \textbf{functionally completeness theorem}.\\
+
+	Other functionally complete sets:
+	\begin{itemize}
+		\item $\{\neg, \wedge\}$: same as above, use De Morgan laws to obtain this set
+		\item $\{\neg, \vee\}$: also De Morgan
+		\item $\{\neg, \rightarrow\}$: can be proven remembering that $A \wedge B \equiv (\neg A) \rightarrow B$
+		\item $\{\rightarrow, \bot\}$: equivalent to $\neg A \equiv A \rightarrow \bot$
+	\end{itemize}
+
+	\paragraph{NAND:} Operator defined as negation of AND, it's usually defined as:
+	$$ A \nand B := \neg (A \wedge B) $$
+	$$ I_{\nand} = \{0,1\}^2 \rightarrow \{0,1\} $$
+	$$ I_{\nand} (x,y) = 1 - \min\{x,y\}$$
+	$$
+	\begin{array}{c c | c c | c}
+		A & B & \neg & (A \wedge B) & \nand \\
+		\hline
+		0 & 0 & 1 & 0 & 1 \\
+		0 & 1 & 1 & 0 & 1 \\
+		1 & 0 & 1 & 0 & 1 \\
+		1 & 1 & 0 & 1 & 0 \\
+	\end{array}
+	$$
+
+
+	Recalling that $\{\neg, \wedge\}$ is functionally complete, the set only composed by \textbf{nand} is \textbf{functionally complete}:
+	$$
+	\begin{cases}
+		\neg A \equiv A \text{ nand } A \\
+		A \wedge B \equiv \neg (A \text{ nand } B) \equiv (A \text{ nand } B) \text{ nand } (A \text{ nand } B)
+	\end{cases}
+	$$
+
+	\newpage
+
+	Exercise: prove that nor is functionally complete, $(A \text{ nor } B \equiv \neg (A \wedge B))$.\\
+
+	Exercise: are
+	\begin{itemize}
+		\item $\{\wedge, \rightarrow\}$
+		\item $\{\wedge, \vee\}$
+		\item $\{\neg, \bot\}$
+	\end{itemize}
+
+	functionally complete? \\
+
+	They're not, there are functions that cannot be expressed with these sets.\\
+
+	The last one doesn't have any binary operators, so it can't be functionally complete, how do I express binary operators? You can't build functions depending on more that one variable.\\
+
+	While for the first two, we don't have the negation, we just have "increasing" functions.\\
+
+	So we can't express \textit{everything}, for example a formula
+	$$ F(1,1, \, \dots \, , 1) = 0 $$
+	is impossible, since we can't produce a zero starting from ones only.\\
+
+	\newpage
+
+	\section{Normal Forms}
+
+	We have seen canonical/complete normal forms (CNF, DNF) and they are \textbf{generally too long}.\\
+	We want to produce CNFs and DNFs without their being canonical, in order to obtain shorter formulas.\\
+
+	\subsection{Implication Free Normal Form IFNF:}
+
+	We're getting rid of implication.\\
+
+	\paragraph{Definition:} a Formula $F \in \FL$ is in IFNF ($F \in IFNF$) \textbf{iff} $F$ \textbf{does not contain} any occurrence \textbf{of} $\rightarrow$.\\
+
+	To do that we just replace every $\rightarrow$ (we've seen it can be replaced, we'll see some transformations below).\\
+
+	\subsection{Negation Normal Form NNF}
+
+	\paragraph{Definition:} A formula $F \in IFNF$ is in NNF ($F \in NNF$) iff the \textbf{negation connective} is applied \textbf{only to propositional letters} (if $\neg B$ is a sub-formula of $F$, then $B = p_i$ for some $p_i \in \mathcal{L}$).\\
+
+	Examples:
+	\begin{itemize}
+		\item Is $p_1 \wedge (p_2 \vee p_3$ in NNF?
+		Obviously no, but its equivalent $p_1 \wedge (\neg p_2 \wedge \neg p_3$
+		\item Is $p_1 \rightarrow \neg p_2$ in NNF? No, since it's not $\in IFNF$ (the negation is only on letters though)
+	\end{itemize}
+
+
+	We have "subsets" of Normal Forms:
+	$$
+	\begin{array}{c c}
+		CNF & \subseteq \\
+		DNF & \subseteq
+	\end{array}
+	NNF \subseteq IFNF
+	$$
+
+	\newpage
+
+	%Check below
+
+	\paragraph{Notation:} $G \preceq F$, $G$ is a \textbf{Subformula} of $F$ (for $G,F \in \FL$) if $G$ occurs in every $L$-construction of $F$ (you need $G$ to build $F$, get the minimal $L$-construction and check if $G$ is in there).\\
+
+	\paragraph{Transformations:} We shall use the following equivalences to \textbf{replace subformulas} with \textbf{equivalent ones}:
+	\begin{enumerate}
+		\item $C \rightarrow D \equiv (\neg C) \vee D$
+		\item $\neg \neg C \equiv C$
+		\item $\neg (C \vee D) \equiv \neg C \wedge \neg D$ (De Morgan)
+		\item $\neg (C \wedge D) \equiv \neg C \vee \neg D$ (De Morgan)
+	\end{enumerate}
+
+	We shall use these logical equivalences to transform subformulas of a given formula $F \in \FL$ using these from left to right, we're \textbf{using them as transformation rules} (we could do the opposite, but goes against our normal forms).\\
+
+	\paragraph{Lemma:} For any $F \in \FL$ we can build another formula $G \in \FL$ (in finite number of steps) such that $F \equiv G$ and $G \in IFNF$. Any formula can be "transformed" into an equivalent one in IFNF.\\
+
+	\begin{proof}
+		For any $E \in \FL$ we introduce an index of complexity, every step it decreases and it goes at 0 only when $E \in IFNF$.\\
+
+		Let $i(E)$ be the number of occurrences of $\rightarrow$ in $E$. We can observe that $E \in IFNF$ iff $i(E) = 0$. If $E \notin IFNF$ then $i(E) > 0$.\\
+
+		Take $C \rightarrow D \preceq E$ (which exists for any $E$ with $i(E) > 0$).\\
+
+		Replace $C \rightarrow D$ with $(\neg C) \vee D$ and call $E'$ the formula obtained.\\
+		$$ E' = E\left[\sfrac{(\neg C) \vee D}{C \rightarrow D}\right]$$
+		(with a small abuse of notation, I think we defined the substitution only for letters but I think it's admissible).\\
+
+		Now $E \equiv E'$ for the transformation $(1)$ and substitution theorem and
+		$$ i(E) > i(E')$$
+		since we removed at least one implication.\\
+
+		So, given in input $F \in \FL$ with $F \notin IFNF$, we build a sequence
+		$$ (\dag) \;\;\;\;\;\;\;\; F = F_0 \equiv F_1\equiv \, \dots \, \equiv F_u \in IFNF $$
+		and
+		$$ i(F_0) > i(F_1) > \, \dots \, > i(F_n) = 0 $$
+		Since we're strictly descending natural numbers since each $F_{i+1}$ is obtained from $F_i$ by substituting some $C \rightarrow D \preceq F$ with $(\neg C) \vee D$.\\
+
+		Trivially, the sequence $(\dag)$ ends in a finite number of steps $u$ with $u \leq i(F_0) = i(F)$, producing a formula $F_u$ such that $F_u \equiv F$, $F_u \in IFNF$.\\
+	\end{proof}
+
+	\paragraph{Lemma:} for any $F \in IFNF$ we can build, in a finite number of steps, a \textbf{sequence}
+	$$ F = F_0 \equiv F_1 \equiv \, \dots \, \equiv F_v = G $$
+	\textbf{such that} $G \equiv F$ \textbf{and} $G \in NNF$.\\
+	This is \textit{kinda} the same as before, but with the NNF. Starting from a formula $\in IFNF$ we can transform it into NNF.\\
+
+	The \textbf{measure of complexity} is not as simple, we can't just \textit{count the instances} of $\neg$, usually the raw number increases but the negation goes closer to the propositional letters.\\
+
+	For any $A \in IFNF$ let $\ell(A) :=$ the \textbf{number of} occurrences of \textbf{connectives in} $\{\wedge, \vee, \neg\}$ in $A$.\\
+
+	For any $E \in IFNF$ let
+	$$m (E):= \sum_{\neg A \preceq E} \ell(A)$$
+
+	So $m(E) = 0$ iff $E \in NNF$.\\
+
+	If $E \in NNF$ then $\neg A \preceq E$ iff $A = p$ for some $p \in \mathcal{L}$, so if $A$ is a propositional letter, it contains no connectives $\ell (A) = 0$, so $m(E) = \sum_{\neg A \preceq E} 0 = 0$.\\
+
+	if $m(E) = 0$ then $\sum_{\neg A \preceq E} 0$ then $\ell(A) = 0$ for all $\neg A \preceq E$, then $A = p$ for some $p \in \mathcal{L}$, then $E \in NNF$ (by definition of NNF).\\
+
+	% TODO Wtf
+	I don't really know what happened here, the definition of $m$ is still a bit of mystery to me. I would really appreciate a simple explanation.\\
+
+	We have to show that each application of our second, third and fourth transformation is such that one step from $F_i$ to $F_{i+1}$ has $m(F_i) > m(F_{i+1})$.\\
+
+	Cases:
+	\begin{itemize}
+		\item we use $\neg \neg C \preceq F_i$ , so we need to prove
+		$$ m(\neg \neg C) > m(C) $$
+
+		By definition:
+		$$ m(C) = \sum_{\neg A \preceq C} \ell(A) $$
+		$$ m(\neg \neg C) = \sum_{\neg A \preceq \neg \neg C} \ell(A) = \ell (\neg C) + \sum_{\neg A \preceq \neg C} \ell (A) =$$
+		$$ = \ell (C) + 1 + \ell (C) + \sum_{\neg A \preceq C} \ell (A) $$
+
+		So $m(\neg \neg C) > m(C)$ by at least $1$.\\
+
+		\newpage
+
+		\item we use $\neg (C \wedge D) \preceq F_i$, we need to prove:
+		$$ m(\neg (C \wedge D)) > m(\neg C \vee \neg D) $$
+
+		So
+		$$ m(\neg (C \wedge D)) = \sum_{\neg A \preceq \neg (C \wedge D)} \ell(A) = \ell (C \wedge D) + \sum_{\neg A \preceq C} \ell(A) + \sum_{\neg A \preceq D} \ell(A) = $$
+		$$ = \ell (C) + 1 + \ell (D) + \sum_{\neg A \preceq C} \ell(A) + \sum_{\neg A \preceq D} \ell(A) $$
+
+		And
+		$$ m(\neg C \vee \neg D) = \sum_{\neg A \preceq \neg C \vee \neg D} \ell (A) = \ell (C) + \ell(D) + \sum_{\neg A \preceq C} \ell(A) + \sum_{\neg A \preceq D} \ell(A) $$
+
+		then $m(\neg (C \wedge D)) > m(\neg C \vee \neg D)$.\\
+
+		\item we use $\neg (C \vee D) \preceq F_i$, we need to prove:
+		$$ m(\neg (C \vee D)) > m(\neg C \wedge \neg D) $$
+		Same as before, just switch symbols.\\
+
+	\end{itemize}
+
+	\textbf{Observe}: if $G \preceq F$, going from $G$ to $H$ and subsequently from $F$ to $F'$, $F' = F[\sfrac{H}{G}]$
+	$$ \text{if } \; m (G) > m(H) \; \text{ then } \; m(F) > m(F')$$
+
+	As a matter of fact
+	$$m(F) = \sum_{\neg A \preceq F} \ell(A) = \sum_{\neg A \preceq G} \ell(A) + \sum_{\neg A \preceq F, \neg A \not \preceq G} \ell (A)  = m(G) + \sum_{\neg A \preceq F, \neg A \not \preceq G} \ell (A) $$
+	$$ m(F') = \sum_{\neg A \preceq F'} \ell(A) = \sum_{\neg A \preceq H} \ell(A) + \sum_{\neg A \preceq F, \neg A \not \preceq H} \ell (A)  = m(H) + \sum_{\neg A \preceq F, \neg A \not \preceq G} \ell (A)$$
+	$$ \implies m(F) > m(F') $$
+
+	\newpage
+
+	We have \textbf{proved that} if $F \in IFNF$ we can build a sequence
+	$$ F = F_0 \equiv F_1 \equiv \, \dots \, \equiv F_v = G$$
+
+	such that $G \in NNF$ and $G \equiv F$ since
+	$$ m(F_0) > m(F_1) > \, \dots \, > m(F_v) = 0 $$
+
+	The \textbf{number of steps} is \textbf{at most} the \textbf{initial complexity} of $F$, $m(F) = m(F_0)$. Which scales the complexity in a linear fashion.\\
+
+	We have, by the proofs of the previous Lemmas, \textbf{efficient} (linear time) \textbf{algorithms} to put a \textbf{formula} $F \in \FL$ into an \textbf{equivalent one in IFNF and} then \textbf{NNF}. \\
+
+	$F$ can be efficiently transformed in an $F^{IF} \in IFNF$, which can be transformed, still efficiently, in an $F^{N} \in NNF$, taking at most $i(F) + m(F)$ steps.\\
+
+	The $IF$ and $N$ mean, respectively, that the formula is $\in IFNF$ and $\in NNF$.\\
+
+%	%Add the IF and N supscripts
+%
+%	Example:
+%	%Complete, if you care enough.\\
+
+	\newpage
+
+	\subsection{Conjunctive Normal Form CNF}
+
+	But I hear you saying "\textit{we've already seen this}", do we have to look at it again? We already know the \textit{canonical} CNF and DNF but now they're the \textit{star of the show}, so let them shine (this gives "What about second breakfast?" vibes).\\
+
+	\paragraph{Terminology: }
+	\begin{itemize}
+		\item \textbf{Definition: Literal}, by literal we mean a formula in the form $p$ or $\neg p$ for some $p \in \mathbb{L}$. A letter or a negation of one.\\
+
+		\item \textbf{Definition: Opposite Literal}, if $A$ is a literal, then we denote by $\overline{A}$, called opposite of $A$, the literal so defined:
+		$$
+		\begin{cases}
+			\text{if } \; A = p & \text{ then } \overline{A} = \neg p \\
+			\text{if } \; A = \neg p & \text{ then } \overline{A} = p
+		\end{cases}
+		$$
+		Equivalently
+		$$ \overline{A} := (\neg A)^N$$
+		An opposite literal is the opposite of a literal, do you really need a definition?\\
+
+		\item \textbf{Definition: Clause}, a clause is a disjunction of a finite number of literals:
+		$$ l_1 \vee l_2 \vee \, \dots \, \vee l_k $$
+		where each $l_i$ is a literal.\\
+
+		\item \textbf{Definition: CNF}, a CNF is a conjunction of a finite number of clauses:
+		$$ C_1 \wedge C_2 \wedge \, \dots \, \wedge C_n$$
+		where each $C_j$ is a clause.\\
+
+		\item \textbf{Definition: Empty Clause}, an empty clause ($\square$) is, by definition, a disjunction of zero literals.\\
+
+		\item \textbf{Definition: Empty CNF}, the empty CNF ($\emptyset$) is the conjunction of zero clauses. Very much different from the last one.\\
+	\end{itemize}
+
+	Thinking about $l_1$ as a literal, and the disjunctions
+	$$ l_1 $$
+	$$ l_1 \vee l_2 $$
+	$$ l_1 \vee l_2 \vee l_3 $$
+	and so on
+	$$ l_1 \vee l_2 \vee l_3 \vee \, \dots \, l_k \vee \, \dots $$
+
+	If any of these is satisfiable, then all of the ones below are satisfiable, so it makes sense to put $\square$ on top of the first literal $l_1$, so, by definition, the empty literal $\square$ \textbf{is unsatisfiable and a contradiction}.\\
+
+	Same game with clauses and empty CNF $\emptyset$:
+	$$ C_1 $$
+	$$ C_1 \wedge C_2 $$
+	$$ C_1 \wedge C_2 \wedge \, \dots \, \wedge C_n \wedge \, \dots $$
+
+	But here the satisfiability flows upwards, if one is satisfied then all of the above are satisfied. The empty CNF $\emptyset$ is still above all, and as such is satisfied by all assignments and is a tautology
+
+	\subsection{Disjunctive Normal Form DNF}
+
+	A DNF is a disjunction of a finite number of formulas:
+	$$ D_1 \vee D_2 \vee \, \dots \, \vee D_h $$
+	where each $D_i$ (dual of a clause, hasn't got a proper name, maybe co-clause) is a conjunction of a finite number of literals (or the dual of a literal, but it's still a literal):
+	$$ l_1 \wedge l_2 \wedge \, \dots \, \wedge l_m $$
+
+	Every definition stated before has a DNF dual but they don't have a proper name since \textit{nobody cares}.\\
+
+	\paragraph{Lemma:} Every formula $F \in \FL$ is \textbf{logically equivalent to} a formula $F^C \in CNF$ and to a formula $F^D \in DNF$
+	$$ (CNF \ni F^C \equiv F \equiv F^D \in DNF )$$
+
+	\begin{proof}
+		By structural induction of $F$:
+		\begin{itemize}
+			\item \textbf{Base}: $F = p$, $p \in \mathcal{L}$ then $p^C \equiv p \equiv p^D$. A single literal is already in CNF and DNF, $p^C = p = p_D$.\\
+
+			\item \textbf{Step}: the case $F = \neg G$, by I.H., there are $G^c \in CNF$, $G^D \in DNF$ with $G^C \equiv G \equiv F^D$
+			$$ F = \neg G \equiv (\neg(G^D))^N \in CNF $$
+
+			$$ F = \neg G $$
+			$$ \neg (G^D) = \neg (D_1 \vee D_2 \vee \, \dots \, \vee D_v) $$
+
+			with each $D_i$
+			$$ D_i = l_{i1} \wedge l_{i2} \wedge \, \dots \, \wedge l_{iq}$$
+
+			but by De Morgan
+			$$ \equiv \neg D_1 \wedge \neg D_2 \wedge \, \dots \, \wedge \neg D_v $$
+
+			And, still by De Morgan, each $\neg D_i$
+			$$ 	\equiv (\overline{l}_{i1} \vee \overline{l}_{i2} \vee \, \dots \, \vee \overline{l}_{iu_i}) $$
+		\end{itemize}
+
+		So $(\neg (G^D))^N$ is the conjunction $\neg D_1 \neg D_2 \wedge \, \dots \, \neg D_v$ of a finite number of formulas $(\neg D_i)$, each one equivalent to a disjunction of a finite number of literals, that is $(\neg (G^D))^N \in CNF$, and $F \equiv \neg G \equiv (\neg (G^D))^N$.\\
+	\end{proof}
+
+	Exercise: prove that if $F = \neg G$ then
+	$$ F \equiv (\neg (G^C))^N, \;\;\;\; (\neg (G^C))^N \in DNF $$
+
+	\newpage
+
+	% End L11
+
+	For the \textbf{other connectives}: \begin{proof}
+		Case: $F = (G \wedge H)$, by I.H.
+		$$  G^C, H^C \in CNF, \;\;\;\; G^D, H^D \in DNF $$
+		$$ \text{with } \; G^C \equiv G \equiv G^D, \;\; H^C \equiv H \equiv H^D $$
+
+		We want to build \textbf{2 new formulas}:
+		\begin{itemize}
+			\item $F \equiv F^D$, defining $F^D$ as  $:= G^D \vee H^D \in DNF$, then by definition is $ \in DNF$, and by construction $G^D \vee H^D \equiv F$. Disjunction of disjunctions of finitely many co-clauses, so still $\in DNF$.\\
+
+			\item $F \equiv F^C$, then
+			$$ G^C = G_1 \wedge G_2 \wedge \, \dots \, \wedge G_u $$
+			$$ H^C = H_1 \wedge H_2 \wedge \, \dots \, \wedge H_v $$
+			So
+			$$ G \vee H \equiv G^C \vee H^C \equiv (G_1 \wedge G_2 \wedge \, \dots \, \wedge G_u) \vee (H_1 \wedge H_2 \wedge \, \dots \, \wedge H_v) \equiv $$
+			Using generalized distributivity:
+			$$ \equiv \bigwedge_{i=1}^u \bigwedge_{j=1}^v (G_i \wedge H_j) $$
+		\end{itemize}
+
+
+		Each $G_i$ and each $H_j$ are clauses, i.e., disjunctions of finitely many literals, so each term in the form $G_i \vee H_j$ is again a clause, and then the whole formula is a finite conjunction of clauses and, by definition, a CNF, also $\equiv G \vee H = F$.\\
+	\end{proof}
+
+	Then we have the case $(G \wedge H)$, which is left as an exercise to the reader.\\
+
+	Case (to complete our set of connectives): $(G \rightarrow H)$, which is also left as an exercise, because implication can be reduced to $G \rightarrow H \equiv (\neg G) \vee H$.\\
+
+	\newpage
+
+	\textbf{Transforming example:}
+	$$ p_1, p_2, p_3, q_1, q_2, q_3 \in \mathcal{L}$$
+	Then
+	$$ (p_1 \wedge q_1) \vee (p_2 \wedge q_2) \vee (p_3 \wedge q_3) \in DNF$$
+
+	We want to \textbf{convert} these 3 disjuncts of 2 literals each \textbf{to CNF}. We want to distribute the first conjunction over the rest:
+	$$ \equiv [p_1 \vee ((p_2 \wedge q_2) \vee (p_3 \wedge q_3))] \wedge [p_2 \vee ((p_2 \wedge q_2) \vee (p_3 \wedge q_3))] $$
+
+	Now we do the same thing with the second conjunction
+	$$ \equiv (p_1 \vee p_2 \vee (p_3 \wedge q_3)) \wedge (p_1 \vee q_2 \vee (p_3 \wedge q_3)) \wedge
+	(q_1 \vee p_2 \vee (p_3 \wedge q_3)) \vee
+	(p_1 \vee q_2 \vee (p_3 \wedge q_3)) $$
+
+	Distributivity:
+	$$ \equiv
+	(p_1 \vee p_2 \vee p_3) \wedge
+	(p_1 \vee p_2 \vee q_3) \wedge
+	(p_1 \vee q_2 \vee p_3) \wedge
+	(p_1 \vee q_2 \vee q_3) \wedge
+	$$
+	$$
+	\wedge
+	(q_1 \vee p_2 \vee p_3) \wedge
+	(q_1 \vee p_2 \vee q_3) \wedge
+	(q_1 \vee q_2 \vee p_3) \wedge
+	(q_1 \vee q_2 \vee q_3)
+	$$
+	And this is $\in CNF$, having 8 conjuncts of 3 literals each.\\
+
+	\textbf{Exercise}: generalize to every $n \in \mathbb{N}$.\\
+
+	A DNF of $n$ disjuncts of 2 literals each, becomes a CNF with $2^n$ c+onjuncts with $n$ literals each.\\
+
+	Doing the inverse (CNF to DNF) has the same exponential dilation.\\
+
+	\newpage
+
+%%% Local Variables:
+%%% TeX-master: "../MathLogic.tex"
+%%% End:
+
