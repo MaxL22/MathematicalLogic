@@ -1,0 +1,746 @@
+% TeX root = ../MathLogic.tex
+
+	\chapter{Introduction}
+
+	\marginnote{this introduction should be redone}
+
+	Intuitively two Sentences "say the same thing" \textbf{iff} they're true in exactly the same circumstances.
+	Starting on logic: from the sentences
+	\begin{example} This is an example of \textbf{syllogism}:
+	  \begin{itemize}
+		\item Every man is mortal
+		\item Socrates is a man
+			  \\ \bline
+		\item Therefore, Socrates is mortal
+	  \end{itemize}
+	\end{example}
+
+	 \textbf{Consequences from some assumptions, which are considered true}.
+	The concept is that \textbf{if the assumptions are true, then the consequences must also be true}. \\
+
+	Logic doesn't really think about each part of the sentence in a literal sense (we don't care what they "mean" in the real world), but \textbf{each sentence has to be formalized in a way that makes the "shape" of the information the most important part}.
+
+	\begin{example} Another example:
+	  \begin{itemize}
+		\item All cats have seven legs
+		\item Bob is a cat
+			  \\ \bline
+		\item Therefore Bob has seven legs
+	  \end{itemize}
+	\end{example}
+
+	We can say this because the "shape" of the argument is the same as before, even if rationally it doesn't make sense, it's not "right", but \textbf{in a world in which these informations are true then the consequences must be true}.\\
+
+	We don't care about the content, \textbf{we only care about the shape and what our clauses imply}.
+
+	\begin{example} Yet Another example:
+	\begin{itemize}
+		\item Every tik is tok
+		\item Tak is tik
+		\\ \bline
+		\item Therefore tak is tok
+	\end{itemize}
+	\end{example}
+
+	It doesn't mean shit, but this is true whatever being tik, tak or tok means.
+	We'll eventually want to model pieces of the real world, but logic doesn't necessarily care about that. \\
+
+	\newpage
+
+	\textbf{Formalizing} the shape of these examples:
+	\begin{itemize}
+		\item First sentence
+		$$ \forall x \;\;\;  P(x) \rightarrow Q(x) $$
+			For every individual in the universe, possessing the property \( P() \) implies possessing \( Q() \). \smallvspace
+
+		\item Second sentence
+		$$ P(s) $$
+
+		\item Therefore
+		$$ Q(s) $$
+	\end{itemize}
+
+	We \textbf{formalized} the sentences, but we \textbf{lost some information in the process}, we lose the facts that we're talking about Socrates, or cats, we don't know that we're talking about.
+
+	\begin{example} Lets Consider another example:
+	\begin{itemize}
+		\item Every flower is perfumed
+		\item The rose is perfumed
+		\\ \bline
+		\item Therefore the rose is a flower?
+	\end{itemize}
+	\end{example}
+
+	Is this syllogism correct? Let's formalize it to find out. \\
+	$$\forall x\;\;\; P(x) \rightarrow Q(x)$$
+	$$Q(s)$$
+	\begin{center}
+		\bline \\
+		Therefore $P(s)$? \\
+	\end{center}
+
+
+	This obviously \textbf{doesn't hold}, our first predicate doesn't automatically works bidirectionally, we're \textbf{reversing our implication}. With our assumptions there's no "proof" that $P(s)$ is true.
+
+	\begin{example} Final example:
+	\begin{itemize}
+		\item If it rains I take my umbrella
+	\end{itemize}
+	\end{example}
+
+	Which one is the \textbf{equivalent?}
+	\begin{enumerate}
+		\item If it doesn't rain I don't take my umbrella
+		\item If I don't take my umbrella then it doesn't rain
+		\item If I take the umbrella then it rains
+		\item Either it doesn't rain or I take the umbrella
+		\item It rains only if I take the umbrella
+		\item It rains if I take the umbrella
+		\item It rains if and only if I take the umbrella
+		\item None of the above
+	\end{enumerate}
+
+	To answer we need to formalize what we mean by equivalent: for logicians it means "given a world in which its true then the other is true and given a world in which it's false then the other is false". \\
+
+	\newpage
+
+	With this definition then the \textbf{second} one is \textbf{true}:
+	$$ P(x) \rightarrow Q(x) \text{ then } \neg Q(x) \rightarrow \neg P(x) $$
+
+	The first one is a simple negation, it can't be true as well. \\
+
+	The third one is the opposite of the original sentence. \\
+
+	There's at least two types of \textit{or} in a natural language, usually it's exclusive. The \textbf{fourth sentence is correct if the \textit{or} is inclusive}, if it's a \textit{xor} it can't be. \\
+
+	\textbf{Five} is also a \textbf{correct} translation, once we agree on the meaning of words like "if", "only if", ...; It basically means that the first part (rain) can or can not happen based on the "umbrella" fact, which is the same as the original. \\
+	We're speaking in both cases about a necessary and sufficient condition for rain. Taking the umbrella is a necessary condition for rain, it doesn't cause the rain. There's no causation between clauses. \\
+
+	Six and seven are false, since five is true. \\
+
+	%End of L1
+
+	\paragraph{Equivalence:} What does "saying the same thing" means in logic terms? \\
+	Two sentences \textbf{say the same thing if and only if (iff) they are true in exactly the same circumstances}, a.k.a. "possible world", a.k.a. "truth evaluation". \\
+
+	If \textit{it rains} then \textit{I take my umbrella}: the cursive ones are stand alone sentences, each one is an \textbf{atomic sentence} (in logic terms), they cannot be further disassembled. \\
+
+	So, \textbf{formalizing} the sentence
+	\begin{itemize}
+		\item it rains $= P$
+		\item I take my umbrella $= Q$
+		\item if/then $= \rightarrow$
+	\end{itemize}
+	$$ P \rightarrow Q $$
+
+	There can be many (infinite) world in which "it rains", i.e. $P$, is true and another set of worlds in which "I take my umbrella", i.e. $Q$, is true. These sets can (will) intersect.\\
+
+	Imagining something along the lines of a Venn diagram (I don't care enough to actually draw it), there will be the following regions:
+	\begin{itemize}
+		\item $P$: worlds in which it only rains
+		\item $Q$: worlds in which I only take my umbrella
+		\item $P \cap Q$: worlds in which it rains and I take my umbrella
+		\item $ \neg (P \vee Q)$: worlds in which it doesn't rain and I don't take my umbrella (outside all)
+	\end{itemize}
+
+	For each region we have
+	\begin{itemize}
+		\item it rains but I don't take my umbrella (inside the $P$ region only) $\implies$ for the worlds in here the preposition is false
+		\item it doesn't rain but I take my umbrella ($Q$ region) $\implies$ for the worlds in here the preposition is true
+		\item inside both regions, it rains and I take my umbrella $\implies$ for the worlds here the preposition is true
+		\item outside both regions, doesn't rain, don't take my umbrella $\implies$ for the worlds here the preposition is true
+	\end{itemize}
+	Now we have a sort of "image" on which to evaluate if other sentences are equivalent. \textbf{If another preposition gives us the same image}, i.e. the same truth values in the same regions of the diagram, \textbf{it's equivalent to our original}. \\
+
+	% Draw the Venn diagrams for all
+	% No, I don't think I will
+
+	Considering our earlier example and taking sentence $\#4$:
+	$$ (\neg P) \vee Q $$
+	\begin{itemize}
+		\item $\neg P$ is true when $P$ is not (duh)
+		\item $P \vee Q$ is true inside the $P$, $Q$ and intersection region between them
+	\end{itemize}
+
+	So, combining these two gives us that, $(\neg P) \vee Q$ is true
+	\begin{itemize}
+		\item inside $Q$ region
+		\item inside intersection between $P$ and $Q$
+		\item outside everything
+	\end{itemize}
+
+	So it's the same as our initial example $P \rightarrow Q$, they give the same "picture", so they say the same thing, they are equivalent. \textbf{They are true in the same circumstances}. Each world is false (or true), i.e. has the same value, in both cases.\\
+
+	Another case, sentence $\#2$:
+	$$ \neg Q \rightarrow \neg P$$
+	gives the same picture, while sentence $\# 1$
+	$$ \neg P \rightarrow \neg Q$$
+	does not (obviously, they're opposite to one another, they can't be both true).\\
+
+	Considering sentences  $\#5$
+	$$ Q \leftarrow P \implies P \rightarrow Q $$
+	and $\#6$
+	$$ Q \rightarrow P$$
+
+	$\# 6$ can be rephrased in $\# 6'$ as: If I take my umbrella it rains. Doesn't sound too correct, does it?\\
+	While in sentence $\#5$ "only if" goes the other way in respect to "if".\\
+
+	\newpage
+
+	Basically:
+	\begin{itemize}
+		\item \textbf{if} goes \textbf{one way}
+		\item \textbf{only if} goes the \textbf{other way}
+		\item \textbf{if and only if (iff)} goes \textbf{both ways}
+	\end{itemize}
+
+	Inside
+	$$ P \rightarrow Q: \, true$$
+	It means that:
+	\begin{itemize}
+		\item $P$ is \textbf{sufficient} for $Q$ to be true (if there's $P$ there must be $Q$)
+		\item $Q$ is \textbf{necessary} for $P$ to be true (there can't be $P$ without $Q$)
+	\end{itemize}
+	There can be no case in which $P$ (it rains) is true and $Q$ isn't (I take my umbrella).\\
+
+	When is our preposition true? "$P \rightarrow Q$ is true" can be read as:
+	\begin{center}
+		"When $P$ is true then $Q$ is true"
+	\end{center}
+	 or
+	 \begin{center}
+	 	"Each single time $P$ is true then $Q$ is true (in every possible world)"
+	 \end{center}
+
+	% End of the introduction called "What do we mean by propositional logic" (?) maybe?
+	% Need to revise this shit, it's easy but fuck it's confused
+
+	\newpage
+
+	\chapter{Introduction to Formulas}
+	A \textbf{"Sentence"} (or \textbf{proposition}) in natural language is a \textbf{grammaticarly correct sequence of words such that it makes sense to ask whether} (in the given circumstance) \textbf{it is true or false}.
+
+	\begin{example} Let's make some examples of propositions \vspace{0.3cm}
+
+$
+\begin{array}{l l}
+\bullet \ \ \text{It rains} & {\color{green} \checkmark} \\
+\bullet \ \ \text{If it rains, I stay at home} & {\color{green} \checkmark} \\
+\bullet \ \ \text{What's the time?} & {\color{red} \times} \quad \text{Questions are not sentences.} \\
+\bullet \ \ 2 + 2 = 4 & {\color{green} \checkmark} \\
+\bullet \ \ 2 + 2 = 5 & {\color{green} \checkmark} \quad \text{It's wrong, but still a sentence.}
+\end{array}
+$
+	\end{example}
+
+	\section{Meaning: Denotation vs Connotation}
+	Consider:
+	\begin{itemize}
+		\item $4$
+		\item $2^2$
+		\item $6-2$
+		\item $5+1$
+	\end{itemize}
+
+	They're \textbf{not sentences} because they \textbf{can't be true or false}, they just are.
+	But all these expressions \textbf{mean the same thing}, they all \textbf{denote} the natural number $4$ (apart from the last one). This is the denotation of these expressions.
+	They are all expressions that describe distinct ways to obtain $4$. The \textbf{denotation} is the number $4$, \textbf{all the other informations given by the expressions are connotations}.
+
+	For each given an expression $E$ we have the denotation of $E$ and the connotation(s) of $E$.
+
+	A \textbf{denotation} is just a \textbf{name} (a pointer), \textbf{referring to a uniquely determined object} of discourse.
+
+	The \textbf{connotations} are the \textbf{names with all the actual information they contain}. A name can be a complex thing and as such can contain informations. \\
+
+	We'll primarily focus on denotations, as connotations are more challenging to handle, and denotations 	possess the following useful property.
+
+	\begin{property}[Invariance under substitutions]
+	  Two different ways to connote the same denoted object can be substituted as they mean the same thing. For example we can exchange $4$ and $2+2$ because they're different strings but evaluate to the same object.
+	\end{property}
+
+	Ok but what is the denotation of sentences in standard arithmetic? \vspace{0.3cm}
+
+$
+\begin{array}{llc}
+\bullet \ \ 4 &= pred(5) & {\color{green} true} \\
+\bullet \ \ 4 &= succ(5) & {\color{red} false} \\
+\bullet \ \ 4 &= 3+1 & {\color{green} true} \\
+\bullet \ \ 4 &= 4 & {\color{green} true} \\
+\bullet \ \ 2 &= 2 & {\color{green} true} \\
+\bullet \ \ 4 &= 6 & {\color{red} false} \\
+
+\end{array}
+$ \\
+
+	The \textbf{denotation of a sentence}, in a given possible world, is just \textbf{one of two truth values}, $true$ or $false$. \textbf{Each sentence is evaluated to a precise truth value}.
+
+	\section{Formalization}
+	What is propositional logic about? Propositions (a.k.a. sentences) and their semantics (denotation, their truth values) in every possible circumstance.\\
+
+	To formalize sentences we distinguish among \textbf{two types of sentences}:
+	\begin{itemize}
+		\item \textbf{Atomic sentences}: Simple sentences (e.g., "It rains," "Paul runs," "I stay at home") that cannot be simplified further.
+
+		\item \textbf{Complex sentences}: Formed by combining atomic sentences with connectives (It rains \underline{and} Paul runs, Paul runs \underline{or} I stay at home, ...). These can be arbitrarily complex.
+	\end{itemize}
+
+	The \textbf{formalization} of these types of sentences is:
+	\begin{itemize}
+		\item \textbf{Atomic sentences} $\rightarrow$ \textbf{Atomic formulas}, they \textbf{become symbols} ($p$, $q$, $r$, $p_1$, ...).\\ We fix a (countably) infinite set of symbols $\mathcal{L}$ as out set of atomic formulas, $\mathcal{L}$ is called "propositional language" and its elements are called "atomic formulas" or "propositional letters/variables". In every possible world, every propositional letter can either be true or false. \\
+
+		\item \textbf{Complex sentences}: Fix a propositional language $\mathcal{L}$ and the \textbf{set of propositional formulas on this language}.\\ $\mathcal{F}_\mathcal{L}$ is defined as follows (3 ways):
+		\begin{enumerate}
+			\item The smallest set such that:
+			\begin{itemize}
+				\item $\forall p \in \mathcal{L}$ then $p \in \mathcal{F}_\mathcal{L} \qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad\qquad (\mathcal{L} \subseteq \mathcal{F}_\mathcal{L})$
+				\item $\forall A, B \in \mathcal{F}_\mathcal{L}$ then $(A \cap B)$, $(A \cup B)$, $(A \rightarrow B)$, $(\neg A) \in \mathcal{F}_\mathcal{L}$
+			\end{itemize}
+
+			\item $\mathcal{F}_\mathcal{L}$ is the \textbf{intersection} of all sets $\mathcal{X}$ such that:
+			\begin{itemize}
+				\item $\mathcal{L} \subseteq \mathcal{X}$
+				\item $\forall A,B \in \mathcal{X}$ then $(A \cap B)$, $(A \cup B)$, $(A \rightarrow B)$, $(\neg A) \in \mathcal{X}$
+			\end{itemize}
+
+			\item Inductive definition: $\mathcal{F}_\mathcal{L}$ is the set such that the following properties hold:
+			\begin{enumerate}[leftmargin=6em]
+				\item[(Base)] $\mathcal{L} \subseteq \mathcal{F}_\mathcal{L}$
+				\item[(Inductive Step)] If $A, B \in \mathcal{F}_\mathcal{L}$ then $(A \cap B)$, $(A \cup B)$, $(A \rightarrow B)$, $(\neg A) \in \mathcal{F}_\mathcal{L}$
+				\item[(3)] Nothing else belongs to $\mathcal{F}_\mathcal{L}$
+			\end{enumerate}
+		\end{enumerate}
+
+		The difference between first and last one is that in the former we specify "smallest set", while in the last it's a property.\\
+	\end{itemize}
+
+	\begin{example} given $p,q,r \in \mathcal{L}$, then
+
+	  $
+\begin{array}{lcl}
+\bullet & ((p \wedge q) \rightarrow r) \in \mathcal{F}_\mathcal{L} & \text{this is a valid formula and as such is in} \ \mathcal{F}_\mathcal{L} \\
+\bullet & p \vee \wedge (q \wedge r) \notin \mathcal{F}_\mathcal{L} & \text{this is a string but it's not a formula} \\
+
+\end{array}
+$
+	\end{example}
+
+	We must be able to identify formulas from meaningless strings. To achieve this, we require a certificate, some type of proof, that confirms whether a given string is a formula.
+
+It is important to note that the set of connectives used in any definition is chosen arbitrarily; there can be many, few, or even infinitely many connectives. The formalization of complex sentences depends on the specific connectives under consideration.
+
+%  End of L2
+
+	\section{Certifying formulas}
+	We need to \textbf{produce a certificate that a string is a formula}, a kind of proof that something is a formula. We don't need to prove that something is NOT a formula since we indirectly get that from the fact that there's no certificate for such string.
+
+	\subsection{$\mathcal{L}$-construction}
+	Given a word $w \in \left(\{\wedge, \vee, \neg, \rightarrow, ), (\} \cup \mathcal{L}\right)^\ast$, an $\mathcal{L}$-construction is a way to \textbf{show that}, $w$ \textbf{is actually a formula}, i.e. $w \in \mathcal{F}_{\mathcal{L}}$.
+
+	%TODO: CHECK THESE POINTS ON THE SLIDES
+	more formally an $\mathcal{L}$-construction of $w$ is a sequence finetly many strings $w_1, w_2, \, ..., w_{u}$ such that:
+	\begin{itemize}
+		\item $w_u = w$
+		\item $\forall i =  1,2, ... , u$, either.
+		\begin{itemize}
+			\item $w_i \in L$
+			\item $\exists j<i$ such that $w_i = (\neg w_j)$
+			\item $\exists j,k < i$ such that
+			\begin{itemize}[label=]
+				\item $w_i = (w_j \wedge w_k)$
+				\item $w_i = (w_j \vee w_k)$
+				\item $w_i = (w_j \rightarrow w_k)$
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+	%AT LEAST 'TILL HERE
+
+	The string must be the negation of something else, the conjunction of something else or the disjunction of something else, implication, ecc.; it must be made of something else which is simpler.
+
+	\begin{example} Let's show more than one $\mathcal{L}$-construction that proves $(p \wedge q) \rightarrow r \in \fl$
+	  \begin{itemize}
+		\item $p, \quad q, \quad r, \quad (p \wedge q), \quad ((p \wedge q) \rightarrow r) $
+		\item $r, \quad q, \quad p, \quad p, \quad (p \rightarrow p), \quad (p \wedge q), \quad ((p \wedge q) \rightarrow r) $
+	  \end{itemize}
+	\end{example}
+
+	These aren't the only $\mathcal{L}$-construction possible, there are infinitely many possible ones (we can add useless stuff and even repetitions).
+
+	But we can have a \textbf{shortest} $\mathcal{L}$-construction, its easy to prove that such $\mathcal{L}$-construction will be as long as the number of letters $+$ the number of connectives used in the formula we need to certify.
+
+	\subsection{Unique readability}
+	Directly from the definition of $\mathcal{L}$-constructions comes another property: \textbf{unique readability}. From the definition of $\mathcal{L}$-construction, it can be observed that if $w \in \mathcal{F}_{\mathcal{L}}$ then \textbf{exactly one} of the following cases \textbf{holds}
+	\begin{itemize}
+		\item $w \in \mathcal{L}$
+		\item or there is $v \in \mathcal{F}_{\mathcal{L}}$ such that $w = (\neg v)$
+		\item or there are $v_1, v_2 \in \mathcal{F}_{\mathcal{L}}$ such that $w = (v_1 \wedge v_2)$
+		\item or there are $v_1, v_2 \in \mathcal{F}_{\mathcal{L}}$ such that $w = (v_1 \vee v_2)$
+		\item or there are $v_1, v_2 \in \mathcal{F}_{\mathcal{L}}$ such that $w = (v_1 \rightarrow v_2)$
+	\end{itemize}
+	Essentially, either $w$ it's not decomposable, or it's decomposable in a unique way.
+
+	Not every formal language possesses the psroperty of unique readability. A simple example of a formal language lacking this property is the case where \( w \in \Sigma^\ast \) and \( w = v_1 \cdot v_2 \) (the concatenation of strings). For instance, consider \( w = \text{hello} \). This string can be decomposed in 6 different ways of the form \( w = v_1 \cdot v_2 \):
+
+	\begin{itemize}
+		\item $\epsilon, hello$
+		\item $h, ello$
+		\item $he, llo$
+		\item $hel, lo$
+		\item $hell, o$
+		\item $hello, \epsilon$
+	\end{itemize}
+
+	The unique readability of formulas grants us additional forms of certification for "Formulicity"
+	Thanks to this property, we can construct a \textbf{unique parsing tree} for any given formula.
+
+	\begin{example} Lets draw the parsing tree of $(p \wedge q) \rightarrow r$:
+
+	\begin{center}
+	\Tree [.$(p\wedge q)\rightarrow r$
+	[.$p\wedge q$ [.\textit{p} ] [.\textit{q} ] ]
+	[.$r$ ] ]
+
+	\end{center}
+
+	For a given string $w \in \left(\{\wedge, \vee, \neg, \rightarrow, ), (\} \cup \mathcal{L}\right)^\ast$ if we have a single parsing tree, it's for sure a formula.
+	\end{example}
+
+	\subsection{Structural induction principle}
+	Since we can \textbf{define} $\mathcal{F}_{\mathcal{L}}$ \textbf{as an inductive set} (third definition), it comes with its own \textbf{Induction principle}.
+
+	\begin{definition}
+	Let $\mathcal{P}$ be some property that can be asked of formulas (note that $\mathcal{P}$ may hold or not for any given $\mathcal{F} \in \mathcal{F}_{\mathcal{L}}$). \\
+
+	This property $\mathcal{P}$ holds for all formulas $\mathcal{F} \in \mathcal{F}_{\mathcal{L}}$ iff:
+	\begin{enumerate}
+		\item \textbf{base}: $\mathcal{P}$ holds for all propositional letters $p \in \mathcal{L}$
+		\item \textbf{step(s)}: if $\mathcal{P}$ holds for generic formulas $A,B \in \mathcal{F}_{\mathcal{L}}$ then $\mathcal{P}$ holds for all the ways to build new formulas starting from $A$ and $B$: $(\neg A), (A \wedge B), (A \vee B), (A \rightarrow B)$
+	\end{enumerate}
+
+	\end{definition}
+	\begin{proof} \hspace{1cm}
+	\begin{itemize}
+		\item Let $\mathcal{P}$ be a property satisfying \textbf{base} and \textbf{step(s)}.
+		\item Let $\mathcal{I} = \{\mathcal{F} \in \mathcal{F}_{\mathcal{L}}: \mathcal{P} \text{ holds for } \mathcal{F}\}$ (the set of formulas for which $\mathcal{P}$ holds).
+	\end{itemize}
+
+	We now need to show that $\mathcal{F}_{\mathcal{L}} = \mathcal{I}$ (the set of formulas in which the property holds coincides with the complete set of formulas).
+		To do that we need to show that:
+		\begin{enumerate}
+			\item $\mathcal{F}_{\mathcal{L}} \subseteq \mathcal{I}$
+			\item $\mathcal{I} \subseteq \mathcal{F}_{\mathcal{L}}$
+		\end{enumerate}
+		2. is trivial since $\mathcal{I}$ is defined as a subset of $\mathcal{F}_{\mathcal{L}}$. We only need to prove that all the formulas are in $\mathcal{I}$.
+
+		Since \(\mathcal{P}\) satisfies the \textbf{base} case, it follows that \(\mathcal{P}\) holds for all \(p \in \mathcal{L}\). Therefore, \(\mathcal{L} \subseteq \mathcal{I}\).
+
+		If \(A, B \in \mathcal{I}\), then \(\mathcal{P}\) holds for \(A\) and \(B\). By \textbf{step(s)}, \(\mathcal{P}\) also holds for \((\neg A)\), \((A \wedge B)\), \((A \vee B)\), and \((A \rightarrow B)\). Consequently, the same constructions we defined for \(\mathcal{F}_{\mathcal{L}}\) belong to \(\mathcal{I}\).
+
+		Thus, each formula \(\mathcal{F}\) belongs to \(\mathcal{I}\), which implies \(\mathcal{F}_{\mathcal{L}} \subseteq \mathcal{I}\).
+	\end{proof}
+
+	\section{Semantics of propositional logic}
+
+	Classical propositional logic is based on a couple of \textbf{underlying design ideas}:
+	\begin{itemize}
+		\item \textbf{Bivalence principle}: a sentence (formula) in every possible universe \textbf{is either true or false}.
+		\item \textbf{Truth-functionality principle}: (also called compositionality, extensionality) the \textbf{truth value of a sentence} (a formula) in a given possible universe \textbf{only} depends on the truth values of the sentences composing it and the fixed meaning of connectives.
+	\end{itemize}
+
+	An easy example of a non truth-functional realm is probability we can prove this with a simple example
+
+	\begin{example}
+	  given $A :=$ Tomorrow it will rain and $B :=$ France is going to win the next world cup and given the probabilities of those two events being $v(A) = v(B) = 0.5$ then by truth functionality $v(A \rightarrow B) = v(\frac{1}{2} \rightarrow \frac{1}{2}) = v(A \rightarrow A)$ but this makes no sense since the probability of $v(A \rightarrow A)$ its obviously 1.
+	\end{example}
+
+	For instance, take conjunction
+	$$ A, B \in \mathcal{F}_{\mathcal{L}} \;\;\;\;\;\; A \wedge B$$
+	We want to evaluate the value in a given possible world.
+	By bivalence we know that this is either true or false. By truth-functionality this value depends only on:
+	\begin{itemize}
+		\item whether $A$ is true or false
+		\item whether $B$ is true or false
+	\end{itemize}
+
+	\textbf{The notion of "possible world"}: it's a \textbf{function} from the set of propositional letters to the set of truth values
+	$$ v: \, \mathcal{L} \mapsto \{0,1\} $$
+
+	It assigns a truth value to each of the propositional letters. The set of all possible worlds is the set of all possible truth evaluations.\\
+
+	Now Let's formalize these notions, by truth functionality lets fix the semantics of our connectives
+
+	$$ \tilde{v}(A \wedge B) := I_\wedge (\tilde{v}(A),  \tilde{v}(B))$$
+	$$ I_{\wedge} : \, \{0,1\}^2 \mapsto \{0,1\}  = a \cdot b = \min \{a,b\} $$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \wedge b$ \\
+			\hline
+			0 & 0 & 0 \\
+			0 & 1 & 0 \\
+			1 & 0 & 0 \\
+			1 & 1 & 1
+		\end{tabular}
+	\end{center}
+
+	$$ I_{\vee} : \, \{0,1\}^2 \mapsto \{0,1\} = a + b = \max \{a,b\} $$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \vee b$ \\
+			\hline
+			0 & 0 & 0 \\
+			0 & 1 & 1 \\
+			1 & 0 & 1 \\
+			1 & 1 & 1
+		\end{tabular}
+	\end{center}
+
+	$$ I_{\neg} : \, \{0,1\} \mapsto \{0,1\} = 1 - a $$
+	\begin{center}
+		\begin{tabular}{c | c}
+			$a$ & $\neg a$ \\
+			0 & 1 \\
+			1 & 0
+		\end{tabular}
+	\end{center}
+
+	$$ I_{\rightarrow} : \, \{0,1\}^2 \mapsto \{0,1\} = \max\{1-a, b\}$$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \rightarrow b$ \\
+			\hline
+			0 & 0 & 1 \\
+			0 & 1 & 1 \\
+			1 & 0 & 0 \\
+			1 & 1 & 1
+		\end{tabular}
+	\end{center}
+
+	$$ I_{\leftrightarrow} : \, \{0,1\}^2 \mapsto \{0,1\} = ((a+b) \ mod \ 2)+1 $$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \leftrightarrow b$ \\
+			\hline
+			0 & 0 & 1 \\
+			0 & 1 & 0\\
+			1 & 0 & 0\\
+			1 & 1 & 1
+		\end{tabular}
+	  \end{center}
+
+	 $$ I_{\oplus} : \, \{0,1\}^2 \mapsto \{0,1\} = ((a+b) \ mod \ 2) $$
+	\begin{center}
+		\begin{tabular}{c c | c}
+			$a$ & $b$ & $a \oplus b$ \\
+			\hline
+			0 & 0 & 0 \\
+			0 & 1 & 1\\
+			1 & 0 & 1\\
+			1 & 1 & 0
+		\end{tabular}
+	\end{center}
+	%TODO
+
+	\begin{definition} A \textbf{truth evaluation is an arbitrarily chosen map}
+	$$v: \mathcal{L} \mapsto \{0,1\}$$
+  \end{definition}
+
+  	\begin{definition} the canonical extension $\tilde{v}: \mathcal{F}_{\mathcal{L}} \mapsto \{0,1\}$ of $v : \mathcal{L} \mapsto \{0,1\}$ is defined as follows:
+	\begin{itemize}
+		\item if $F \in \mathcal{L}$ then $\tilde{v} (F) := v(F)$
+		\item if $A, B \in \mathcal{F}_{\mathcal{L}}$ then
+		\begin{itemize}[label=]
+			\item $\tilde{v} (A \wedge B) := I_\wedge (\tilde{v} (A), \tilde{v} (B))$
+			\item $\tilde{v} (A \vee B) := I_\vee (\tilde{v} (A), \tilde{v} (B))$
+			\item $\tilde{v} (A \rightarrow B) := I_\rightarrow (\tilde{v} (A), \tilde{v} (B))$
+			\item $\tilde{v} (\neg A) := I_\neg (\tilde{v} (A))$
+		\end{itemize}
+	\end{itemize}
+  \end{definition}
+
+	%Maybe change the sec title to "introduction to formulas"
+
+	\newpage
+
+	\subsection{Tautologies and other definitions}
+	\begin{definition}[Tautology] a formula $F  \in \mathcal{F}_\mathcal{L}$ is a \textbf{Tautology} \textbf{iff}  $\forall v: \mathcal{L} \mapsto \{0,1\}, \, \tilde{v} (F) = 1$, i.e. it's always true for all assignment.
+	  \end{definition}
+
+	\begin{definition}[Satisfiable Formula] a formula $F \in \mathcal{F}_\mathcal{L}$ is \textbf{Satisfiable} \textbf{iff}  $\exists v: \mathcal{L} \mapsto \{0,1\}, \, \tilde{v} (F) = 1$, i.e. there's at least one assignment that makes it true.
+	\end{definition}
+
+	\begin{definition} a formula $F \in \mathcal{F}_\mathcal{L}$ is (\textbf{contradiction}, \textbf{unsatisfiable}, \textbf{refutable}):
+	\textbf{iff}  $\forall v: \mathcal{L} \mapsto \{0,1\}, \, \tilde{v} (F) = 0$, i.e. it's never true for all assignment.
+  \end{definition}
+
+	\begin{fact} Let $F \in \mathcal{F}_\mathcal{L}$ then $F$ is a tautology \textbf{iff}
+	  $$ \neg F \text{ is a contradiction}$$
+	\end{fact}
+
+	\begin{proof}
+		$F$ is a tautology \textbf{iff} (by definition of tautology)  $\forall v: \mathcal{L} \mapsto \{0,1\}, \, \tilde{v} (F) = 1$. But this by defintion of (truth table) $I_\neg$ means that $\tilde{v} (\neg F) = 0$ for all $v: \mathcal{L} \mapsto \{0,1\}$, and thus by definition of contradiction $\neg F$ is unsatisfiable.
+	\end{proof}
+
+	To \textbf{prove} that the \textbf{implication is correct} the way it is:
+
+	\label{combinatorics}
+	\subsection{Digression on combinatorics}
+		$$ |\{F : \{0,1\}^n \mapsto \{0,1\} \}| = 2^{2^n} $$
+		Which is a specific version of a more general formula: with $A$ and $B$ as finite sets
+		$$ |\{F : A \mapsto B \}| = |B|^{|A|} $$
+		Intuitively this formula can be explained by the fact that there are $|B|$ options for each element of $A$. Let $\mathcal{S}$ be a set of $n$ many elements. There are $2^n$ possible subsets of $\mathcal{S}$, we can use the aforementioned formula to prove this
+		$$ 2^n = |\mathcal{P} (\mathcal{S})| = 2^{|\mathcal{S}|} = |\{F : \mathcal{S} \mapsto \{0,1\}\}|$$
+		Note that we are counting all characteristic functions on $\mathcal{S}$, where a characteristic function is:
+
+		$$ X_A :  \mathcal{S} \mapsto \{0,1\} \;\;\;
+		\begin{cases}
+			1 \text{ if} \; x \in A \\
+			0 \text{ if} \; x \notin A \\
+		\end{cases}
+		$$
+
+		Remember that characteristic functions are essentially subsets; there is an isomorphism between characteristic functions and subsets.
+
+		\begin{example} Let's make an example to justify the interpretation of implications.
+		\begin{center}
+		  "If a natural number is divisible by $4$ then it is divisible by $2$"
+		\end{center}
+		$$ n = 4k \implies n = (2 \cdot 2) k \implies 2 \cdot (2k) $$
+		Here the only assumption is that $n$ is divisible by 4, so we are skipping over the case where $n \neq 4k$. However, let us now examine all cases, even when this assumption does not hold, keeping in mind  that the proposition is obviously true over all numbers.
+
+		\begin{center}
+		"If 4 is divisible by 4, then 4 is divisible by 2"\\
+		$true \rightarrow true = true$.
+	  \end{center}
+
+	  \begin{center}
+		"If 3 is divisible by 4, then 3 is divisible by 2"\\
+		$false \rightarrow false = true$.
+	  \end{center}
+
+	  \begin{center}
+		"If 6 is divisible by 4 then 6 is divisible by 2". \\
+		$false \rightarrow true = true$.
+	  \end{center}
+	\end{example}
+
+	\subsection{Assignment Encoding}
+
+	We want to demonstrate how it's possible to \textbf{encode} the \textbf{infinite information} given by a general truth value assignment on all letters of $\mathcal{L}$ in \textbf{finite time}.
+
+	\label{lem:AOcc}
+	\begin{lemma} Let $F \in \mathcal{F}_\mathcal{L}$ and let $v,v' : \mathcal{L} \mapsto \{0,1\}$ be two (possibly) distinct truth value assignments. Then: if $v(p) = v'(p)$ for all $p \in \mathcal{L}$ letters \textbf{actually occurring} in $F$ (so occurs in every $\mathcal{L}$-construction of $F$) then $\tilde{v}(F) = \tilde{v}'(F)$. The only relevant part of an assignment is the \textbf{letters actually occurring}, we don't care about all the infinite non-occurring letters.
+	\end{lemma}
+	\begin{proof}
+	  Structural induction of $F$
+
+	  \textbf{Base}: If $F=p$, $p \in \mathcal{L}$ then $p$ occurs in $F$, trivially then by hypothesis $v(p) = v'(p)$, then by definition of $\tilde{v}$, $\tilde{v} (p) = \tilde{v}'(p)$. \smallvspace
+
+	  \textbf{Step(s)}:
+	  \begin{itemize}
+		\item If $F = (\neg A)$ for some $A \in \mathcal{F}_\mathcal{L}$, then by induction hypothesis (I.H.) $\tilde{v} (A) = \tilde{v}'(A)$. Since each $p \in \mathcal{L}$ occurring in $F$ occurs in $A$ too, by definition of $I_\neg$: $$ v(F) = \tilde{v} (\neg A) \stackrel{\mathclap{\tiny\mbox{def}}}{=} \neg \tilde{v}(A) \stackrel{\mathclap{\tiny\mbox{I.H.}}}{=} \neg \tilde{v}'(A) \stackrel{\mathclap{\tiny\mbox{def}}}{=} \tilde{v}' (\neg A) = v'(F)$$
+
+		\item If $F = (A \wedge B)$ for some $A, B \in \mathcal{F}_\mathcal{L}$, then each $p \in \mathcal{L}$ occurring in $A$ occurs in $F$ too and each $p \in \mathcal{L}$ occurring in $B$ occurs in $F$ too.
+		So we can apply the I.H. $\tilde{v} (A) = \tilde{v}' (A)$ and $\tilde{v} (B) = \tilde{v}' (B)$. By definition of $I_\wedge$:
+			  $$ v(F) = \tilde{v} (A \wedge B) \stackrel{\mathclap{\tiny\mbox{def}}}{=} I_\wedge (\tilde{v}(A), \tilde{v}(B)) \stackrel{\mathclap{\tiny\mbox{I.H.}}}{=}  I_\wedge (\tilde{v}' (A), \tilde{v}' (B)) \stackrel{\mathclap{\tiny\mbox{def}}}{=} \tilde{v}' (A \wedge B) = v'(F) $$
+
+		\item If $F = (A \vee B)$ for some $A, B \in \mathcal{F}_\mathcal{L}$, then each $p \in \mathcal{L}$ occurring in $A$ occurs in $F$ too and each $p \in \mathcal{L}$ occurring in $B$ occurs in $F$ too.
+		So we can apply the I.H. $\tilde{v} (A) = \tilde{v}' (A)$ and $\tilde{v} (B) = \tilde{v}' (B)$. By definition of $I_\vee$:
+			  $$ v(F) = \tilde{v} (A \vee B) \stackrel{\mathclap{\tiny\mbox{def}}}{=} I_\vee (\tilde{v}(A), \tilde{v}(B)) \stackrel{\mathclap{\tiny\mbox{I.H.}}}{=}  I_\vee (\tilde{v}' (A), \tilde{v}' (B)) \stackrel{\mathclap{\tiny\mbox{def}}}{=} \tilde{v}' (A \vee B) = v'(F) $$
+
+		\item If $F = (A \rightarrow B)$ for some $A, B \in \mathcal{F}_\mathcal{L}$, then each $p \in \mathcal{L}$ occurring in $A$ occurs in $F$ too and each $p \in \mathcal{L}$ occurring in $B$ occurs in $F$ too.
+		So we can apply the I.H. $\tilde{v} (A) = \tilde{v}' (A)$ and $\tilde{v} (B) = \tilde{v}' (B)$. By definition of $I_\rightarrow$:
+			  $$ v(F) = \tilde{v} (A \rightarrow B) \stackrel{\mathclap{\tiny\mbox{def}}}{=} I_\rightarrow (\tilde{v}(A), \tilde{v}(B)) \stackrel{\mathclap{\tiny\mbox{I.H.}}}{=}  I_\rightarrow (\tilde{v}' (A), \tilde{v}' (B)) \stackrel{\mathclap{\tiny\mbox{def}}}{=} \tilde{v}' (A \rightarrow B) = v'(F) $$
+	  \end{itemize}
+	\end{proof}
+
+	\marginnote{shouldn't these two I.H. have different assignments? TOASK}[-9cm]
+	\vspace{-0.5cm}
+
+	\paragraph{Remarks on the lemma:} the lemma allow us \textbf{evaluate the behavior of any} $F \in \mathcal{F}_\mathcal{L}$ under all assignments (of which there are infinitely many) \textbf{just by computing the truth table of} $F$ (finite object, albeit it can be large), whose columns are indexed by the prepositional letters actually occurring in $F$.
+
+	If the formula \( F \) contains exactly the propositional letters \( p_1, p_2, \ldots, p_n \), how many rows will the truth table for \( F \) have?
+    Based on the principles introduced in \ref{combinatorics}, there are \( 2^n \) rows. This growth is exponential with respect to the number of propositional letters in \( F \). Each row corresponds to a possible truth value assignment (a function) for \( p_1, p_2, \ldots, p_n \) mapping to \(\{0,1\}\).
+
+	If the formula \( F \) contains exactly the propositional letters \( p_1, p_2, \ldots, p_n \), how many rows will the truth table for \( F \) have?
+	Using what we introduced in \ref{combinatorics}, there are $2^n$ rows. This growth is exponential in the length of $F$. Each row is a possible assignment of $p_1, \, ... \, , p_n \mapsto \{0,1\}$.\\
+
+	\newpage
+
+	\begin{example}
+	using Lemma \labelcref{lem:AOcc} we can prove using truth table that, let $A,B \in \mathcal{F}_\mathcal{L}$:
+	\begin{enumerate}
+		\item $A \rightarrow \neg A$: satisfiable, but not a tautology
+		\item $A \wedge \neg A$: unsatisfiable
+		\item $A \rightarrow (A \vee B)$: tautology
+	\end{enumerate}
+	You can check with truth tables (under each column the result of each operand):
+	$$
+	\begin{array}{c | c c c c | c}
+		A & A & \rightarrow & \neg & A & \\
+		\hline
+		0 & 0 & 1 & 1 & 0 & 1\\
+		1 & 1 & 0 & 0 & 1 & 0\\
+	\end{array}
+	\;\;\;\;
+	\begin{array}{c | c c c c | c}
+		A & A & \wedge & \neg & A & \\
+		\hline
+		0 & 0 & 0 & 1 & 0 & 0\\
+		1 & 1 & 0 & 0 & 1 & 0\\
+	\end{array}
+	\;\;\;\;
+	\begin{array}{c c | c c c c c | c}
+		A & B & A & \rightarrow & (A & \vee & B) & \\
+		\hline
+		0 & 0 & 0 & 1 & 0 & 0 & 0 & 1\\
+		0 & 1 & 0 & 1 & 0 & 1 & 1 & 1\\
+		1 & 0 & 1 & 1 & 1 & 1 & 0& 1 \\
+		1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+	\end{array}
+	$$
+  \end{example}
+
+	Below is a series of important tautologies. They are straightforward to prove using truth tables.
+	\begin{itemize}
+		\item $A \rightarrow (B \rightarrow A)$ (called "weakening")
+		\item $(\neg A \rightarrow A) \rightarrow A$ (called "consequentia mirabilis")
+		\item $(A \rightarrow B) \vee (B \rightarrow A)$ (called "prelinearity")
+		\item $(A \wedge B) \rightarrow A$
+		\item $A \rightarrow (A \vee B)$
+		\item $A \vee \neg A$ (called "tertium non datur" or "excluded middle")
+		\item $\neg \neg A \rightarrow A$ and $A \rightarrow \neg \neg A$ (called "double negation laws" or "involutiveness of negation")
+	\end{itemize}
+
+	Let $A \in \mathcal{F}_\mathcal{L}$, $A \rightarrow \neg A$, the truth table:
+	$$
+	\begin{array}{c | c c c c | c}
+		A & A & \rightarrow & \neg & A & \\
+		\hline
+		0 & 0 & 1 & 1 & 0 & 1\\
+		1 & 1 & 0 & 0 & 1 & 0\\
+	\end{array}
+	$$
+	This \textbf{does not take into consideration differences between $A$ and simple letters}, but if we instantiate $A$ with a specific formula, for example $A := p \wedge \neg p$ (a contradiction) then: $(p \wedge \neg p) \rightarrow \neg (p \wedge \neg p) $ is a tautology. But if $A:= p \vee \neg p$ (tauto) then:
+	$ (p \vee \neg p) \rightarrow \neg (p \vee \neg p)$
+	is a contradiction.
+
+	\begin{fact}
+	A Tautology/Contradiction remains a Tautology/Contradiction if you replace letters with arbitrary formulas (the contrary doesn't necessarily hold).
+	\end{fact}
+
+	\noindent
+	Two very important Tautologies are:
+	\indent
+
+	\begin{itemize}
+	\item \textbf{Prelinearity}: $(A \rightarrow B) \vee (B \rightarrow A) \quad  \forall (A, B \in \mathcal{F}_\mathcal{L})$. This kinda means that "in every possible world $A \rightarrow B$ is true or $B \rightarrow A$ is true". \smallvspace
+
+	  \item \textbf{Excluded middle}: \( A \vee \neg A \). This tautology asserts that for any proposition \( A \), it must be either true or false, there is no middle ground. In logical terms, this means that in every possible world, \( A \) is either true or \( \neg A \) is true. The rejection of the principle of the excluded middle forms the basis for other logical systems, such as constructive or intuitionistic logic, which are particularly significant in computer science. Unlike classical logic, these systems do not assume \( A \vee \neg A \) as universally valid, focusing instead on provability and constructibility.
+
+	\end{itemize}
+
+	\newpage
+
+%%% Local Variables:
+%%% TeX-master: "../MathLogic.tex"
+%%% End:
+
