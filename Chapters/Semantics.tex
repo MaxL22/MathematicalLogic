@@ -4,11 +4,15 @@
 
 	Let $\Gamma \subseteq \fl$ ($\Gamma$ is a subset of the set of all formulas), then $\Gamma$ is called a \textbf{theory}.\\
 
-	\paragraph{Definition:} a \textbf{theory} $\Gamma \subseteq FL$ is \textbf{satisfiable} iff it exists a truth value assignment $v: \mathcal{L} \rightarrow \{0,1\}$ such that for all $\gamma \in \Gamma$ then $\tilde{v} (\gamma) = 1$ (in symbols $v \models \gamma$ we mean $v$ satisfies $\gamma$ as a formula) .\\
+	\begin{definition}
+		A \textbf{theory} $\Gamma \subseteq \FL$ is \textbf{satisfiable} iff it exists a truth value assignment $v: \mathcal{L} \rightarrow \{0,1\}$ such that for all $\gamma \in \Gamma$ then $\tilde{v} (\gamma) = 1$ (in symbols $v \models \gamma$ we mean $v$ satisfies $\gamma$ as a formula) .\\
+	\end{definition}
 
-	\paragraph{Definition:} $\Gamma \subseteq \mathcal{F}_\mathcal{L}$ is \textbf{unsatisfiable} iff for all assignments $v: \mathcal{L} \rightarrow \{0,1\}$ there exists at least $\gamma \in \Gamma$ such that $\tilde{v} (\gamma) = 0$.\\
-
-	$v \not \models \Gamma$ for all $\ta$. $v \not \models \gamma$ if $\tilde{v} (\gamma) = 0$.\\
+	\begin{definition}
+		$\Gamma \subseteq \mathcal{F}_\mathcal{L}$ is \textbf{unsatisfiable} iff for all assignments $v: \mathcal{L} \rightarrow \{0,1\}$ there exists at least $\gamma \in \Gamma$ such that $\tilde{v} (\gamma) = 0$.\\
+		
+		$v \not \models \Gamma$ for all $\ta$. $v \not \models \gamma$ if $\tilde{v} (\gamma) = 0$.\\
+	\end{definition}
 
 	\newpage
 
