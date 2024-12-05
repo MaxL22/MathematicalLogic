@@ -1,0 +1,902 @@
+\chapter{Refutational Methods}
+
+They are \textbf{deductive methods} whose aim is to \textbf{prove the unsatisfiability of a set of clauses} (of a formula or of a theory).\\
+
+Many of these methods are based on the inference rule called "\textit{resolution principle}".\\
+
+They are calculi particularly \textbf{fit to be automated} (for proof search, we can just give theory and formula to a machine and make it decide). This is the basic behind Automated Deduction.\\ 
+
+There are \textbf{different possible branches}:
+\begin{itemize}
+	\item SAT Solver: decide if a given set of clauses is satisfiable or not.\\
+	
+	\item Theorem Prover: designed to automatically prove mathematical theorem.\\
+	
+	\item Logic Programming: asking a machine to refute a theorem $\in CNF$ (Prolog).\\
+\end{itemize}
+
+\newpage
+
+\section{Resolution Principle}
+Given two clauses $C_1$ and $C_2$ we say that the clause $D$ is the \textbf{resolvent} of $C_1$ and $C_2$ on the pivot $L$ (where $L$ is a literal) \textbf{iff}:
+\begin{itemize}
+	\item $L \in C_1$
+	\item $\overline L \in C_2$
+	\item $D:= (C_1 \setminus \{L\}) \cup (C_2 \setminus \{\overline L\})$
+\end{itemize}
+
+We shall write $D = \mathbb{R} (C_1, C_2; L, \overline L)$.\\
+
+Examples
+$$ S := \left\{\{x,y,\neg t\}, \{u, \neg y, t\}\right\} $$
+How many resolvents can we have? 2, namely: 
+$$ D_1: \mathbb{R} (C_1, C_2; y, \neg y) = \{x, \neg t, u, t\} $$
+$$ D_2: \mathbb{R} (C_1, C_2; \neg t, t) = \{x,y,u, \neg y\} $$
+
+\begin{lemma}
+	\textbf{Correctness} (of the resolution principle, also called "Soundness"). \\
+	Let $D = \mathbb{R}(C_1, C_2; L, \overline L)$ be the resolvent of some clauses, then 
+	$$\{C_1, C_2\} \models D$$
+\end{lemma}
+
+\begin{proof}
+	We must show that for each assignment $\ta$, if $v \models C_1$ and $v \models C_2$ then $v \models D$ too. Let $\ta$ be such that $v \models C_1$ and $v \models C_2$.\\
+	
+	Then $v \models M$ and $v \models N$ for literals $M \in C_1$ and $N \in C_2$. If it were the case that $M=L$ and $N = \overline L$ then $\tilde v (L) = 1$ and $\tilde v(\overline L) = 1$ but this is clearly a contradiction.\\
+	
+	Then at least one in $M$ or $N$ is such that $M \neq L$ or $N \leq \overline L$. Then we assume without loss of generality that $M \neq L$ then $M \in D$ (by definition of $D$), so $\tilde v (M) = 1$ implies that $\tilde v (D) = 1$.\\
+\end{proof}
+
+\begin{corollary}
+	If $\mathbb{R} (C_1, C_2; L, \overline L) = \square$ then $\{C_1, C_2\}$ is UNSAT.\\
+\end{corollary}
+
+\begin{proof}
+	$\{C_1, C_2\} \models \square$ by Correctness Lemma.\\
+\end{proof}
+
+\begin{corollary}
+	Let $S$ be a set of clauses. Let $S = S_0, \, \dots \, , S_k$ be a sequence of sets of clauses such that:
+	\begin{enumerate}
+		\item For all indexes $i = 0, 1, \, \dots \, , k-1$, $S_{i+1}$ is obtained from $S_i$ by adding one or more resolvents of clauses in $S_i$
+		\item $\square \in S_k$
+	\end{enumerate}
+	
+	Then $S$ is UNSAT.\\
+\end{corollary}
+
+\begin{proof}
+	$S = S_0 \models S_1 \models S_2 \models \, \dots \, \models S_k \ni \square$, the sequence is guaranteed by correctness Lemma, so $S \models \square$ and $S$ is UNSAT.\\
+\end{proof}
+
+\newpage
+
+%\section{Completeness}
+
+Our aim is to show that the \textbf{refutational method} based on iterated applications of resolution principle is \textbf{correct} and \textbf{refutationally complete}.\\
+
+In general, a logical calculus may have (or not) the two following \textbf{properties}:
+\begin{itemize}
+	\item \textbf{Correctness (Soundness):} a calculus is correct (sound) if the "\textit{certificates}" it outputs (the proofs) witness a true state of things (it does not produce "fake certificates", falsifying assignment). In our case the sequence $S_0, S_1, \, \dots \, , S_k \ni \square$ is a correct "certificate", or proof, that $S$ is UNSAT.\\
+	
+	\item \textbf{Completeness:} a calculus is complete if it does not omit any "certificate" (proof). In our case it means that to be complete our method should have the following property: If $S$ is UNSAT then there is a sequence (certificate) $S = S_0, \, \dots \, , S_k \ni \square$ ($S_i \rightsquigarrow S_{i+1}$ only adding resolvents from clauses in $S_i$).\\
+\end{itemize} 
+
+
+Our refutation, resolution-based, method we'll only be \textbf{refutationally complete}.\\
+
+\subsection{Refutational Completeness of the Resolution Principle (proof of J.A. Robinson)}
+
+%Check R, change cal?
+A (possibly infinite) set of clauses $S$ is unsatisfiable iff (since we're proving correctness and completeness) $\square \in \mathcal{R}^\ast (S)$ where $\mathcal{R}^\ast (S)$ is defined as follows:
+$$ \begin{array}{c c}
+	\mathcal{R}(S) & := S \cup \{D : D = \mathbb{R} (C_1, C_2; L, \overline L) \text{ for some } C_1, C_2 \in S, L \in C_1, \overline L \in C_2 \} \\
+	\mathcal{R}^2 (S) & := \mathcal{R} \left(\mathcal{R} (S)\right) \\
+	\vdots & \\
+	\mathcal{R}^{t+1} (S) & := \mathcal{R} \left(\mathcal{R}^t (S)\right) \\
+	\vdots & \\
+	\mathcal{R}^\ast (S) & := \bigcup_{i \in \omega} \mathcal{R}^i (S)
+\end{array}
+$$
+
+For simplicity
+$$ \mathcal{R}^1 (S) := \mathcal{R} (S) $$
+$$ \mathcal{R}^0 (S) := S $$
+
+\begin{remark}
+	Assume we proved Robinson's theorem. If $S$ is a finite set of clauses, then $\mathcal{R}^\ast$ provides us with a decision procedure for establishing whether $S$ is SAT or UNSAT. That is, in both cases, the procedure building $\mathcal{R}^\ast (S)$ ends in a finite number of steps (finite amount of time) providing always the correct answer.\\
+\end{remark}
+
+\begin{proof}
+	If $S$ is finite then in $S$ there occur only finitely many distinct propositional letters. Let us write $Var (S) \subseteq \{p_1, p_2, \, \dots \, , p_n\}$ for some $n \in \mathbb{N}$.\\
+	
+	The literals writable using only $p_1, p_2, \, \dots \, , p_n$ are exactly $2^n$.\\
+	The clauses writable using only literals on $p_1, p_2, \, \dots \, , p_n$ are exactly $2^{2n}$.\\
+	
+	\textbf{Key observation}: the application of the resolution rule (the \textbf{formation of new resolvents}) \textbf{never introduces any new literals}.\\
+	
+	So, the sequence
+	$$(\dag) \;\;\;\; S = \mathcal{R}^0 (S) \subseteq \mathcal{R}^1 (S) \subseteq  \, \dots \, \subseteq \mathcal{R}^k (S) \subseteq \, \dots $$
+	is such that every $\mathcal{R}^i (S)$ is a subset of the $2^{2n}$ clauses writable on $p_1, p_2, \, \dots \, , p_n$.\\
+	
+	Let us write $\mathcal{C}^{(n)}$ for the set of all clauses on $p_1, \, \dots \, , p_n$
+	$$ \mathcal{R}^i (S)  \subseteq \mathcal{C}^{(n)} \; \text{ for each } \; i \in \omega $$
+	
+	Then there must be $t \in \omega$ such that $\mathcal{R}^t (S) = \mathcal{R}^{t+1} (S)$ (since no $\mathcal{R}^i (S)$ can have more that $2^{2n}$ clauses, $t \leq 2^{2n}$).\\
+	
+	Then 
+	$$ \mathcal{R}^t (S) = \mathcal{R}^{t+1} (S) = \mathcal{R} \left(\mathcal{R}^t(S)\right) = \mathcal{R} \left(\mathcal{R}^{t+1} (S)\right) = \mathcal{R}^{t+2} (S) = \, \dots $$
+	So we have that 
+	$$ \mathcal{R}^t (S) = \mathcal{R}^{t+1} (S)  = \, \dots \, = \mathcal{R}^\ast (S) $$
+	
+	Then: At step $i \rightsquigarrow i+1$ of the construction: 
+	\begin{itemize}
+		\item if we found $\square \in \mathcal{R}^{i+1} (S)$ then stop $\implies$ output $S$ UNSAT
+		\item If $\square \notin \mathcal{R}^{i+1} (S)$ then 
+		\begin{itemize}
+			\item if $\mathcal{R}^{i+1} (S) = \mathcal{R}^i (S)$ then stop and output $S$ SAT
+			\item else go to the next step
+		\end{itemize}
+	\end{itemize}
+	
+	This algorithm \textbf{always terminates when $S$ is finite}.\\
+\end{proof}
+
+\textbf{Note:} If $S$ is \textbf{infinite}, but it happens that $\mathcal{R}^t (S) = \mathcal{R}^{t+1} (S)$ (and we can check this), the algorithm can stop and say that $S$ is SAT. The procedure is complete, but it's a semi-decision procedure, might not end.\\
+
+% End L15
+
+%All $C$ clauses must be capitalized
+
+%We've done the correctness (soundness) part, so we proved that 
+%$$ \square \in \mathcal{R}^\ast (S) \implies S \;\; UNSAT$$
+%
+%Now we do \textbf{Completeness}
+%$$ S \;\; UNSAT \implies \square \in \mathcal{R}^\ast (S) $$
+
+\subsubsection{Correctness}
+Assuming that $\square \in \mathcal{R}^\ast (S)$, then, by definition of $\mathcal{R}^\ast (S) = \bigcup_{i \in \omega} \mathcal{R}^i (S)$, there is $i \in \omega$ such that $\square \in \mathcal{R}^i (S)$.\\
+
+So $\mathcal{R}^i (S)$ is UNSAT, by definition of $\square$.\\
+But $\mathcal{R}^i (S) \equiv \mathcal{R}^{i-1} (S) \equiv \, \dots \, \equiv \mathcal{R}^0 (S) \equiv S$ (by Correctness Lemma). So $S$ is UNSAT.\\
+
+\newpage
+
+\subsubsection{(Refutational) Completeness}
+We have to prove that $S$ UNSAT implies $\square \in \mathcal{R}^\ast (S)$.\\
+
+\begin{proof}
+	Since $S \in UNSAT$ (by assumption), by compactness theorem, there is a $S_{fin} \finsat S$ such that $S_{fin}$ is UNSAT.\\
+	
+	In $S_{fin}$ there occur finitely many (distinct) propositional letters, say $Var (S_{fin}) \subseteq \{p_1, \, \dots \, , p_n\} \subseteq \mathcal{L}$, for some $n \in \omega$.\\
+	
+	\begin{remark}
+		$S_{fin} \subseteq \mathcal{C}^{(n)}$ (we call $\mathcal{C}^{(n)}$ the set of all clauses over the letters $p_1, \, \dots \, , p_n$).\\
+	\end{remark}
+	
+	\begin{remark}
+		$\mathcal{C}^{(0)} = \{\square\}$ ($|\mathcal{C}^{(0)}| = 2^{2 \cdot 0} = 1$).\\
+	\end{remark}
+	
+	A fortiori ("from stronger reasons"): we can say that 
+	$$ 
+	\left.
+	\begin{array}{c c}
+		S_{fin} \subseteq &\mathcal{C}^{(n)} \\
+		S_{fin} \subseteq & S
+	\end{array}
+	\right\} \implies S_{fin} \subseteq \mathcal{C}^{(n)} \cap \mathcal{R}^\ast (S)
+	$$
+	(since $S \subseteq \mathcal{R}^\ast (S)$).\\
+	
+	It follows 
+	$$ (\dag \dag) \;\;\;\;\; \mathcal{C}^{(n)} \cap \mathfrak{R}^\ast (S) \; \text{ is } UNSAT $$
+	Since it contains $S_{fin}$, which is UNSAT by definition.\\
+	
+	We shall prove that for each $k = n, n-1, \, \dots \, , 0$ that $\mathcal{C}^{(k)} \cap \mathcal{R}^\ast (S)$ is UNSAT $(\dag)$.\\
+	
+	If we can prove $(\dag)$ for all $k$, then $(\dag)$ holds for $k = 0$ too. That is $\mathcal{C}^{(0)} \cap \mathcal{R}^\ast (S)$ is UNSAT, and thus $\{\square\} \cap \mathcal{R}^\ast (S)$ is UNSAT.\\
+	
+	If we prove $\{\square\} \cap \mathcal{R}^\ast (S)$ is UNSAT $(\dag\dag\dag)$ then 
+	$$ \{\square\} \cap \mathcal{R}^\ast (S) = \begin{cases}
+		\emptyset & \rightarrow \{\square\} \cap \mathcal{R}^\ast (S) \; SAT \; \text{ contradicting } \; (\dag\dag\dag) \\
+		\text{ or } & \\
+		\{\square\} & \rightarrow \{\square\} \cap \mathcal{R}^\ast (S) \; UNSAT \\
+	\end{cases}
+	$$
+	but 
+	$$ \{\square\} \cap \mathcal{R}^\ast (S) = \{\square\} \; \text{ iff } \; \square \in \mathcal{R}^\ast (S)$$
+	And this is the end of completeness.\\
+\end{proof}
+
+\newpage
+
+We shall prove by \textbf{descending induction} on the index $k = n, n-1, \, \dots \, , 0$ that $(\dag)$: $\mathcal{C}^{(k)} \cap \mathcal{R}^\ast (S)$ is UNSAT.\\
+
+\paragraph{Base:} $k=n$, then $\mathcal{C}^{(k)} \cap \mathcal{R}$ UNSAT, which is already proven, by $(\dag\dag)$.\\
+
+\paragraph{Step:} Assume the statement $(\dag)$ is true for $k=n, k=n-1, 1, \, \dots \, , k+1$ and we want to prove it for $k$. \\
+So $\mathcal{C}^{(n)} \cap \mathcal{R}^\ast (S)$ UNSAT, $\mathcal{C}^{(n-1)} \cap \mathcal{R}^\ast (S)$ UNSAT, \dots  $\mathcal{C}^{(k+1)} \cap \mathcal{R}^\ast (S)$ UNSAT, and we want to \textbf{prove} $\mathcal{C}^{(k)} \cap \mathcal{R}^\ast (S)$ UNSAT, too.\\
+
+By \textbf{contradiction}: we assume $\mathcal{C}^{(k)} \cap \mathcal{R}^\ast (S)$ is SAT.\\
+Then there is $\ta$ such that for all $C \in \mathcal{C}^{(k)} \cap \mathcal{R}^\ast (S)$, $v \models C$ ($\tilde v(C) = 1$).\\
+
+Let us define the two following variants $v^+, v^- : \mathcal{L} \rightarrow \{0,1\}$ of $v$: 
+\begin{itemize}
+	\item $v^+ (p_{k+1}) := 1$
+	\item $v^- (p_{k+1}) := 0$
+	\item $v^+ (p_i) := v(p_i) =: v^- (p_i)$ for all $i \neq k+1$
+\end{itemize}
+
+By I.H. $\mathcal{C}^{(k+1)} \cap \mathcal{R}^\ast (S)$ is UNSAT, then $v, v^+, v^- \not \models \mathcal{C}^{(k+1)} \cap \mathcal{R}^\ast (S)$.\\
+
+Then there is at least a clause $C_1 \in \mathcal{C}^{(k+1)} \cap \mathcal{R}^\ast (S)$ such that $\tilde v^+ (C_1) = 0$ ($v^+ \not \models C_1$) $(\star)$, analogously there must be a $C_2 \in \mathcal{C}^{(k+1)} \cap \mathcal{R}^\ast (S)$ such that $\tilde v^- (C_2) = 0$ ($v^- \not \models C_2$) $(\star \star)$.\\
+
+\textbf{Key Observation}: $p_{k+1}$, as a propositional letter, occurs in $C_1$ and, precisely, only in the literal $\neg p_{k+1}$ (same thing but not negated in $C_2$)
+$$ \neg p_{k+1} \in C_1, \;\;\; p_{k+1} \notin C_1 $$
+
+\begin{proof}
+	As a matter of fact 
+	\begin{itemize}
+		\item $p_{k+1}$ cannot occur in $C_1$ as a literal, for otherwise $v^+ (p_{k+1}) = 1$ implies $\tilde v^+ (C_1) = 1$, contradicting $(\star)$
+		\item $p_{k+1}$ must occur in $C_1$ in the literal $\neg p_{k+1}$, for otherwise $p_{k+1} \notin C_1$, $\neg p_{k+1} \notin C_1$, so $C_1 \in \mathcal{C}^{(k)} \cap \mathcal{R}^\ast (S)$, and so $\tilde v (C_1) = 1$, but since $p_{k+1}$ does not occur as a variable in $C_1$, $\tilde v^+ (C_1) = \tilde v (C_1) = 1$ that is $\tilde v^+ (C_1) =1$, contradicting $(\star)$.\\
+	\end{itemize}
+	
+	So $\neg p_{k+1} \in C_1$, $p_{k+1} \notin C_1$.\\
+\end{proof}
+
+Analogously: $p_{k+1}$ must be in $C_2$ in the form $p_{k+1}$.\\
+
+\newpage
+
+Then $\neg p_{k+1} \in C_1$, $p_{k+1} \notin C_1$, $p_{k+1} \in C_2$, $\neg p_{k+1} \notin C_2$.\\
+
+Then there \textbf{exists the resolvent} 
+\begin{flalign*}
+	D & = \mathbb{R} (C_1, C_2; \neg p_{k+1}, p_{k+1})\\
+	& = (C_1 \setminus \{\neg p_{k+1}\}) \cup (C_2 \setminus \{p_{k+1}\})\\
+	& = (C_1 \cup C_2) \setminus \{p_{k+1}, \neg p_{k+1}\}
+\end{flalign*}
+
+Notice that $D$ is such that $\neg p_{k+1} \notin D$ and $p_{k+1} \notin D$, so 
+$$ D \in \mathcal{C}^{(k)} \cap \mathcal{R}^\ast (S) \implies \tilde v (D) = 1 $$
+
+Then $v$ must satisfy at least one literal in $m \in D$, ($\tilde v (M) = 1$).\\
+
+So $M \in D = (C_1 \cup C_2) \setminus \{p_{k+1}, \neg p_{k+1}\}$, and $\tilde v(M) = 1$, so we have two cases: 
+\begin{enumerate}
+	\item $M \in C_1 \setminus \{ \neg p_{k+1}, p_{k+1}\}$, then $\tilde v (C_1) = 1$, and then since $p_{k+1}$ does not occur in $C_1$ (as a letter), $\tilde v^+ (C_1) = \tilde v (C_1) = 1$, contradicting $(\star)$.\\
+	
+	\item $M \in C_2 \setminus \{p_{k+1}, \neg p_{k+1} \}$, then  $\tilde v (C_2) = 1$, and then since $p_{k+1}$ does not occur in $C_2$ (as a letter), $\tilde v^- (C_2) = \tilde v (C_2) = 1$, contradicting $(\star \star)$.\\
+\end{enumerate}
+
+As there are no more cases to consider we have concluded our proof by contradiction, showing that it is not the case that $\mathcal{C}^{(k)} \cap \mathcal{R}^\ast (S)$ is SAT, implying, in any case, that $\mathcal{C}^{(k)} \cap \mathcal{R}^\ast (S)$ is UNSAT.\\
+
+This concludes induction step and proof by induction. We have proved that $\mathcal{C}^{(k)} \cap \mathcal{R}^\ast (S)$ is UNSAT for all $k = n, \, \dots \, , 0$.\\
+%End proof of Completeness theorem
+
+
+
+\begin{remark}
+	Say $S$ is an \textbf{infinite theory}. In the first step of the proof we reduced $S$ to $S_{fin} \finsat S$ by compactness theorem.\\
+	
+	This application of compactness theorem doesn't provide us with a decision procedure for the input $S$, when $S$ is infinite, since, in general, we don't know anything useful on the concrete nature of $S_{fin}$ (we have no clues on how to choose such $S_{fin} \finsat S$, $S_{fin}$ UNSAT).\\
+	
+	The best thing we can do is to \textbf{build a possibly infinite sequence of finite subsets} of $S$:
+	$$ 
+	S_1 \finsat S_2 \finsat \, \dots \, \finsat S \; \text{ s. th. } \; \bigcup_{i \in \omega} S_i = S
+	$$
+	
+	Then, for each $S_i$, which are all finite, compute $\mathcal{R}^\ast (S_i)$.\\
+\end{remark}
+
+\newpage
+
+\begin{remark}
+	If $S$ is infinite, at step $i$:
+	\begin{itemize}
+		\item If $\square \in \mathcal{R}^m (S_i)$ for some $m \in \omega$:
+		$$ 
+		\begin{array}{c c}
+			\implies & \square \in \mathcal{R}^\ast (S_i) \\
+			\implies & \square \in \mathcal{R}^\ast (S) \\
+			\implies & S \;\;\; UNSAT
+		\end{array}
+		$$
+		\item If we find $t \in \omega$, $\square \notin \mathcal{R}^t (S_i)$ and $\mathcal{R}^t (S_i) = \mathcal{R}^{t+1} (S_i)$, then $S_i$ is SAT, go to the next step $i+1$
+	\end{itemize} 
+	
+	If $S_i$ UNSAT (which is decidable) then $S$ UNSAT and stop, but if $S_i$ is SAT (also decidable) then go on. This is a semi-decidability procedure for "$S$ SAT?".\\
+\end{remark}
+
+%Terminology.\\
+
+\begin{definition}
+	A \textbf{deduction by resolution} of a clause $C$ from a set of clauses $S$ ($S \vdash_R C$) is a finite sequence $C_1, C_2, \, \dots \, , C_u$ of clauses such that
+	\begin{enumerate}
+		\item $C_u = C$
+		\item For all indexes $i \in \{1, \, \dots \, , u\}$ either
+		\begin{enumerate}
+			\item $C_i \in S$
+			\item $C_i = \mathbb{R} (C_j, C_k ; L, \overline L)$ for some $j,k < i$ (and some literals $L \in C_j$, $\overline L \in C_k$) 
+		\end{enumerate}
+	\end{enumerate}
+	\nn
+\end{definition}
+
+$S \vdash_R C$ by correctness, implies that $S \models C$.\\
+
+A \textbf{deduction by resolution of} $\square$ from $S$ ($S \vdash_R \square$) is called a \textbf{refutation} of $S$ (and then $S$ is UNSAT, i.e. $S \models \square$).\\
+
+The \textbf{refutational completeness} of $\vdash_R$ \textbf{shows} 
+\begin{itemize}[label*=]
+	\item \phantom{equivalently} $S$ UNSAT iff $S \vdash_R \square$
+	\item equivalently $S \models \square$ iff $S \vdash_R \square$
+	\item equivalently $S \models \bot$ iff $S \vdash_R \bot^c$ %Check
+\end{itemize}
+
+A calculus $C$ is \textbf{refutationally complete iff} $\Gamma \models \bot$ implies $\Gamma \vdash_C \bot$ (whenever $\Gamma$ is contradictory, i.e., is UNSAT, then the calculus $C$ proves such contradiction).\\
+
+A calculus $C$ is \textbf{"tout-court"/fully complete} (just complete) \textbf{iff} $\Gamma \models A$ implies $\Gamma \vdash_C A$ for any $A \in \fl$.\\
+
+\newpage
+
+\textbf{Examples of deductions} (not necessarily refutations) in $\vdash_R$
+
+$$ a,b,c \in \mathcal{L} \;\;\; S = \{\{a,b,\neg c\}, \{a,b,c\}, \{a, \neg b\} \} \models^? \{\{a\}\}$$
+
+Steps: 
+\begin{enumerate}
+	\setcounter{enumi}{-1}
+	\item Transform $S \models^? \{a\}$ into $S \cup \{\neg a\}$ UNSAT? That is, show that $S, \neg a \vdash_R \square$
+	\item Choose a formula from $S$, $\{a,b, \neg c\} \in S$
+	\item Choose another formula? $\{a,b,c\}$
+	\item Choose $\{a, \neg b\}$
+	\item Choose $\{\neg a\}$
+	\item Resolve 1 and 2 together: $\mathbb{R}(1,2)$: $\{a, b\}$
+	\item Resolve 3 and 5 together: $\mathbb{R}(3,5)$: $\{a\}$
+	\item Resolve 4 and 6 together: $\mathbb{R}(4,6)$: $\square$
+\end{enumerate}
+%Wtf
+
+%TODO From here, Idk what's going on
+
+The first 6 steps constitute a direct deduction from $S, \neg a \vdash_R \{a\}$, a deduction by resolution of $A$ from $S$.\\
+
+Consider a theory $\Gamma \subseteq \fl$, a formula $A \in \fl$.\\
+Let $\Gamma^C$ be the set of clauses equisatisfiable with $\Gamma$. Let $A^C$ ($(\neg A)^C$) be a set of clauses equisat with $A$ ($\neg A$).\\
+
+$$ \Gamma \models A \Leftrightarrow \Gamma, \neg A \;\; UNSAT \Leftrightarrow \Gamma^c, (\neg A)^C \vdash_R \square \Leftarrow \Gamma^C \vdash_R A^C$$
+
+full completeness fails for $\vdash_R$.\\
+
+%Da dove cazzo arrivano le doritos diomerda
+
+%Check
+$(\dag)$
+
+So $(\dag)$ shows that $\vdash_R$ is only refutationally complete, that is 
+$$ \Gamma \models \bot \Leftrightarrow \Gamma \vdash_C \bot $$
+$$ (S \models \square \Leftrightarrow S \vdash_R \square) $$
+but it's not complete (so $ $%Complete$)
+
+This is not a problem from the computational point of view, because, via a suitable and efficient "pre-processing", we reduce $\Gamma \models^? A$ to a refutational problem $\Gamma^C, (\neg A)^C \vdash_R^? \square$.\\
+
+Actually, from the computational point of view, calculi that are just refutationally complete, may be preferable for efficiency reasons with respect to fully complete calculi.\\
+
+%Exercise last page, I guess
+
+\newpage
+
+\section{Axiomatic Systems (Hilbert's style calculus)}
+
+The Hilbert's style calculus $\mathcal{H}$ is another formal logical system that can be used for mathematical logic. It's \textbf{based on a set of axioms} and inference rules that are designed to formalize mathematical reasoning. \\
+
+It's relatively short but \textbf{not well suited to automated deduction}, due to it's nature.\\
+
+The \textbf{axioms} are: 
+\begin{itemize}
+	\item $A_1: A \rightarrow ( B\rightarrow A)$
+	\item $A_2: (A \rightarrow (B \rightarrow C)) \rightarrow ((A \rightarrow B) \rightarrow (A \rightarrow C))$
+	\item $A_3: (\neg B \rightarrow \neg A) \rightarrow (A \rightarrow B)$
+\end{itemize}
+
+Inference rule(s):
+\begin{itemize}
+	\item Modus Ponens: 
+	$$
+	\AxiomC{$A$}
+	\AxiomC{$A \rightarrow B$}
+	\BinaryInfC{$B$}
+	\DisplayProof
+	$$
+\end{itemize}
+
+% End L16
+
+\nn \nn
+
+A \textbf{proof} of $A \in \fl$, from some theory $\Gamma \subseteq \fl$ in the \textbf{Hilbert Style calculus} $\Gamma \vdash_\mathcal{H} A$ is a \textbf{finite sequence} $A_1 , \, \dots \, , A_u$ \textbf{of formulas such that}:
+\begin{enumerate}
+	\item $A_u = A$
+	\item For each $i \in \{1,2, \, \dots \, , u\}$ it holds that either 
+	\begin{itemize}
+		\item $A_i \in \Gamma$, or 
+		\item $A_i$ is an instance of one of the axiom schemes above, or
+		\item there are $j,k < i$ such that $A_j = A_k \rightarrow A_i$ so that
+	\end{itemize}
+\end{enumerate}
+
+We have proof that $\mathcal{H}$ is \textbf{sound} and \textbf{complete} (fully, not just refutationally)
+$$ \Gamma \models A \; \text{ iff } \; \Gamma \vdash_\mathcal{H} A $$
+
+\newpage
+
+As an \textbf{example} we will verify that 
+$$ \neg \neg A \models^? A $$
+
+%Preprocessing:
+%* transform into propositional letters
+%$$ \neg \neg p \models p \;\;\;\; p \in \mathcal{L}$$
+%* Transform it into an UNSAT problem 
+%$$ \{\neg \neg p, \neg p \}$$
+%* normalize
+%$$ \{\{p\}, \{\neg p\}\} \vdash_R \square $$
+%which has proof 
+%$$ 
+%%Complete
+%$$
+%
+%These are all mechanical and efficient steps.\\
+
+First we will try using \textbf{resolution}. First of all we substitute the formula $A$ for a propositional letter, obtaining
+$$ \neg \neg p \overset{?}{\vDash} p $$
+
+We then change the problem in an unsatisfiability one
+$$ \{\neg \neg p, \neg p\} \;\;\;\; UNSAT$$
+
+finally we normalize
+$$ \{\{p\}, \{\neg p\}\} \vdash_R \square $$
+
+which has proof
+$$
+\AxiomC{$p$}
+\AxiomC{$\neg p$}
+\BinaryInfC{$\square$}
+\DisplayProof
+$$
+
+In $\mathcal{H}$ we do not have any preprocessing to do. Steps: 
+$$
+\AxiomC{}
+\LeftLabel{$Ax_1$}
+\UnaryInfC{$\neg \neg A \rightarrow (\neg \neg \neg \neg A \rightarrow \neg \neg A)$}
+\AxiomC{$\neg \neg A$}
+\LeftLabel{MP}
+\BinaryInfC{$\neg \neg \neg \neg A \rightarrow \neg \neg A$}
+\AxiomC{}
+\LeftLabel{$Ax_3$}
+\UnaryInfC{$(\neg \neg \neg \neg A \rightarrow \neg \neg A) \rightarrow (\neg A \rightarrow \neg \neg \neg A)$}
+\LeftLabel{MP}
+\BinaryInfC{$\neg \neg A \rightarrow A$}
+\AxiomC{$\neg \neg A$}
+\LeftLabel{MP}
+\BinaryInfC{$A$}
+\DisplayProof
+$$
+
+\newpage
+
+\section{Refutational procedure by David Putnam (DPP)}
+
+Problem: Maintaining (refutational) completeness by selecting all possible resolvents.\\
+
+\begin{remark}
+	\textbf{Definition:} A clause $C_1$ \textbf{subsumes} $C_2$ (or $C_2$ is subsumed by $C_1$) \textbf{iff} $C_1 \subset C_2$ (Notice: $\models C_1 \implies C_2$, it's an implication and a tautology, equivalently $\{C_1, C_2\} \equiv \{C_1\}$). \\
+	
+	\textbf{Subsumption rule:} Let $S$ be a set of clauses and let $S'$ be obtained from $S$, by removing all subsumed clauses. Then $S \equiv S'$, preserving logical equivalence. Notice $S'$ cannot be further reduced by subsumption. One subset of the other, elminate the bigger one.\\
+\end{remark}
+
+\begin{remark}
+	\textbf{Definition:} A clause $C$ is \textbf{trivial iff} it contains $L$ and $\overline L$ for some literal $L$. Notice $\models C$, if $C \in S$ then $S \equiv S \setminus \{C\}$.\\
+	
+	\textbf{Elimination of trivial clauses rule:} Let $S$ be a set of clauses and let $S'$ be obtained from $S$ by removing all trivial clauses. Then $S \equiv S'$. Remove trivial clauses, they don't matter.\\
+\end{remark}
+
+\textbf{Notice}: If $D = \mathbb{R} (C_1, C_2; L, \overline L)$ and $C_1, C_2$ are not trivial 
+$$ (C_1 \setminus \{L\}) \cup (C_2 \setminus \{\overline L\}) = (C_1 \cup C_2) \setminus \{L, \overline L\} $$
+
+While if it was trivial
+\begin{flalign*}
+	\mathbb{R} (\{a, \neg a\}, \{a, \neg a\}, a, \neg a) & = (\{a, \neg a\} \setminus \{a\}) \cup (\{a, \neg a\} \setminus \{\neg a\}) \\
+	& = \{\neg a\} \cup \{a\} = \{a, \neg a\} \\
+	& \neq (\{a, \neg a\} \cup \{a, \neg a\}) \setminus \{a, \neg a\} = \square
+\end{flalign*}
+So, \textbf{trivial clauses do not carry meaningful information} and removing them allows us to use resolvents in the easier form.\\
+
+\newpage
+
+\subsection{Steps}
+
+\paragraph{Input for a step of DPP:} A \textbf{finite set of clauses} $S$, $S$ is already "\textbf{cleaned}" from \textbf{subsumed and trivial clauses} (we have applied to the original input both the subsumption rule and the elimination of trivial clauses rule).\\
+
+We call the process of "\textbf{cleaning}"
+$$ S = clean(S)$$
+
+
+Then each step of the DPP \textbf{consists of}:
+\begin{enumerate}
+	\item \textbf{Choose} a \textbf{propositional letter} $p \in \mathcal{L}$ among those occurring in clauses of $S$. $p$ is called the "\textbf{pivot}" the step. How do we choose? No fixed way, heuristically.\\
+	
+	\item \textbf{Form} 
+	$$
+	S' = \{\mathcal{C} \in S: p \notin \mathcal{C} \; \text{ and } \; \neg p \notin C\}
+	$$
+	$S'$ is the set of \textbf{$p$-free clauses} of $S$.\\
+	
+	\item \textbf{Form}
+	$$
+	S'' = \{D = \mathbb{R} (C_1, C_2; p, \neg p): C_1, C_2 \in S \setminus S' \}
+	$$
+	$S''$ is the set of \textbf{$p$-resolvents} of $S$.\\
+	
+	\item \textbf{Form} 
+	$$ 
+	S''' = clean (S' \cup S'')
+	$$
+	The cleaned version of $S''$.\\
+	
+	\item \textbf{Output} $S'''$ and go to the \textbf{next step}, i.e., repeat the process with another literal.\\
+\end{enumerate} 
+
+If we get $\square$ then $S$ UNSAT, otherwise we get $\emptyset$ and $S$ is SAT.\\
+
+\newpage
+
+\begin{example}
+	Let 
+	$$S = \{\{a, b, \neg c\}, \{a, \neg b, d\}, \{a, \neg b, \neg c, \neg c\}, \{\neg a, d\}, \{\neg a, \neg c, \neg d\}, \{c\}\} $$
+	\begin{itemize}
+		\item we choose a pivot, an heuristic is choosing a literal appearing in the shortest clause.
+		In this case $c$;
+		\item we create the $c$-free set of clauses
+		$$ \{\{a, \neg b, d\}, \{\neg a, d\}\} $$
+		\item we create the $c$-resolvents
+		$$ \{\{a, b\}, \{a, \neg b, \neg d\}, \{\neg a, \neg d\}\} $$
+		\item we clean the set, obtaining
+		$$ \{\{a, \neg b, d\}, \{\neg a, d\}, \{a, b\}, \{a, \neg b, \neg d\}, \{\neg a, \neg d\}\} $$
+		because there was nothing to clean;
+		\item we choose a new pivot: $a$;
+		\item we form the $a$-free set of clauses
+		$$ \varnothing $$
+		\item we form the $a$-resolvent se 
+		$$ \{\{\neg b, d\}, \{b, d\}, \{\neg b, d, \neg d\}, \{b, \neg d\}, \{\neg b, \neg d\}\} $$
+		\item we clean the set, obtaining
+		$$ \{\{\neg b, d\}, \{b, d\}, \{b, \neg d\}, \{\neg b, \neg d\}\} $$
+		\item we choose a new pivot: $b$;
+		\item we form the $b$-free set of clauses
+		$$ \varnothing $$
+		\item we form the $b$-resolvents:
+		$$ \{\{d\}, \{d, \neg d\}, \{\neg d\} \} $$
+		\item we clean the set
+		$$ \{\{d\}, \{\neg d\} \} $$
+		\item we choose a new pivot: $d$;
+		\item we form the $d$-free set
+		$$ \varnothing $$
+		\item we form the $d$-resolvents
+		$$ \{ \square \} $$
+		$S$ is unsatisfiable.
+	\end{itemize}
+\end{example}
+
+\newpage
+
+\begin{example}
+	Let 
+	$$S = \{\{a, \neg b, c\}, \{b, \neg c\}, \{a, c, \neg d\}, \{\neg b, \neg d\}, \{a, b, d\}, \{\neg a, d, b\}, \{b, \neg c, d\}, \{c, \neg c\}\} $$
+	this is cleaned into
+	$$S = \{\{a, \neg b, c\}, \{b, \neg c\}, \{a, c, \neg d\}, \{\neg b, \neg d\}, \{a, b, d\}, \{\neg a, d, b\} \} $$
+	\begin{itemize}
+		\item we pivot on $b$;
+		\item we make the $b$-free set
+		$$ \{ \{a, c, \neg d\} \} $$
+		\item we make the $b$-resolvents
+		$$ \{\{a, c, \neg c\}, \{a, c, d\}, \{a, \neg a, c, d\}, \{\neg c, \neg d\}, \{a, d, \neg d\}, \{\neg a, d, \neg d\} \} $$ 
+		\item we clean the set
+		$$ \{\{a, c, \neg d\}, \{a, c, d\}, \{\neg c, \neg d\} \} $$
+		\item we pivot on $c$;
+		\item we make the $c$-free set
+		$$ \varnothing $$
+		\item we make the $c$-resolvents
+		$$ \{ \{a, \neg d\}, \{a, d, \neg d\} \} $$
+		\item we clean the set
+		$$ \{ \{a, \neg d\} \} $$
+		\item we pivot on $a$;
+		\item we make the $a$-free set
+		$$ \varnothing $$
+		\item we make the $a$-resolvents
+		$$ \varnothing $$
+		\item we clean, obtaining
+		$$ \varnothing $$
+		\item $S$ is satisfiable.
+	\end{itemize}
+\end{example}
+
+\newpage
+
+\subsection{Model Building}
+
+Referring to the last example. We shall use the DPP proof to get a \textbf{satisfying assignment} for $S$.\\
+
+If a \textbf{letter} has \textbf{never been used as a pivot} in any step let us call it "\textbf{outsider}". To the outsiders we assign \textbf{whatever truth value}. So, in our earlier example $v(d) = 0$.\\
+
+Let us \textbf{substitute} the \textbf{values already assigned to each step}, proceeding \textbf{backwards from the last step} $\neq \emptyset$. So we start with:
+$$ S_2 = \{\{a, \neg d\}\} $$
+With $v(d)$ known, define $v(a)$ in order to satisfy $S_2$: $v(a) = 0$.\\
+
+Going backwards:
+$$ S_1 = \{\{a,c,d\}, \{\neg c, \neg d\}, \{a,c,\neg d\}\} $$
+Pivot of $S_1 \rightsquigarrow S_2$ is $c$. We now find a suitable $v(c)$ and looking at the first clause we can say that $v(c) = 1$
+
+Last step: 
+$$S_0 = \{\{a, \neg b,  c\}, \{b, \neg c\}, \{a, c, \neg d\}, \{\neg b, \neg d\}, \{a,b,d\}, \{\neg a, b, d\}\} $$
+The pivot was $b$. We need to chose $v(b)$, looking at the already satisfied ones we see that the choice must be $v(b) = 1$.\\
+
+\newpage
+
+\subsection{Termination}
+
+\begin{proof}
+	Let us display the DPP over input $S$ as the sequence of the outputs of the steps $DPP(S) = S_0, S_1, \, \dots \, , S_k$ with $S_0 = clean(S)$. \\
+	
+	$S_i$ is obtained from $S_{i-1}$ by one DPP step on pivot $q_i$.\\
+	
+	Observe that $S_i$ does not contain any occurrence of $q_i$ (as a propositional letter).\\
+	
+	After at most $k \leq n$ steps it holds that $Var(S_k) = \emptyset$ (there are no more letters).\\
+	
+	So, either $S_k = \{\square\}$ or $S_k = \emptyset$.\\
+\end{proof}
+
+We're removing letters at each step, after some time it must end.\\
+
+\newpage
+
+%End L17
+
+\subsection{Correctness and refutational completeness of DPP}
+
+\begin{theorem}
+	Correctness and (refutational) completeness of the DPP. \\
+	A finite set of clauses $S$ in the propositional letters $p_1, p_2, \, \dots \, , p_n$ is \textbf{UNSAT iff} within at most $n$ DPP steps $\square$ \textbf{is produced}. \\
+	
+	Alternatively, $S$ is \textbf{SAT iff} within at most $n$ DPP steps $\emptyset$ \textbf{is produced}.\\
+\end{theorem}
+
+This is takes a \textbf{linear number of steps}, takes $n$ steps, since we get rid of at least one letter at each step, but each step itself is not linear in time, so we, sadly, did not prove that $\mathcal{P} = \mathcal{NP}$.\\
+
+We call $k$ the last step of DPP on input $S$, obviously $k \leq n$ where $Var(s) \subseteq \{p_1 , \, \dots \, p_n\}$.\\
+
+\paragraph{To prove Correctness} one of two forms: 
+\begin{itemize}
+	\item If we reach $\square$, $S_k = \{\square\}$, then $S_0$ (first step, "cleaning" of $S$) is UNSAT
+	\item if $S_0$ is SAT then $S_k = \emptyset$
+\end{itemize}
+
+
+\paragraph{To prove Refutational completeness} one of two forms: 
+\begin{itemize}
+	\item If $S_0$ is UNSAT then $S_k = \{\square\}$
+	\item if $S_k = \emptyset$ then $S_0$ is SAT (we'll prove this form)
+\end{itemize}
+
+\nn
+
+\subsubsection{Correctness}
+If $S_k = \{\square\}$ then $S_0$ is UNSAT.\\
+
+\begin{proof}
+	It's just a \textbf{corollary of the correctness lemma}, since $S_i \models S_{i+1}$ then $S_0 \models \{\square\}$, that is $S_0$ is UNSAT.\\ 
+\end{proof}
+
+\newpage
+
+\subsubsection{Refutational Completeness}
+We have to prove that $S_k = \emptyset$ implies $S_0$ is SAT.\\
+
+%TODO FROM HERE
+
+
+
+
+
+
+
+
+Proof: By descending induction on $k$. We shall prove $S_i$ SAT for $i = k, k-1, \, \dots \, 1 , 0$.\\
+
+Base: $i=k$, $S_i = S_k = \emptyset$. By definition of $\emptyset$, this is SAT.\\
+
+Step: Assume $S_{i+1}$ is SAT, with the aim of proving $S_i$ SAT, too.\\
+Then we know that there is $\ta$ such that $v \models S_{i+1}$.\\
+We define two variants of $v$, $v^-,v^+: \mathcal{L} \rightarrow \{0,1\}$:
+* $v^+ (q_{i+1}) = 1$
+* $v^- (q_{i+1}) = 0$
+$v^+ (p) = v = v^- (p)$ for all other $p \in \mathcal{L}$, $p \neq p_{i+1}$.\\
+$p_{i+1}$ is the pivot in step $S_{i+1}$.\\
+
+We shall show that either $v^+ \models S_i$ or $v^- \models S_i$, that is, $S_i$ is SAT $(\dag)$.\\
+
+By contraditicon we asssume that $v^+ \not \models S_i$ and $v^- \not \models S_i$ $(\dag \dag)$.\\
+
+Than there are $C_1, C_2 \in S_i$ such that $v^+ \not \models C_1$ and $v^- \not \models C_2$.\\
+
+Key observation: $\neg q_{i+1} \in C_1$ and $q_{i+1} \notin C_1$ (note that $C_1$ is not trivial). For otherwise, if $q_{i+1} \in C_1$ (as a literal) then $v^+(C_1) = 1$ contradicting $(\dag \dag)$.\\
+Then $q_{i+1} \notin C_1$ (as a literal). If $\neg q_{i+1} \notin C_1$, too, then $C_1$ does not contain $q_{i+1}$, so $C_1 \in S_{i+1}$, then $v \models C_1$, but then $v^+ \models C_1$ (since $q_{i+1} \notin Var (C_1)$), reaching another contradiction of $(\dag \dag)$.\\
+
+Analogously $q_{i+1} \in C_2$ and $\neg q_{i+1} \notin C_2$ (noting that $C_2$ is not trivial).\\
+
+Then we can form the resolvent
+$$ D = \mathbb{R} (C_1, C_2; \neg q_{i+1}, q_{i+1}) $$
+and $D$ is not trivial since $C_1$ and $C_2$ are not.\\
+So $D \in q_{i+1}$-resolvents $\implies$ either $D \in S_{i+1}$ or there is $D' \in S_{i+1}$ and $D'$ subsumes $D$.\\
+In both cases $v \models D$.\\
+
+$v \models D$ implies $v^+ \models D$ and ($v^- \models D$), since ...
+%Complete
+
+We have reached in any case contradiction. We proved by contradiction that either $v^+ \models S_i$ or $v^- \models S_i$, that is $S_i$ SAT.\\
+%End of induction
+
+Then $S_0$ is SAT.
+%End proof
+
+
+**Remarks**
+Let $S$ be a finite set of clauses. Then $Var(S) \subseteq \{p_1, \, \dots \, , p_n\}$ for some $n \leq ||S||$.\\
+Then 
+$$DPP(S) = S_0, S_1, \, \dots \, , S_k
+%Complete
+$$
+with $k \leq n \leq ||S||$.\\
+
+If we can guarantee that $||S_i||$ is always polynomially bounded by the size of the input $||S||$ then the overall length of the DPP proof, $||S_0, \, \dots \, , S_k||$ would be polynomially short with respect to $||S||$.\\
+
+If the choice of the pivot at each step is polynomially short with respect to $||S||$ the overall time used by $DPP(S)$ would be polynomial with respect to $||S||$, too.\\
+
+There are fragments of CNF on which DPP runs on polynomial time. Notable examples: 
+* $2CNFSAT \in \mathcal{P}$ (also known as KROMSAT)
+* $HORNSAT \in \mathcal{P}$ (A clause is Horn iff it contains at most one positive literal)
+
+
+Haken: Every refutational (i.e., based on resolution) prook of the pigeon-hole-principle on $n$ pigeons $PHP_n$ will require at least $2^n$ steps (computational steps, in the computational model, Turing Machines in our case).\\
+
+$PHP_n$, we have:
+* $P$: pigeons
+* $H$: holes
+* $|H| = n$
+* $|P| = n+1$
+
+One more pigeons than holes.\\
+
+% # Side quest, eventualmente da completare
+
+Improvements on DPP: DPLL (Davis-Putnam-Loveland-Logemann).\\
+On input $S$ (finite set of clauses) **tries** to build a satisfying assignment by extending a partial assignment. Split rule: at a certain point assign at the pivot either 0 or 1, fork the possibilities for eventual backtracking.\\
+Saves space with respect to DPP, by using backtracking.\\
+
+Unit propagation: 
+* unit resoluzion: resolvents only among singletons and Clauses %Compl 
+* unit subsumption: if $L \in C \implies$ delete $C$ (if you're assuming $v(L) = 1$)
+
+
+Improvement on DPLL: CDCL: Conflict Driven Clause Learning
+
+DPLL $+$ non-chronological backtracking (backjumping). Building an implication graph while building the DPLL which is able to find conflict clauses (not satisfied by the partial assignment of the DPLL).\\
+
+Learn the clause: add a clause recording the conflict to the input and 
+Backtrack to the first choice that originated the conflict
+
+%Check, # Dai questa è un'altra side quest comunque
+
+%End of propositional logic
+
+First-Order Logic
+
+Introductory example: 
+If it rains ($p$) I take the umbrella ($q$) 
+I do not take the umbrella  ($\neg q$)
+***
+Therefore it does not rain
+
+This lies in propositional logic:
+$$ \{p \rightarrow q, \neg q\} \models \neg p $$
+Transform it into UNSAT
+$$ 
+%Complete
+$$
+DPP on
+$$
+%Complete, idk, wtf
+$$
+Outputs $\square$, so the thingy is UNSAT, then the first thingy is correct.\\
+
+Another one:
+
+Every man is mortal ($p$)
+Socrates is a man ($q$)
+***
+Therefore Socrates is a mortal ($r$)
+
+They are all atomic, we can't relate them using propositional logic, trying DPP on this is straight up dumb, starting from $\{p,q\} \models r$, obviously it goes to $\emptyset$. We need a more expressive language able to express these kind of concepts.\\
+
+To handle reasoning such as the syllogism about Socrates we must adopt richer (more expressive) language.\\
+
+Syntax: We enrich syntax by adding new kinds of symbols: 
+* Quantifiers
+* Predicate symbols
+* Function symbols (including constants)
+* Variables
+
+Semantics: We attach new meanings to new concepts, to assign a formal way to intepret the new "ingredients" of the language, with the aim of being able to express more refined aspects of the possible "worlds" that we want to model.\\
+
+Try to develop calculi fit to be automated , to (semi) decide problems like:
+Every man is mortal ($p$) 
+Socrates is a man ($q$)
+***
+Therefore Socrates is a mortal ($r$)
+-->
+$\forall x (U(x) \rightarrow M(x))$
+$U(s)$
+***
+M(s)
+
+%Explain it
+
+So 
+$$ \{\forall x (U(x) \rightarrow M(x)), U(s)\} \models^? M(s) $$
+But it will make sense after introducing syntax and semantics.\\
+
+Preprocessing, going in Normal Form, getting first-order clauses and another UNSAT problem
+$$ \{ \{\neg U(x), M(x)\}, \{U(s)\}, \{\neg M(s)\} \} \;\;\;\; UNSAT $$
+
+%Check name
+Herbrand theory: we may substitute $x$ with $s$ 
+$$
+%Write it 
+$$
+We can all cosider these propositional letters:
+$$ 
+%Complete
+$$
+Then we can just use resolution, showing that it's refutable and thus proving true the first statement.\\
+
+Every man is mortal 
+The father of every man is a man
+Socrates is a man
+***
+The father of Socrates is mortal
+
+%Additional layer, woooo
+$\forall x (U(x) \rightarrow M(x))$
+$\forall x (U(x) \rightarrow U(f(x)))$
+$U(s)$
+***
+$M(f(s))$
+
+Where the function $f$ represents a relation (father) to an element, Socrates $s$ in this case.\\
+
+%Pls basta
+
+$$ 
+\{ \{\neg U(x), M(x)\},
+\}
+%Complete
+$$
+Using herbrand's theory: we can use $s$ and $f(s)$, but also $f(f(s))$, $f(f(f(s)))$, \dots, there are infinitely many different substitutions. We need to find the "clever" one, not just any.\\
+In this case $x$ becomes $f(s)$
+$$
+%Complete
+$$
+
+% End L18
