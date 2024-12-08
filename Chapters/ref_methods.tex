@@ -704,199 +704,97 @@ If $S_k = \{\square\}$ then $S_0$ is UNSAT.\\
 \subsubsection{Refutational Completeness}
 We have to prove that $S_k = \emptyset$ implies $S_0$ is SAT.\\
 
-%TODO FROM HERE
+\begin{proof}
+	By descending induction on $k$. We shall prove $S_i$ SAT for $i = k, k-1, \, \dots \, 1 , 0$.
+	
+	\paragraph{Base:} $i=k$, $S_i = S_k = \emptyset$. By definition of $\emptyset$, this is SAT.
+	
+	\paragraph{Step:} Assume $S_{i+1}$ is SAT, with the aim of proving $S_i$ SAT, too.\\
+	Then we know that there is $\ta$ such that $v \models S_{i+1}$.\\
+	We define two variants of $v$, $v^-,v^+: \mathcal{L} \rightarrow \{0,1\}$:
+	\begin{itemize}
+		\item $v^+ (q_{i+1}) = 1$
+		\item $v^- (q_{i+1}) = 0$
+	\end{itemize}
+	$v^+ (p) = v = v^- (p)$ for all other $p \in \mathcal{L}$, $p \neq p_{i+1}$.\\
+	$p_{i+1}$ is the pivot in step $S_{i+1}$.\\
+	
+	We shall show that either $v^+ \models S_i$ or $v^- \models S_i$, that is, $S_i$ is SAT $(\dag)$.\\
+	
+	By contradiction we assume that $v^+ \not \models S_i$ and $v^- \not \models S_i$ $(\dag \dag)$.\\
+	Than there are $C_1, C_2 \in S_i$ such that $v^+ \not \models C_1$ and $v^- \not \models C_2$.
+	
+	\paragraph{Key observation:} $\neg q_{i+1} \in C_1$ and $q_{i+1} \notin C_1$ (note that $C_1$ is not trivial). For otherwise, if $q_{i+1} \in C_1$ (as a literal) then $v^+(C_1) = 1$ contradicting $(\dag \dag)$.\\
+	Then $q_{i+1} \notin C_1$ (as a literal). If $\neg q_{i+1} \notin C_1$, too, then $C_1$ does not contain $q_{i+1}$, so $C_1 \in S_{i+1}$, then $v \models C_1$, but then $v^+ \models C_1$ (since $q_{i+1} \notin Var (C_1)$), reaching another contradiction of $(\dag \dag)$.\\
+	
+	Analogously $q_{i+1} \in C_2$ and $\neg q_{i+1} \notin C_2$ (noting that $C_2$ is not trivial).\\
+	
+	Then we can form the resolvent
+	$$ D = \mathbb{R} (C_1, C_2; \neg q_{i+1}, q_{i+1}) $$
+	and $D$ is not trivial since $C_1$ and $C_2$ are not.\\
+	So $D \in q_{i+1}$-resolvents $\implies$ either $D \in S_{i+1}$ or there is $D' \in S_{i+1}$ and $D'$ subsumes $D$.\\
+	In both cases $v \models D$.\\
+	
+	$v \models D$ implies $v^+ \models D$ and ($v^- \models D$), since $q_{i+1} \notin Var(D)$, $\implies v^+ (C_1) = 1$ ($v^- (C_2) = 1$), contradicting $(\dag \dag)$.\\
+	
+	We have reached in any case contradiction. We proved by contradiction that either $v^+ \models S_i$ or $v^- \models S_i$, that is $S_i$ SAT (end of induction).\\
+	
+	Then $S_0$ is SAT.\\
+\end{proof}
+
+\newpage
 
 
-
-
-
-
-
-
-Proof: By descending induction on $k$. We shall prove $S_i$ SAT for $i = k, k-1, \, \dots \, 1 , 0$.\\
-
-Base: $i=k$, $S_i = S_k = \emptyset$. By definition of $\emptyset$, this is SAT.\\
-
-Step: Assume $S_{i+1}$ is SAT, with the aim of proving $S_i$ SAT, too.\\
-Then we know that there is $\ta$ such that $v \models S_{i+1}$.\\
-We define two variants of $v$, $v^-,v^+: \mathcal{L} \rightarrow \{0,1\}$:
-* $v^+ (q_{i+1}) = 1$
-* $v^- (q_{i+1}) = 0$
-$v^+ (p) = v = v^- (p)$ for all other $p \in \mathcal{L}$, $p \neq p_{i+1}$.\\
-$p_{i+1}$ is the pivot in step $S_{i+1}$.\\
-
-We shall show that either $v^+ \models S_i$ or $v^- \models S_i$, that is, $S_i$ is SAT $(\dag)$.\\
-
-By contraditicon we asssume that $v^+ \not \models S_i$ and $v^- \not \models S_i$ $(\dag \dag)$.\\
-
-Than there are $C_1, C_2 \in S_i$ such that $v^+ \not \models C_1$ and $v^- \not \models C_2$.\\
-
-Key observation: $\neg q_{i+1} \in C_1$ and $q_{i+1} \notin C_1$ (note that $C_1$ is not trivial). For otherwise, if $q_{i+1} \in C_1$ (as a literal) then $v^+(C_1) = 1$ contradicting $(\dag \dag)$.\\
-Then $q_{i+1} \notin C_1$ (as a literal). If $\neg q_{i+1} \notin C_1$, too, then $C_1$ does not contain $q_{i+1}$, so $C_1 \in S_{i+1}$, then $v \models C_1$, but then $v^+ \models C_1$ (since $q_{i+1} \notin Var (C_1)$), reaching another contradiction of $(\dag \dag)$.\\
-
-Analogously $q_{i+1} \in C_2$ and $\neg q_{i+1} \notin C_2$ (noting that $C_2$ is not trivial).\\
-
-Then we can form the resolvent
-$$ D = \mathbb{R} (C_1, C_2; \neg q_{i+1}, q_{i+1}) $$
-and $D$ is not trivial since $C_1$ and $C_2$ are not.\\
-So $D \in q_{i+1}$-resolvents $\implies$ either $D \in S_{i+1}$ or there is $D' \in S_{i+1}$ and $D'$ subsumes $D$.\\
-In both cases $v \models D$.\\
-
-$v \models D$ implies $v^+ \models D$ and ($v^- \models D$), since ...
-%Complete
-
-We have reached in any case contradiction. We proved by contradiction that either $v^+ \models S_i$ or $v^- \models S_i$, that is $S_i$ SAT.\\
-%End of induction
-
-Then $S_0$ is SAT.
-%End proof
-
-
-**Remarks**
-Let $S$ be a finite set of clauses. Then $Var(S) \subseteq \{p_1, \, \dots \, , p_n\}$ for some $n \leq ||S||$.\\
-Then 
-$$DPP(S) = S_0, S_1, \, \dots \, , S_k
-%Complete
-$$
-with $k \leq n \leq ||S||$.\\
-
-If we can guarantee that $||S_i||$ is always polynomially bounded by the size of the input $||S||$ then the overall length of the DPP proof, $||S_0, \, \dots \, , S_k||$ would be polynomially short with respect to $||S||$.\\
-
-If the choice of the pivot at each step is polynomially short with respect to $||S||$ the overall time used by $DPP(S)$ would be polynomial with respect to $||S||$, too.\\
+\begin{remark}
+	Let $S$ be a finite set of clauses. Then $Var(S) \subseteq \{p_1, \, \dots \, , p_n\}$ for some $n \leq ||S||$.\\
+	Then 
+	$$DPP(S) = S_0, S_1, \, \dots \, , S_k = \begin{cases}
+		\{\square\}& \implies S \;\;\; UNSAT \\
+		\emptyset & \implies S \;\;\; SAT
+	\end{cases}
+	$$
+	with $k \leq n \leq ||S||$.\\
+	
+	If we can guarantee that $||S_i||$ is always \textbf{polynomially bounded} by the size of the input $||S||$ then the overall length of the DPP proof, $||S_0, \, \dots \, , S_k||$ would be \textbf{polynomially short with respect to} $||S||$.\\
+	
+	If the \textbf{choice of the pivot} at each step is \textbf{polynomially short} with respect to $||S||$ the \textbf{overall time} used by $DPP(S)$ would be \textbf{polynomial with respect to} $||S||$, too.\\
+\end{remark}
 
 There are fragments of CNF on which DPP runs on polynomial time. Notable examples: 
-* $2CNFSAT \in \mathcal{P}$ (also known as KROMSAT)
-* $HORNSAT \in \mathcal{P}$ (A clause is Horn iff it contains at most one positive literal)
+\begin{itemize}
+	\item $2CNFSAT \in \mathcal{P}$ (also known as KROMSAT)
+	\item $HORNSAT \in \mathcal{P}$ (A clause is Horn iff it contains at most one positive literal)
+\end{itemize}
 
+%Haken: Every refutational (i.e., based on resolution) proof of the pigeon-hole-principle on $n$ pigeons $PHP_n$ will require at least $2^n$ steps (computational steps, in the computational model, Turing Machines in our case).\\
+%
+%$PHP_n$, we have:
+%\begin{itemize}
+%	\item $P$: pigeons
+%	\item $H$: holes
+%	\item $|H| = n$
+%	\item $|P| = n+1$
+%\end{itemize}
+%
+%One more pigeons than holes.\\
+%
+%% # Side quest, eventualmente da completare
 
-Haken: Every refutational (i.e., based on resolution) prook of the pigeon-hole-principle on $n$ pigeons $PHP_n$ will require at least $2^n$ steps (computational steps, in the computational model, Turing Machines in our case).\\
-
-$PHP_n$, we have:
-* $P$: pigeons
-* $H$: holes
-* $|H| = n$
-* $|P| = n+1$
-
-One more pigeons than holes.\\
-
-% # Side quest, eventualmente da completare
-
-Improvements on DPP: DPLL (Davis-Putnam-Loveland-Logemann).\\
-On input $S$ (finite set of clauses) **tries** to build a satisfying assignment by extending a partial assignment. Split rule: at a certain point assign at the pivot either 0 or 1, fork the possibilities for eventual backtracking.\\
+\paragraph{Improvements on DPP: DPLL (Davis-Putnam-Loveland-Logemann):} On input $S$ (finite set of clauses) \textbf{tries} to build a satisfying assignment by \textbf{extending a partial assignment}. Split rule: at a certain point assign at the pivot either 0 or 1, \textbf{fork the possibilities for eventual backtracking}.\\
 Saves space with respect to DPP, by using backtracking.\\
 
 Unit propagation: 
-* unit resoluzion: resolvents only among singletons and Clauses %Compl 
-* unit subsumption: if $L \in C \implies$ delete $C$ (if you're assuming $v(L) = 1$)
+\begin{itemize}
+	\item unit resolution: resolvents only among singletons and Clauses $\mathbb{R} (\{L\}, C, L, \overline L) = C \setminus \{\overline{L}\}$
+	\item unit subsumption: if $L \in C \implies$ delete $C$ (if you're assuming $v(L) = 1$)
+\end{itemize}
 
+\paragraph{Improvement on DPLL: CDCL: Conflict Driven Clause Learning:} DPLL with \textbf{non-chronological backtracking} (backjumping). Building an implication graph while building the DPLL which is able to find conflict clauses (not satisfied by the partial assignment of the DPLL).\\
 
-Improvement on DPLL: CDCL: Conflict Driven Clause Learning
-
-DPLL $+$ non-chronological backtracking (backjumping). Building an implication graph while building the DPLL which is able to find conflict clauses (not satisfied by the partial assignment of the DPLL).\\
-
-Learn the clause: add a clause recording the conflict to the input and 
-Backtrack to the first choice that originated the conflict
+Learn the clause: add a clause recording the conflict to the input and backtrack to the first choice that originated the conflict
 
 %Check, # Dai questa è un'altra side quest comunque
 
 %End of propositional logic
 
-First-Order Logic
-
-Introductory example: 
-If it rains ($p$) I take the umbrella ($q$) 
-I do not take the umbrella  ($\neg q$)
-***
-Therefore it does not rain
-
-This lies in propositional logic:
-$$ \{p \rightarrow q, \neg q\} \models \neg p $$
-Transform it into UNSAT
-$$ 
-%Complete
-$$
-DPP on
-$$
-%Complete, idk, wtf
-$$
-Outputs $\square$, so the thingy is UNSAT, then the first thingy is correct.\\
-
-Another one:
-
-Every man is mortal ($p$)
-Socrates is a man ($q$)
-***
-Therefore Socrates is a mortal ($r$)
-
-They are all atomic, we can't relate them using propositional logic, trying DPP on this is straight up dumb, starting from $\{p,q\} \models r$, obviously it goes to $\emptyset$. We need a more expressive language able to express these kind of concepts.\\
-
-To handle reasoning such as the syllogism about Socrates we must adopt richer (more expressive) language.\\
-
-Syntax: We enrich syntax by adding new kinds of symbols: 
-* Quantifiers
-* Predicate symbols
-* Function symbols (including constants)
-* Variables
-
-Semantics: We attach new meanings to new concepts, to assign a formal way to intepret the new "ingredients" of the language, with the aim of being able to express more refined aspects of the possible "worlds" that we want to model.\\
-
-Try to develop calculi fit to be automated , to (semi) decide problems like:
-Every man is mortal ($p$) 
-Socrates is a man ($q$)
-***
-Therefore Socrates is a mortal ($r$)
--->
-$\forall x (U(x) \rightarrow M(x))$
-$U(s)$
-***
-M(s)
-
-%Explain it
-
-So 
-$$ \{\forall x (U(x) \rightarrow M(x)), U(s)\} \models^? M(s) $$
-But it will make sense after introducing syntax and semantics.\\
-
-Preprocessing, going in Normal Form, getting first-order clauses and another UNSAT problem
-$$ \{ \{\neg U(x), M(x)\}, \{U(s)\}, \{\neg M(s)\} \} \;\;\;\; UNSAT $$
-
-%Check name
-Herbrand theory: we may substitute $x$ with $s$ 
-$$
-%Write it 
-$$
-We can all cosider these propositional letters:
-$$ 
-%Complete
-$$
-Then we can just use resolution, showing that it's refutable and thus proving true the first statement.\\
-
-Every man is mortal 
-The father of every man is a man
-Socrates is a man
-***
-The father of Socrates is mortal
-
-%Additional layer, woooo
-$\forall x (U(x) \rightarrow M(x))$
-$\forall x (U(x) \rightarrow U(f(x)))$
-$U(s)$
-***
-$M(f(s))$
-
-Where the function $f$ represents a relation (father) to an element, Socrates $s$ in this case.\\
-
-%Pls basta
-
-$$ 
-\{ \{\neg U(x), M(x)\},
-\}
-%Complete
-$$
-Using herbrand's theory: we can use $s$ and $f(s)$, but also $f(f(s))$, $f(f(f(s)))$, \dots, there are infinitely many different substitutions. We need to find the "clever" one, not just any.\\
-In this case $x$ becomes $f(s)$
-$$
-%Complete
-$$
-
-% End L18
+\newpage

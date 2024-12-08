@@ -1,0 +1,100 @@
+\chapter{First-Order Logic}
+
+Introductory example: 
+\begin{itemize}
+	\item If it rains ($p$) I take the umbrella ($q$) 
+	\item I do not take the umbrella  ($\neg q$)
+	\\ \bline
+	\item Therefore it does not rain
+\end{itemize}
+
+This lies in \textbf{propositional logic}:
+$$ \{p \rightarrow q, \neg q\} \models \neg p $$
+We can transform it into UNSAT and by using DPP we can see that it outputs $\square$, so the thing is UNSAT, so we confirmed that our example is correct.\\
+
+Another, different, example:
+\begin{itemize}
+	\item Every man is mortal ($p$)
+	\item Socrates is a man ($q$)
+	\\ \bline
+	\item Therefore Socrates is a mortal ($r$)
+\end{itemize}
+They are all atomic, we \textbf{can't relate them using propositional logic}, trying DPP on this is just dumb, starting from $\{p,q\} \models r$, obviously it goes to $\emptyset$. We \textit{need a more expressive language} able to express these kind of concepts.\\
+To handle reasoning such as the syllogism about Socrates we must adopt richer (more expressive) language.\\
+
+\paragraph{Syntax:} We'll enrich syntax by adding \textbf{new} kinds of \textbf{symbols}: 
+\begin{itemize}
+	\item Quantifiers
+	\item Predicate symbols
+	\item Function symbols (including constants)
+	\item Variables
+\end{itemize}
+
+\paragraph{Semantics:} We attach \textbf{new meanings} to new concepts, to assign a formal way to interpret the new "ingredients" of the language, with the aim of being able to express more refined aspects of the possible "worlds" that we want to model.\\
+
+\newpage
+
+Try to develop \textbf{calculi fit to be automated} , to (semi) decide problems like the earlier syllogism, which can be \textbf{formalized} as:
+\begin{itemize}
+	\item $\forall x (U(x) \rightarrow M(x))$
+	\item $U(s)$
+	 \\ \bline
+	\item $M(s)$
+\end{itemize}
+For every element $x$ of the group $U$ (men), the element is also in group $M$ (mortal). So if $s$ (Socrates) is in $U$, then $s$ is in $M$.\\
+
+So 
+$$ \{\forall x (U(x) \rightarrow M(x)), U(s)\} \models^? M(s) $$
+But it will make sense after introducing syntax and semantics.\\
+
+%TODO From here
+%I'm tired and I don't care enough
+
+
+
+
+
+
+Preprocessing, going in Normal Form, getting first-order clauses and another UNSAT problem
+$$ \{ \{\neg U(x), M(x)\}, \{U(s)\}, \{\neg M(s)\} \} \;\;\;\; UNSAT $$
+
+%Check name
+Herbrand theory: we may substitute $x$ with $s$ 
+$$
+%Write it 
+$$
+We can all consider these propositional letters:
+$$ 
+%Complete
+$$
+Then we can just use resolution, showing that it's refutable and thus proving true the first statement.\\
+
+Every man is mortal 
+The father of every man is a man
+Socrates is a man
+***
+The father of Socrates is mortal
+
+%Additional layer, woooo
+$\forall x (U(x) \rightarrow M(x))$
+$\forall x (U(x) \rightarrow U(f(x)))$
+$U(s)$
+***
+$M(f(s))$
+
+Where the function $f$ represents a relation (father) to an element, Socrates $s$ in this case.\\
+
+%Pls basta
+
+$$ 
+\{ \{\neg U(x), M(x)\},
+\}
+%Complete
+$$
+Using herbrand's theory: we can use $s$ and $f(s)$, but also $f(f(s))$, $f(f(f(s)))$, \dots, there are infinitely many different substitutions. We need to find the "clever" one, not just any.\\
+In this case $x$ becomes $f(s)$
+$$
+%Complete
+$$
+
+% End L18
