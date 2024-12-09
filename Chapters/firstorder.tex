@@ -47,54 +47,59 @@ So
 $$ \{\forall x (U(x) \rightarrow M(x)), U(s)\} \models^? M(s) $$
 But it will make sense after introducing syntax and semantics.\\
 
-%TODO From here
-%I'm tired and I don't care enough
-
-
-
-
-
-
 Preprocessing, going in Normal Form, getting first-order clauses and another UNSAT problem
 $$ \{ \{\neg U(x), M(x)\}, \{U(s)\}, \{\neg M(s)\} \} \;\;\;\; UNSAT $$
 
-%Check name
-Herbrand theory: we may substitute $x$ with $s$ 
-$$
-%Write it 
-$$
+Herbrand's theory: we may substitute $x$ with $s$ 
+$$ \{ \{\neg U(s), M(s)\}, \{U(s)\}, \{\neg M(s)\} \} \;\;\;\; UNSAT $$
 We can all consider these propositional letters:
-$$ 
-%Complete
+$$ \{\{\neg p, q\}, \{p\}, \{\neg q\}\} \;\;\;\; PROP \; UNSAT $$
+Then we can just use resolution, showing that it's refutable and thus proving true the first statement.
 $$
-Then we can just use resolution, showing that it's refutable and thus proving true the first statement.\\
+\AxiomC{$p$}
+\AxiomC{$\neg p q$}
+\BinaryInfC{$q$}
+\AxiomC{$\neg q$}
+\BinaryInfC{$\square$}
+\DisplayProof
+$$
 
-Every man is mortal 
-The father of every man is a man
-Socrates is a man
-***
-The father of Socrates is mortal
+\newpage
 
-%Additional layer, woooo
-$\forall x (U(x) \rightarrow M(x))$
-$\forall x (U(x) \rightarrow U(f(x)))$
-$U(s)$
-***
-$M(f(s))$
+Adding \textbf{another layer}:
+\begin{itemize}
+	\item Every man is mortal 
+	\item The father of every man is a man
+	\item Socrates is a man
+	\\ \bline
+	\item The father of Socrates is mortal
+\end{itemize}
 
-Where the function $f$ represents a relation (father) to an element, Socrates $s$ in this case.\\
-
-%Pls basta
+This can be \textbf{formalized} into
+\begin{itemize}
+	\item $\forall x (U(x) \rightarrow M(x))$
+	\item $\forall x (U(x) \rightarrow U(f(x)))$
+	\item $U(s)$
+	\\ \bline
+	\item $M(f(s))$
+\end{itemize}
+Where the function $f$ represents a \textbf{relation} (being father) \textbf{to an element}, Socrates $s$ in this case.\\
 
 $$ 
-\{ \{\neg U(x), M(x)\},
-\}
-%Complete
-$$
-Using herbrand's theory: we can use $s$ and $f(s)$, but also $f(f(s))$, $f(f(f(s)))$, \dots, there are infinitely many different substitutions. We need to find the "clever" one, not just any.\\
+\{ \{\neg U(x), M(x)\}, \{\neg U(x), U(f(x))\}, \{U(s)\}, \{\neg M(f(s))\}\} \;\;\;\; UNSAT $$
+Using Herbrand's theory: we can use $s$ and $f(s)$, but also $f(f(s))$, $f(f(f(s)))$, \dots, there are \textbf{infinitely many different substitutions}. We need to find the "\textit{clever}" one, not just any.\\
+
 In this case $x$ becomes $f(s)$
 $$
-%Complete
+\AxiomC{$\neg U(f(s)), M(f(s))$}
+\AxiomC{$\neg M(f(s))$}
+\BinaryInfC{$\neg U(f(s))$}
+\AxiomC{$\neg U(s), U(f(s))$}
+\BinaryInfC{$\neg U(s)$}
+\AxiomC{$U(s)$}
+\BinaryInfC{$\square$}
+\DisplayProof
 $$
+Which means UNSAT.\\
 
 % End L18
