@@ -103,3 +103,163 @@ $$
 Which means UNSAT.\\
 
 % End L18
+
+\newpage
+
+\section{Syntax of First Order Logic}
+
+At propositional level, we considered a unique language (the set of propositional letters $\mathcal{L}$). From this we derived the set $\fl$ of propositional formulas.\\
+
+In First order logic we'll consider \textbf{several distinct languages} ("elementary languages", in the sense that it has to do with elements).\\
+
+\begin{definition}
+	An \textbf{elementary language} $\mathcal{L} = (\mathcal{P}, \mathcal{F}, \alpha, \beta)$, where: 
+	\begin{itemize}
+		\item $\mathcal{P}$ is the set of all "\textbf{predicates}" ($\mathcal{P} \neq \emptyset$)
+		\item $\mathcal{F}$ is the set of symbols, called "\textbf{function symbols}" ($\mathcal{P} \cap \mathcal{F} = \emptyset$)
+		\item arity functions: 
+		$$
+		\begin{cases}
+			\alpha: \mathcal{P} & \rightarrow \mathbb{N} \\
+			\beta: \mathcal{F} & \rightarrow \mathbb{N}\\
+		\end{cases}
+		$$
+		$\alpha$ assigns the "\textbf{arity}" of \textbf{each} $p \in \mathcal{P}$, $\beta$ assigns the "\textbf{arity}" of \textbf{each} $f \in \mathcal{F}$.\\
+	\end{itemize}
+\end{definition}
+	
+"\textbf{Ingredients}" common to \textbf{every elementary language}:
+\begin{itemize}
+	\item $\mathcal{V}$: an \textbf{infinite set of symbols} ($\mathcal{V} \cap \mathcal{P} \neq \emptyset$, $\mathcal{V} \cap \mathcal{F} \neq \emptyset$), called "\textbf{individual variables}"
+	\item \textbf{Connectives:} $\wedge, \vee, \neg, \rightarrow$ (and all derived connectives $\bot, \top, \leftrightarrow, \, \dots$)
+	\item \textbf{Quantifiers:} $\forall, \exists$
+\end{itemize}
+
+The formulas of the formal language $\fl$ (formulas over the elementary language $\mathcal{L}$) will be defined from $\mathcal{L}: (\mathcal{P}, \mathcal{F}, \alpha, \beta)$ together with the common "ingredients".\\
+	
+\paragraph{Key stipulation:} If "$=$" $\in \mathcal{P}$, then $\alpha(=) = 2$ (its \textbf{arity is always 2}), and the language with $= \in \mathcal{P}$ is called a \textbf{language with identity}.\\
+
+\subsection{Formulas in $\fl$}
+The definition of formulas of $\fl$ ($F \in \fl$) is given \textbf{by layers} and \textbf{inductively} on each one of the two layers.\\
+
+\paragraph{First layer:} Terms of $\mathcal{L}$ (also called $\mathcal{L}$-terms).\\
+
+\begin{definition}
+	Let $\mathcal{L}: (\mathcal{P}, \mathcal{F}, \alpha, \beta)$. Then the \textbf{set $\mathcal{T}_\mathcal{L}$ of $\mathcal{L}$-terms} is defined as follows:
+	\begin{itemize}
+		\item \textbf{Base:}
+		\begin{itemize}
+			\item Every $x \in \mathcal{V}$ ($x$ is an \textbf{individual variable}, is an $\mathcal{L}$-term, $x \in \mathcal{T}_\mathcal{L}$)
+			\item Every $C \in \mathcal{F}$, such that $\beta(c) =0$ is an $\mathcal{L}$-term ($c \in \mathcal{T}_\mathcal{L}$, it's a \textbf{constant symbol})
+		\end{itemize} 
+		\item \textbf{Step:} If $f \in \mathcal{F}$ is such that $\beta(f) = n > 0$ and $t_1, t_2, \, \dots \, , t_n \in \mathcal{T}_\mathcal{L}$ then $f(t_1, t_2, \, \dots \, , t_n)$ is an $\mathcal{L}$-term ($\in \tl$)
+	\end{itemize} 
+	Nothing else is an $\mathcal{L}$-term.\\
+\end{definition}
+
+\newpage
+
+\paragraph{Second Layer:} $\mathcal{L}$-formulas.\\
+
+\begin{definition}
+	Let $\mathcal{L}: (\mathcal{P}, \mathcal{F}, \alpha, \beta)$. The \textbf{set $\fl$ of $\mathcal{L}$-formulas} is defined as follows: 
+	\begin{itemize}
+		\item \textbf{Base:} if $P \in \mathcal{P}$ and $\alpha(P) = n$, and $t_1, t_2, \, \dots \, , t_n \in tn$ then $P(t_1, t_2, \, \dots \, , t_n)$ is an $\mathcal{L}$-formula called Atomic (cannot split an atomic formula into another formula, only into terms)
+		\item Step:
+		\begin{itemize}
+			\item If $A,B \in \fl$ then $(A \wedge B), (A \vee B), (\neg A), (A \rightarrow B)$ are $\mathcal{L}$-formulas.
+			\item if $A \in \fl$ and $x \in \mathcal{V}$ then $(\forall x A)$ and $(\exists x A)$ are $\mathcal{L}$-formulas $(\in \fl)$
+		\end{itemize} 
+	\end{itemize}
+	Nothing else is an $\mathcal{L}$-formula.\\
+\end{definition}
+
+Exercise: Provide a notion of "certificate" for $\mathcal{L}$-terms and $\mathcal{L}$-formulas analogous to the notion of $\mathcal{L}$-constructions for propositional logic.\\
+
+\begin{remark}
+	For simplicity's sake, we shall \textbf{omit parentheses} when there is \textbf{no risk of ambiguity}.\\
+\end{remark}
+
+\begin{terminology}
+	An $\mathcal{L}$-term is called "\textbf{ground}" if it is \textbf{built without using variables}.\\
+\end{terminology}
+
+\begin{terminology}
+	An occurrence of a variable $x \in \mathcal{V}$ in a formula $A \in \fl$ is "\textbf{bound}" ("constrained") if it occurs in a subformula $B \preceq A$ of the form $(\forall x C)$ or $(\exists x C)$ ($x$ is in the scope of some quantifier, i.e., it "can be seen" from a $\forall$ or $\exists$).
+\end{terminology}
+
+\begin{terminology}
+	If an occurrence of $x \in \mathcal{V}$ in $A \in \fl$ is not bound then $x$ \textbf{occurs free} in $A$.\\
+	A \textbf{variable} $x \in \mathcal{V}$ occurs free in $A \in fl$ if some of its occurrences are free (otherwise the variable is bound).\\
+	We denote with $FV(A)$ the \textbf{set of variables occurring free} in $A$.\\
+	%Add example, from "Notice".\\
+\end{terminology}
+
+\begin{definition}
+	An \textbf{$\mathcal{L}$-sentence} or \textbf{closed $\mathcal{L}$-formula} is an $\mathcal{L}$-formula \textbf{without free variables} ($FV(A) = \emptyset$).\\
+\end{definition}
+
+With the notation: $A [\sfrac{t}{x}]$ where $A \in \fl$, $x \in \mathcal{V}$, $t \in \tl$ we mean the $\mathcal{L}$-formula obtained by \textbf{replacing} simultaneously all and only the \textbf{free occurrences} of $x$ with $t$.\\
+
+\newpage
+
+\section{Semantics of First order logic}
+
+To provide an \textbf{interpretation of an $\mathcal{L}$-sentence} (whether it's true or false) in every given "circumstance" (or "possible world") we have to: 
+\begin{enumerate}
+	\item Fix and formalize the \textbf{notion of} "\textbf{circumstance}" (or "possible world", in the propositional case, a "possible world" is formalized just as a truth value assignment)
+	\item Formalize the \textbf{interpretation of $\mathcal{L}$-sentences} (and (ground) $\mathcal{L}$-terms) in every formal "possible world".
+\end{enumerate}
+
+\paragraph{Idea (Tarskian semantics):} The \textbf{truth} is the \textbf{correspondence with the state of things}, e.g., the sentence "The snow is white" is true (in a given world) iff the actual snow is actually white.\\
+We have a universe of discourse (our world) in which there are some elements (snow) with a certain property (is white). In another universe there can be an element with the same name without the same properties.\\
+
+\subsection{$\mathcal{L}$-Structures}
+Let $\lang$. An \textbf{$\mathcal{L}$-structure} is a \textbf{pair} $\mathcal{A} = (A, I)$, where $A$ is just a set, called "\textbf{universe of discourse}" (or "\textbf{domain}"). It is \textbf{required} $A \neq \emptyset$. And $I$ is a function called "\textbf{Interpretation}", defined as follows: 
+\begin{itemize}
+	\item for all $P \in \mathcal{P}$, $\alpha (P) = n$
+	$$ I(P) \subseteq A^n $$
+	$I(P)$ is an $n$-ary relation, that is, it's a set of $n$-tuples of elements of $A$.\\
+	
+	\item For all $f \in \mathcal{F}$, $\beta(f) = n$
+	$$ I(f):  A^n \rightarrow A $$
+	$I(f)$ is a function from the set of all $n$-tuples of elements of $A$ to $A$.\\
+\end{itemize}
+
+\begin{remark}
+	If $c \in \mathcal{F}$, $\beta (c) = 0$, if $c$ is a constant, then 
+	$$ I(c) : A^0 \rightarrow A$$
+	but $A^0 = \{f: \emptyset \rightarrow A \} = \{\emptyset\}$.\\
+	It takes the set containing only the $\emptyset$ and fixes an element of $A$ to it. \\
+	
+	The "left side" ($\emptyset$ part) carries no information, so we identify $f:A^0 \rightarrow A$ with the element $f(\emptyset)$, $I(c) \in A$.\\
+\end{remark}
+
+\begin{remark}
+	If $P \in \mathcal{P}$, $\alpha (P) = 0$
+	$$ I(P) \subset A^0 \implies I(P) \subseteq \{\emptyset\}$$
+	So $I(P)$ can be $\emptyset$ or $A^0 = \{\emptyset\}$ (we can call them 0 and 1 respectively).\\
+	
+	To each relation we can associate its characteristic function $\chi$
+	$$ \chi_{I(Q)}$$
+	%TODO I have no idea what it should be
+\end{remark}
+
+\begin{remark}
+	Let $\lang$ be a language with identity, $"=" \in \mathcal{P}$, $\alpha(=) = 2$. The semantics of "$=$" is fixed. \\
+	Let $\mathcal{A} = (A,I)$ be an $\mathcal{L}$-structure, then 
+	$$ I (=) \subseteq A^2 \;\;\;\;\; I (=) := \{ (a,a): a \in A\} $$
+	Each element is in relation with only itself, this is the meaning of "$=$".\\
+	We shall see later that $(I(a), I(b)) \in I(=)$ iff $I(a) = I(b)$ (assuming $a,b \in \tl$).\\
+\end{remark}
+
+%Define the semantics of $\mathcal{L}$-sentences (and ground $\mathcal{L}$-terms) in every $\mathcal{L}$-structure. We proceed by layers
+%* layer for (ground) $\mathcal{L}$-terms
+%* layer of $\mathcal{L}$-sentences ($\mathcal{L}$-formulas)
+%
+%and inductively on each of these two layers.\\
+
+%We have to capture the Tarskian "idea"
+%Complete
+
+% End L19
