@@ -366,7 +366,7 @@ By induction, for each ground $\la$-term, the interpretation of $t$ is guarantee
 
 \newpage
 
-\subsubsection{Interpretation of $la$-sentences}
+\subsubsection{Interpretation of $\la$-sentences}
 
 Inductively we define $\overline{\mathcal{A}} \models F$ ($\overline{\mathcal{A}}$ "modes"/"renders true" $F$) for each $F \in \la$-sentence.\\
 
@@ -390,7 +390,12 @@ At the end of the definition each sentence is either \textit{true} (x)or \textit
 	\end{array}
 	$$
 	
-	\item Step (again): $\overline{\mathcal{A}} \models \forall x F$ iff for all $a \in A$, $\overline{\mathcal{A}} \models F [\sfrac{\overline a}{x}]$. $\overline{\mathcal{A}} \models \exists x F$ iff there is $a \in A$ such that $\overline{\mathcal{A}} \models F [\sfrac{\overline a}{x}]$.\\
+	\item Step (again): 
+	\begin{itemize}[label=]
+		\item $\overline{\mathcal{A}} \models \forall x F$ iff for all $a \in A$, $\overline{\mathcal{A}} \models F [\sfrac{\overline a}{x}]$
+		\item $\overline{\mathcal{A}} \models \exists x F$ iff there is $a \in A$ such that $\overline{\mathcal{A}} \models F [\sfrac{\overline a}{x}]$
+	\end{itemize}
+	\nn
 \end{itemize}
 
 By induction, for every $\la$-sentence $F$ the \textbf{truth value of} $F$ in the structure $\overline{\mathcal{A}}$ is \textbf{completely determined}, either $\overline{\mathcal{A}} \models F$ (x)or $\overline{\mathcal{A}} \not \models F$.\\
@@ -458,8 +463,8 @@ Interpretation of $\mathcal{L}$-terms (also non-ground terms):
 		\vdots 
 	\end{cases}
 	$$
-	\item $\mathcal{A} \models_v \forall x \in F$ iff for all $a \in A$ $\mathcal{A} \models_{v [a/x]} F$.\\
-	\item $\mathcal{A} \models_v \exists x \in F$ iff for all $a \in A$ $\mathcal{A} \models_{v [a/x]} F$
+	\item $\mathcal{A} \models_v \forall x \in F$ iff for all $a \in A$ $\mathcal{A} \models_{v [\frac{a}{x}]} F$.\\
+	\item $\mathcal{A} \models_v \exists x \in F$ iff for all $a \in A$ $\mathcal{A} \models_{v [\frac{a}{x}]} F$
 \end{itemize}
 
 \newpage
