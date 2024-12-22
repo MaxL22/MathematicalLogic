@@ -484,3 +484,396 @@ iff for all $v: \mathcal{V} \rightarrow A$: $\mathcal{A} \models_v F$ .\\
 %\end{itemize}
 
 % End L20 
+%
+%Exercise: $\lang$, $\lstruc$ be an $\mathcal{L}$-structure. $\mathcal{P} = ... $%Complete
+%
+%Find $\mathcal{A}$ such that $\mathcal{A} \not \models (\exists x P(x)) \rightarrow P(c)$.\\
+%$\mathcal{A} = (A, I(P), I(c))$.\\
+%
+%$\mathcal{A} \models \exists x P(x) \rightarrow P(c)$ iff $\overline{\mathcal{A}} \models \exists x P(x) \rightarrow P(c)$.\\
+%
+%%Complete exercise.\\
+%
+%%Exercises, Idk, should I do that? 
+
+\section{Notions, Terminology}
+
+\begin{definition}
+	An $\mathcal{L}$-sentence $F$ is called a \textbf{logical truth}, or is a valid sentence, \textbf{iff} for all $\mathcal{L}$-structures $\mathcal{A}$ we have that $\mathcal{A} \models F$, in this case we write $\models F$ (same notation for tautologies at propositional level, it's kind of like a tautology, but not exactly).\\
+\end{definition}
+
+There are some differences with propositional tautologies, for example $c=c$ are just propositional letters, but using the fixed semantics of $=$ we can say that this is a valid sentence, same with $\forall x(x=x)$.\\ %Check
+There are logic truths which, strictly speaking, are not tautologies.\\
+Examples: 
+\begin{itemize}
+	\item $(\forall x P(x)) \rightarrow (\forall x P(x))$ is valid and is a tautology, since it's in the form $A \rightarrow A$
+	\item $(\forall x P(x)) \rightarrow (\exists x P(x))$, it's valid and a logical truth, but not a tautology at the propositional level, to say that it's valid we have to reason at first order
+\end{itemize}
+
+\nn
+
+\begin{definition}
+	\textbf{Logical equivalence:} Given the $\mathcal{L}$-sentences $A,B$ we say that $A$ is logically equivalent with $B$, written as $A \equiv B$, \textbf{iff} $A$ and $B$ have (exactly) the same models, i.e., for all $\mathcal{L}$-structures $\mathcal{A}$, $\mathcal{A} \models A$ iff $\mathcal{A} \models B$.\\
+	
+	Equivalently, $A \equiv B$ \textbf{iff} $\models (A \rightarrow B) \wedge (B \rightarrow A)$ (same as $(\models (A \leftrightarrow B)$).\\
+\end{definition}
+
+
+\begin{definition}
+	\textbf{Equisatisfiability:} Given the $\mathcal{L}$-sentences $A$, $B$. We say that $A$ equisat $B$ \textbf{iff} ($A$ has a model iff $B$ has a model). Similar to propositional logic.\\
+\end{definition}
+
+\begin{definition}
+	An \textbf{$\mathcal{L}$-theory} $\Gamma$ is just a \textbf{set of $\mathcal{L}$-sentences}. If $\Gamma$ is an $\mathcal{L}$-theory and $\mathcal{A} = (A,I)$ is an $\mathcal{L}$-structure we say that $\mathcal{A}$ is a model of the theory $\Gamma$ (models/renders true/satisfies $\Gamma$), written as $\mathcal{A} \models \Gamma$ iff $\mathcal{A} \models \gamma$ for all $\gamma \in \Gamma$.\\
+\end{definition}
+
+\begin{definition}
+	An $\mathcal{L}$-theory $\Gamma$ is \textbf{satisfiable} iff $\Gamma$ has at least one model, i.e., there is at least one $\mathcal{A}$ such that $\mathcal{A} \models \Gamma$.\\
+	Otherwise $\Gamma$ is \textbf{unsatisfiable}.\\
+\end{definition}
+
+\begin{definition}
+	Let $\Gamma$be an $\mathcal{L}$-theory and $F$ eb an $\mathcal{L}$-sentence. Then $F$is \textbf{logical consequence} of $\Gamma$ ($\Gamma \models F$) iff $F$ is true in every model of $\Gamma$, i.e., if $\mathcal{A} \models \Gamma$ then $\mathcal{A} \models F$.\\
+\end{definition}
+
+We shall be concerned in a ascertain whether of not, for a given $\Gamma \subseteq \fl$, $F \in \fl$.\\
+
+\newpage
+
+%
+% TODO FROM HERE
+%
+%
+
+
+
+Examples of $\mathcal{L}$-theories
+Order, Partial Order, $R$ of arity 2 in a language with identity
+
+$\Gamma_{po}$: three axioms: %Complete
+* reflexivity ...
+* antisymmetry ...
+* transitivity ...
+
+$(\mathbb{N}, \leq) \models \Gamma_{po}$, %wtf, complete
+
+Total order ... %Complete
+
+%Wtf
+Theory of equivalence relation, with it's axioms ...
+$$ 
+%Compl
+$$
+
+$\Gamma_{eq}$: theory of equivalence relations.\\
+
+To exapand it to ...:
+* For all $f \in \mathcal{F}$, with arity $\beta(f) = n$
+%Complete
+$R$ is a congruence with respect to all function symbols.\\
+
+* For all $P \in \mathcal{P} \setminus \{R\}$, with $\alpha (P) = n$
+%Similar to above, complete
+congruence wrt to predicate symbols.\\
+
+* Every model of $\Gamma_{eq} \cup \{1,2\}$ is a congruence with respect to any $f \in \mathcal{F}$ and any $P \in \mathcal{P} \setminus \{R\}$.\\
+
+Group theory
+%Check, compl
+A group is an algebraic structure with a binary operation which is associative, and such that every element is invertible.\\
+
+First formulation: To satisfy the group $\Gamma_{G1}$
+* associativity: $\forall x \forall y \forall z ((x \star y)\star z = (x \star (y \star z))$
+* Invertible: $\forall x (x \star e = x \wedge e \star x = e)$
+* and consequently $\forall x (x \star x^{-1} = e \wedge x^{-1} \star x = e)$
+
+The operation $Op(x,y)$ for $x \star y$:
+* %Complete with the box
+
+So 
+$$ () \Gamma_{G1} \; \text{ iff } \; G \; \text{ is a group} 
+%Complete
+$$
+For example: %Complete 
+$$ $$
+Addition, with the unary $-$ as inverse on the integers it's a group.\\
+%...
+
+All these examples, without having asked for it, satisfy another axiom: commutativity
+$$ \forall x \forall y \;\;\; x \star y = y \star x $$
+And adding commutativity $\Gamma_{G1} \cup \{comm\}$ makes it the theory of abellian groups.\\
+
+Second formulation of groups
+$$
+\Gamma_{G2} := \begin{cases} \forall x \forall y \forall z \;\;\; & ((x \star y)\star z = (x \star (y \star z)) \\
+	\forall x & (x \star e = x) \wedge (e \star x = x) \\
+	\forall x \exists y & (x \star y = e \wedge y \star x = e)
+\end{cases}
+$$
+The difference is in the inverse, we're just stating that the inverse always exists instead of defining an inverse operation. We end up with the same groups, but we need to be more careful with the language chosen.\\
+
+Examples: 
+$$ 
+%Complete
+$$
+
+$$ (\mathbb{Z}, +, -, 0) \models^? \Gamma_{G2} $$
+Yes, it's a group under this definition, even if it doesn't require the unary $-$ as symbol for $()^{-1}$.\\
+While
+$$ (\mathbb{Z}, +, \_+1, 0) \models \Gamma_{G2} $$
+Since it's a theory by the second definition, it's an $\mathcal{L}_{G_2}$-theory (doesn't use the $\_+1$), and
+$$ (\mathbb{Z}, +, -, 0) \not \models \Gamma_{G_1} $$
+Since it does not have a correct inverse operation it's not a $\mathcal{L}_{G_1}$-theory.\\
+%Change all G2 with G_2 and G1 with G_1
+
+%Example data structure: Stack?
+
+**Peano Arithmetic**
+
+Axiomatize arithmetics. We call Peano Arithmetics the language: 
+$$ 
+%Complete
+$$
+
+Where $s$ is the successor ($+1$).\\
+
+There are 2 axioms for the successor functions: 
+* $\forall x \neg (0 = s(x))$: 0 is not a successor of anything
+* $\forall x \forall y (s(x) = s(y) \rightarrow x = y)$: the successor function $s$ is injective
+
+These axioms charachterize the succession of natural numbers
+%tikz for the arrow thingy?
+
+We also need to axiomatize operations:
+* $\forall x$ $x + 0 = x$
+* $\forall x \forall y$ $x + s(y) = s(x+y)$
+* $\forall x$ $x \times 0 = 0$
+* $\forall x \forall y$ $x \times s(y) = x + (x \times y)$
+
+We introduce a schema o
+For any formula $F$ with at most $FV(F) \subseteq \{x\}$ then axiom 7
+$$ (F [0/x] \wedge \forall x (F \rightarrow F[s(x)/x])) \rightarrow \forall x F $$
+Is an induction schema for any possible axiom.\\
+We can simplify notation: 
+$$ 
+(F(0) \wedge \forall x (F(x) \rightarrow)) %Complete
+$$
+
+We can use this schema to prove any property of the naturals, e.g., no element is the successor of itself: 
+$$ \forall x \neg (x = s(x)) $$
+but this is true only if we add the induction scheme to our theory.\\
+This contains infinitely many axioms, one for each choice of $F$.\\
+
+Our Goal
+Similarly to propositional logic, we're trying to decide whether $\Gamma \models^? A$.\\
+
+If $\Gamma$ is infinite we can use first-order compactness theorem to study finite approximations of $\Gamma$.\\
+
+If $\Gamma = \{\gamma_1, \, \dots \, , \gamma_n\}$ is a finite theory. Then $\Gamma \models A$ iff $\gamma_1 \wedge \gamma_2 \wedge \, \dots \, \wedge \gamma_u \wedge \neg A$ is UNSAT (in the first-order meaning, i.e., if it doesn't have a model).\\
+
+We need to develop a method to (semi-)decide whether a first-order sentence is UNSAT.\\
+
+***
+%Resolution?
+First Step: put the sentence in a suitable normal form.\\
+**Prenex Normal Form PNF**
+An $\mathcal{L}$-sentence is in PNF iff it is of the form $Q_1 x_1 \, \dots \, Q_n x_n M$, where each $Q_i$ is one of the quantifiers, $Q_i \in \{\forall, \exists\}$ and $M$ is an $\mathcal{L}$-formula free of quantifiers (called Matrix). Notice that $FV(M) \subseteq \{x_1, \, \dots \, , x_n\}$, otherwise it's not a sentence.\\
+
+TL;DR: all quantifiers are in front of the sentence.\\
+
+Fact: Every $\mathcal{L}$-sentence $A$ is logically equivalent (has the same models, true under the same $\mathcal{L}$-structures) to an $\mathcal{L}$-sentence $\in PNF$
+$$ A \equiv A^P, \; A^P \in PNF $$
+
+%Sketch of proof
+$A^P$ is built (in polynomial time with respect to $||A||$) using iteratively the following notable logical equivalences: 
+% In the next episode
+
+%End L21
+
+List of equivalences. \\
+
+More than the strict necessary amount.\\
+
+Facts: Let $P$ be any $\mathcal{L}$-formula and let $z$ be a variable not occurring in $P$ ($z$ is "new").\\
+
+1. Renaming
+$$ 
+\begin{cases}
+	\exists x P & \equiv \exists z P[z/x] \\
+	\forall x P & \equiv \forall z P [z/x]
+\end{cases}
+$$
+
+2. De Morgan: we can see $\forall$ as a form of generalized conjunction and $\exists$ as a generalized disjunction:
+$$
+\begin{cases}
+	\neg \forall x P & \equiv \exists x \neg P \\
+	\neg \exists x P & \equiv \forall x \neg P \\
+	\forall x P & \equiv \neg\exists x \neg P \\
+	\exists x P & \equiv \neg \forall x \neg P 
+\end{cases}
+$$
+
+Proof. Of 1 case. Starting from an $\mathcal{L}$-structure $\mathcal{A} \models \neg \forall x P$:
+* iff $\mathcal{A} \not \models \forall x P$ (by the semantics of negation)
+* iff it's not the case that for all $a \in A$, $\mathcal{A} \models P [\overline a/ x]$ (by the semantics of $\forall$)
+* iff not for all $a \in A$, 
+* iff
+* iff
+* %Complete
+
+So this is the same as saying
+$$ \mathcal{A} \models \exists x \neg P \implies \neg \forall x P \equiv \exists x \neg P $$
+Which is what we needed to prove.\\
+
+3. Redundant quantification and exchange
+$$ \forall x \forall y P \equiv \forall y \forall x P $$
+$$ \exists x \exists y P \equiv \exists y \exists x P $$
+$$ \forall x P \equiv P \; \text{ if } \; x \notin FV(P) $$
+$$ \exists x P \equiv P \; \text{ if } \; x \notin FV(P) $$
+%Maybe put into cases
+
+N.B.: Generally $\forall x \exists y P \not \equiv \exists y \forall x P$ (unless they're both free variables).\\
+
+4. Quantifiers shifting
+$$ 
+\begin{cases}
+	\forall x (P_1 \wedge P_2) & \equiv \forall x P_1 \wedge \forall x P_2 \\
+	\exists x (P_1 \vee P_2) & \equiv \exists P_1 \vee \exists P_2 \\
+	\forall x (P_1 \vee P_2) & \equiv \forall x P_1 \vee P_2 \;\; \text{ if } x \notin FV(P_2) \\
+	\exists (P_1 \wedge P_2) & \equiv \exists x P_1 \wedge P_2 \;\; \text{ if } x \notin FV(P_2) \\ 
+\end{cases}
+$$
+
+In general: 
+$$
+%Complete 2 thingys
+$$
+%Counterexample after, kind of a side quest
+
+5. When in doubt, substitute
+$$ 
+\begin{cases}
+	Q_1 x P_1 \vee Q_2 x P_2 & \equiv Q_1 x Q_2 z (P_1 \vee P_2 [z/x]) \\
+	%Complete
+\end{cases}
+$$
+
+6. Indirect implication
+$$ 
+\begin{cases}
+	\forall x P \rightarrow Q & \equiv \exists x (P \rightarrow Q) \\
+	\exists x P \rightarrow Q & \equiv \forall x (P \rightarrow Q) \\
+	Q \rightarrow \forall x P & \equiv \forall x (P \rightarrow Q) \\
+	Q \rightarrow \exists x P & \equiv \exists x (P \rightarrow Q) \\
+\end{cases}
+$$
+
+Given an $\mathcal{L}$-sentence $A$, there is a polinomially short (in $||A||$) sequence 
+$$ A = A_0 \xrightarrow[\equiv]{} A_1 \xrightarrow[\equiv]{} \, \dots \, \xrightarrow[\equiv]{} A_u, \;\;\;\; A_u \in PNF $$
+%Complete
+
+%Exercise? 
+
+**Skolemization**
+We're up to the point in which:
+$\mathcal{L}$-sentence $A$, $A \xrightarrow[\equiv]{} A^P \in PNF$.\\
+$A^P$ is of the form $ $ %Complete
+
+Now we want to get rid of all occurrences of $\exists$ from $A^P$.\\
+
+This process is clled Skolemization (From Thoralf Skolem).\\
+
+An $\mathcal{L}$-sentence $A \in PNF$ is in Skolem Normal Form SNF iff it does not contain any occurrences of $\exists$; they are universal sentences, this is also called universal normal form, skolemization is the process of obtaining universal sentences.\\
+
+Algorithm of Skolemization: $A \in PNF$, $A$ has the form
+$$ A: Q_1 x_1 \, \dots \, Q_n x_n M $$
+We can transform this, preserving equisatisfiability
+$$ A^S \in SNF $$
+Where $A^S$ is in the form
+$$ A^S: \forall x_1 \, \dots \, \forall x_m M' $$
+In general $n \neq m$ ($m \leq n$) and $M$ and $M'$ are distinct formulas.\\
+
+$$ A \xrightarrow[\equiv]{} A^P \xrightarrow[\text{equisat}]{} (A^P)^S \in SNF $$
+We're preserving just equisatisfiability.\\
+
+Let us recall the two axiomatizations of the theory of groups: 
+* $\mathcal{A} = (A,I)$, $\mathcal{A} \models ...$ %Complete
+* ...
+
+Consider 
+$$ \mathcal{A} \models \forall x_1 \, \dots \, \forall x_n \exists y B $$
+And that is the outer most occurrence of $\exists$, the whole formula is $\in PNF$, $B$ may contain other quantifiers.\\
+
+iff for all $(a_1, \, \dots \, , a_n) \in A^n$ there is at least one $b \in A$ such that 
+$$ \mathcal{A} \models B[\overline a_1/x_1][\overline a_2 / x_2] \, \dots \, [\overline a_n/ x_n] [\overline b / y] $$
+so there is a function $f(a_1, \, \dots \, , a_n) = b$ $(\dag)$.\\
+
+Skolemization: 
+* Introducing a **new** function symbol $\overline f$ of arity $n$
+* Interpreting the new symbol $\overline f$ in the function defined by the collection of all statements $(\dag)$, for all $(a_1, \, \dots \, , a_n) \in A^n$
+
+We changed the language, so we have $\mathcal{A}'$, a structure obtained from $\mathcal{A}$, in the expanded language
+$$ \mathcal{A}' \models \forall x_1 \, \dots \, \forall x_n B [\overline f(x_1, \, \dots \, , x_n)/y] $$
+
+
+TL;DR: Skolemization
+
+Given $A: \forall x_1 \forall x_2 \, \dots \, \forall x_n \exists y B$, with that being the outermost occurrence of $\exists$.\\
+
+Without loss of generality, we assume: 
+* $A \in PNF$
+* for the sake of simplicity in $A$ there are no occurrences of redundant quantifiers ($B$ may contain quantifiers but there are no occurrences of $\forall x_i \exists x_i$ or $\forall y \exists y$)
+* In $B$ may occur other quantifiers 
+
+Then we define 
+$$A^S := \forall x_1 \forall x_2 \, \dots \, \forall x_n B[\overline f (x_1, \, \dots \, , x_n) / y] $$
+where $\overline f$ is a **new** function symbol of arity $n$.\\
+
+$$\mathcal{L} \xrightarrow[\text{expand}]{} \mathcal{L}^S: (\mathcal{P}, \mathcal{F} \cup \{\overline f\}, \alpha, \beta^S)$$
+Where $\beta^S$ extends $\beta$ () %Complete
+
+Let $\mathcal{A}$ be an $\mathcal{L}$-structure $\mathcal{A} = (U, I)$. Then we write $(\mathcal A, h)$ for the $\mathcal L^S$ structure $(\mathcal A, h) = (U, I_n)$ such that $I_n$ extends $I$ ($I(g) = I_n(g)$ for all $g \in \mathcal F$) by setting $I_n (\overline f) = h$, for $h: U^n \rightarrow U$.\\
+Said otherwise: $h$ is the interpretation ... %Complete
+
+Notice: Every $\mathcal L^S$-structure arises as a structure of the form $(\mathcal A, h)$ for some $\mathcal L$-structure $\mathcal A = (U,I)$ and some function $h: U^n \rightarrow U$.\\
+
+Example?: 
+* $A \not \equiv A^S$, $P \in \mathcal P$, with $\alpha (P) = 1$, $A: \exists x P(x)$
+To define $A^S$
+$$ A^S := P[\overline c/x] $$
+we replace the quantifier with  a function of arity equal to the number of quantifiers before that, in this case it's a new constant.\\
+
+%Check
+Then by $(\dag)$ %Complete
+...
+We need to show that 
+$$ \models A^S \rightarrow A$$
+
+%Whole page missing, idk what it says, do I really care? 
+
+We now have to show that $A$ and $A^S$ are equisatisfiable, we do this by showing that if $(\mathcal A, h) \models A$ then there is $g: U^n \rightarrow U$ (in general $g \neq h$) such that $(\mathcal A, g) \models A^S$.\\
+
+Notice that, for each function $\ell: U^n \rightarrow U$, $(\mathcal A, \ell) \models A$ implies $\mathcal A \models A$ since $A$ does not contain occurences of $\overline f$.
+
+$(\mathcal A, h) \models A$ then $\mathcal A \models A$ (remember that $A: \forall x_1 \, \dots \, \forall x_n \exists y B$).\\
+$\mathcal A \models A$ iff for all $(a_1, \, \dots \, , a_n) \in U^n$ there is $b \in U$ such that $\mathcal A \models B[\overline a_1/x_1] \, \dots \, [\overline a_n/x_n][\overline b/y]$.\\
+
+Put $g(a_1, \, \dots \, , a_n) := b$ and call it $(\dag)$.\\
+The collection of all $(\dag)$s ... %Complete
+
+Let us check that indeed (remebering $A^S: \forall x_1 \, \dots \, \forall x_n B[\overline f (x_1 \, \dots \, x_n)/ y]$) $(\mathcal A, g) \models A^S$ iff for all $(a_1, \, \dots \, , a_n) \in U^n$, %Complete Porcodio
+...
+
+Recall that 
+$$I_g(\overline f (\overline a_1, \, \dots \, , \overline a_n)) = g(a_1, \, \dots \, , a_n) = b = I(\overline b) = I_g (\overline b) $$
+by $(\dag)$.\\
+
+iff for all $()$ %Complete porcodio x2 
+...
+
+But since $\mathcal A \models A$ (by our assumption) then $(\mathcal A, g) \models A^S$.\\
+
+%And it keeps going, Complete
+
+% End L22
