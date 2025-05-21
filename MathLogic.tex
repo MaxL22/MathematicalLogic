@@ -1,14 +1,18 @@
+
 \title{Mathematical Logic}
-\author{Massimo Perego}
+\author{Massimo Perego, Omar Masri}
 \date{\normalsize\vspace{-1ex} Last updated: \today}
 
 \documentclass[12pt, oneside]{book}
 % \usepackage[a4paper, left=2cm, top=2cm, bottom=2cm, right=2cm]{geometry}
 %\usepackage[paperwidth=210mm, paperheight=297mm, left=2cm, top=2cm, bottom=2cm, right=2cm]{geometry}
-\usepackage[paperwidth=280mm, paperheight=297mm, total={210mm, 297mm}, left=2cm, top=2cm, bottom=2cm, right=9cm, marginparsep=1cm, marginparwidth=7cm]{geometry}
+\usepackage[paperwidth=330mm, paperheight=297mm, left=2cm, top=2cm, bottom=2cm, right=14cm, marginparsep=1cm, marginparwidth=12cm]{geometry}
+
+\setcounter{secnumdepth}{2}
 
 \usepackage{enumitem} 	    			%enumerate, itemize
-\usepackage{graphicx} 					%File grafici 
+\usepackage{graphicx} 					%File grafici
+\graphicspath{ {./img/} }
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage{amsmath}  					%Roba Matematica
@@ -43,6 +47,25 @@
 \usepackage{cleveref}
 \usepackage{fancyhdr}
 \usepackage{tcolorbox}
+\usepackage{stmaryrd}
+\usepackage{yhmath}
+\usepackage{cancel}
+\usepackage{bussproofs}
+\tcbuselibrary{skins, raster}
+\newtcolorbox{mybox}[2][]{
+  enhanced,
+  attach boxed title to top left={yshift=-3mm, yshifttext=-1mm, xshift=5mm},
+  coltext=black,
+  colframe=black,
+  colback=white,
+  fonttitle=\bfseries,
+  colbacktitle=white,
+  coltitle=black,
+  boxed title style={
+    colframe=black,
+    },
+  title=#2,
+  #1}
 
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}[section]
@@ -54,6 +77,8 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{remark}[theorem]{Remark}
+\newtheorem{osservation}[theorem]{Osservation}
+\newtheorem{terminology}[theorem]{Terminology}
 
 \newtheorem*{theorem*}{Theorem}
 \newtheorem{fact*}{Fact}
@@ -64,7 +89,8 @@
 \newtheorem*{definition*}{Definition}
 \newtheorem*{example*}{Example}
 \newtheorem*{remark*}{Remark}
-\newtheorem*{claim}{Claim}
+\newtheorem*{osservation*}{Osservation}
+\newtheorem*{terminology*}{Terminology}
 
 \usepackage{titlesec}
 \titleformat{\chapter}{\LARGE\bfseries}{{\fontsize{25}{25}\selectfont\textreferencemark}\; }{0em}{}
@@ -106,10 +132,14 @@
 	\newcommand{\fln}{\mathcal{F}_\mathcal{L}^{(n)}}
 	\newcommand{\hfln}{\hat{\mathcal{F}}_\mathcal{L}^{(n)}}
 	\newcommand{\fle}{\sfrac{\mathcal{F}_\mathcal{L}}{\equiv}}
-	\newcommand{\nand}{\text{ nand }}
+	\newcommand{\nand}{\text{ NAND }}
 	\newcommand{\pr}{\preceq_p}
 	\newcommand{\np}{\mathcal{NP}}
 	\newcommand{\pnp}{\mathcal{P} = \mathcal{NP}}
+    \newcommand{\lang}{\mathcal{L} = (\mathcal{P}, \mathcal{F}, \alpha, \beta)}
+	\newcommand{\tl}{\mathcal{T}_\mathcal{L}}
+	\newcommand{\lstruc}{\mathcal{A} = (A,I)}
+	\newcommand{\la}{\mathcal{L}_\mathcal{A}}
 
     \newcommand{\smallvspace}{\vspace{0.15cm}}
 	
@@ -128,5 +158,13 @@
     \input{blank}
 
     \input{Chapters/Complexity}
+
+    \input{blank}
+
+    \input{Chapters/Refutational_Methods}
+
+    \input{blank}
+
+    \input{Chapters/FirstOrder}
 
 \end{document}

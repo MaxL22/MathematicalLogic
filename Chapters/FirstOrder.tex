@@ -1,0 +1,929 @@
+% TeX root = ../MathLogic.tex
+
+\chapter{First-Order Logic}
+
+Introductory example:
+\begin{itemize}
+	\item Every man is mortal ($p$)
+	\item Socrates is a man ($q$)
+	\\ \bline
+	\item Therefore Socrates is a mortal ($r$)
+\end{itemize}
+They are all atomic, we \textbf{can't relate them using propositional logic}.
+To handle reasoning such as the syllogism about Socrates we must adopt richer (more expressive) language.
+
+\paragraph{Syntax:} We'll enrich syntax by adding \textbf{new} kinds of \textbf{symbols}:
+\begin{itemize}
+	\item Quantifiers
+	\item Predicate symbols
+	\item Function symbols (including constants)
+	\item Variables
+\end{itemize}
+
+\paragraph{Semantics:} We attach \textbf{new meanings} to new concepts, to assign a formal way to interpret the new "ingredients" of the language, with the aim of being able to express more refined aspects of the possible "worlds" that we want to model.
+
+Try to develop \textbf{calculi fit to be automated} , to (semi) decide problems like the earlier syllogism.
+
+\marginnote{$\leftarrow$ (ci sono degli esempi sulle slide se vuoi sono un po' inutili)}
+
+\vspace{-0.3cm}
+
+\section{Syntax of First Order Logic}
+
+At propositional level, we considered a unique language (the set of propositional letters $\mathcal{L}$). From this we derived the set $\fl$ of propositional formulas.
+
+In First order logic we'll consider several distinct languages called \textbf{elementary languages}
+
+\begin{definition}
+	An \textbf{elementary language} $\mathcal{L} = (\mathcal{P}, \mathcal{F}, \alpha, \beta)$, where:
+	\begin{itemize}
+		\item $\mathcal{P}$ is the set of all "\textbf{Predicates}" ($\mathcal{P} \neq \emptyset$)
+		\item $\mathcal{F}$ is the set of symbols, called "\textbf{Function symbols}" ($\mathcal{P} \cap \mathcal{F} = \emptyset$)
+		\item Arity functions:
+		$$
+		\begin{cases}
+			\alpha: \mathcal{P} & \rightarrow \mathbb{N} \qquad \text{assigns the \textbf{arity} of \textbf{each }} p \in \mathcal{P} \\
+			\beta: \mathcal{F} & \rightarrow \mathbb{N} \qquad \text{assigns the \textbf{arity} of \textbf{each }} f \in \mathcal{F} \\
+		\end{cases}
+		$$
+	\end{itemize}
+\end{definition}
+
+"\textbf{Ingredients}" common to every elementary language:
+\begin{itemize}
+	\item $\mathcal{V}$: an infinite set of symbols ($\mathcal{V} \cap \mathcal{P} \neq \emptyset$, $\mathcal{V} \cap \mathcal{F} \neq \emptyset$), called "\textbf{individual variables}"
+	\item \textbf{Connectives:} $\wedge, \vee, \neg, \rightarrow$ (and all derived connectives $\bot, \top, \leftrightarrow, \, \dots$)
+	\item \textbf{Quantifiers:} $\forall, \exists$
+\end{itemize}
+
+The formulas of the formal language $\fl$ (formulas over the elementary language $\mathcal{L}$) will be defined from $\mathcal{L}: (\mathcal{P}, \mathcal{F}, \alpha, \beta)$ together with the common "ingredients".
+
+\paragraph{Key stipulation:} If $=$ $\in \mathcal{P}$, then $\alpha(=) = 2$ (its \textbf{arity is always 2}), and the language with $= \ \in \mathcal{P}$ is called a \textbf{language with identity}.
+
+\subsection{Formulas in $\fl$}
+The definition of formulas of $\fl$ ($F \in \fl$) is given \textbf{by layers} and \textbf{inductively} on each one of the two layers.
+
+\paragraph{First layer:} $\mathcal{L}$-terms.
+
+\begin{definition}
+	Let $\mathcal{L}: (\mathcal{P}, \mathcal{F}, \alpha, \beta)$. Then the \textbf{set $\mathcal{T}_\mathcal{L}$ of $\mathcal{L}$-terms} is defined as follows:
+	\begin{itemize}
+		\item \textbf{Base:}
+		\begin{itemize}
+			\item Every $x \in \mathcal{V}$ ($x$ is an \textbf{individual variable}, is an $\mathcal{L}$-term, $x \in \mathcal{T}_\mathcal{L}$)
+			\item Every $C \in \mathcal{F}$, such that $\beta(c) = 0$ is an $\mathcal{L}$-term ($c \in \mathcal{T}_\mathcal{L}$, it's a \textbf{constant symbol})
+		\end{itemize}
+		\item \textbf{Step:} If $f \in \mathcal{F}$ is such that $\beta(f) = n > 0$ and $t_1, t_2, \, \dots \, , t_n \in \mathcal{T}_\mathcal{L}$ then $f(t_1, t_2, \, \dots \, , t_n)$ is an $\mathcal{L}$-term ($\in \tl$)
+	\end{itemize}
+	Nothing else is an $\mathcal{L}$-term.\\
+\end{definition}
+
+\paragraph{Second Layer:} $\mathcal{L}$-formulas.
+
+\begin{definition}
+	Let $\mathcal{L}: (\mathcal{P}, \mathcal{F}, \alpha, \beta)$. The \textbf{set $\fl$ of $\mathcal{L}$-formulas} is defined as follows:
+	\begin{itemize}
+		\item \textbf{Base:} if $P \in \mathcal{P}$ and $\alpha(P) = n$, and $t_1, t_2, \, \dots \, , t_n \in \mathcal{T}_{\mathcal{L}}$ then $P(t_1, t_2, \, \dots \, , t_n)$ is an $\mathcal{L}$-formula called Atomic (cannot split an atomic formula into another formula, only into terms)
+		\item \textbf{Step}:
+		\begin{itemize}
+			\item If $A,B \in \fl$ then $(A \wedge B), (A \vee B), (\neg A), (A \rightarrow B)$ are $\mathcal{L}$-formulas.
+			\item If $A \in \fl$ and $x \in \mathcal{V}$ then $(\forall x A)$ and $(\exists x A)$ are $\mathcal{L}$-formulas $(\in \fl)$
+		\end{itemize}
+	\end{itemize}
+	Nothing else is an $\mathcal{L}$-formula.\\
+\end{definition}
+
+\marginnote{Exercise: Provide a notion of "certificate" for $\mathcal{L}$-terms and $\mathcal{L}$-formulas analogous to the notion of $\mathcal{L}$-constructions for propositional logic.}[-1cm]
+
+\vspace{-0.6cm}
+
+\begin{remark}
+	For simplicity's sake, we shall omit parentheses when there is \textbf{no risk of ambiguity}.
+\end{remark}
+
+\begin{terminology}
+	An $\mathcal{L}$-term is called "\textbf{ground}" if it is built without using variables.
+\end{terminology}
+
+\begin{terminology}
+	An occurrence of a variable $x \in \mathcal{V}$ in a formula $A \in \fl$ is "\textbf{bound}" ("constrained") if it occurs in a subformula $B \preceq A$ of the form $(\forall x C)$ or $(\exists x C)$ ($x$ is in the scope of some quantifier, i.e., it "can be seen" from a $\forall$ or $\exists$).
+\end{terminology}
+
+\begin{terminology}
+	If an occurrence of $x \in \mathcal{V}$ in $A \in \fl$ is not bound then $x$ \textbf{occurs free} in $A$. A \textbf{variable} $x \in \mathcal{V}$ \textbf{occurs free} in $A \in \fl$ if some of its occurrences are free (otherwise the variable is bound). We denote with $FV(A)$ the \textbf{set of variables occurring free} in $A$. \marginnote{$\leftarrow$ ($FV((\forall x (R(x,y)) \vee P(X)) = \{x,y\}, FV(\forall x(R(x,y))) = \{y\}$)}
+\end{terminology}
+
+\begin{definition}
+	An \textbf{$\mathcal{L}$-sentence} or \textbf{closed $\mathcal{L}$-formula} is an $\mathcal{L}$-formula \textbf{without free variables} ($FV(A) = \emptyset$).
+\end{definition}
+
+\begin{definition}
+With the notation: $A [\sfrac{t}{x}]$ where $A \in \fl$, $x \in \mathcal{V}$, $t \in \tl$ we mean the $\mathcal{L}$-formula obtained by \textbf{replacing} simultaneously all and only the \textbf{free occurrences} of $x$ with $t$.
+\end{definition}
+
+\newpage
+
+\section{Semantics of First order logic}
+
+To provide an \textbf{interpretation of an $\mathcal{L}$-sentence} (whether it's true or false) in every given "circumstance" (or "possible world") we have to:
+\begin{enumerate}
+	\item Fix and formalize the \textbf{notion of} "\textbf{circumstance}" (or "possible world", in the propositional case, a "possible world" is formalized just as a truth value assignment)
+	\item Formalize the \textbf{interpretation of $\mathcal{L}$-sentences} (and (ground) $\mathcal{L}$-terms) in every formal "possible world".
+\end{enumerate}
+
+\paragraph{Idea (Tarskian semantics):} The \textbf{truth} is the \textbf{correspondence with the state of things}, e.g., the sentence:
+$$
+\text{"The snow is white" is true (in a given world) iff the actual snow is actually white.}
+$$
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{img21.png}
+\end{figure}
+
+\subsection{$\mathcal{L}$-Structures}
+Let $\lang$. An \textbf{$\mathcal{L}$-structure} is a \textbf{pair} $\mathcal{A} = (A, I)$, where $A$ is just a set, called "\textbf{universe of discourse}" (or "\textbf{domain}"). It is \textbf{required} $A \neq \emptyset$. And $I$ is a function called "\textbf{Interpretation}", defined as follows:
+\begin{itemize}
+	\item For all $P \in \mathcal{P}$, $\alpha (P) = n$
+	$$ I(P) \subseteq A^n $$
+	$I(P)$ is an $n$-ary relation, that is, it's a set of $n$-tuples of elements of $A$.\\
+
+	\item For all $f \in \mathcal{F}$, $\beta(f) = n$
+	$$ I(f):  A^n \rightarrow A $$
+	$I(f)$ is a function from the set of all $n$-tuples of elements of $A$ to $A$.\\
+\end{itemize}
+
+\begin{remark}
+	If $c \in \mathcal{F}$, $\beta (c) = 0$, if $c$ is a constant, then
+	$$ I(c) : A^0 \rightarrow A$$
+	but $A^0 = \{f: \emptyset \rightarrow A \} = \{\emptyset\}$. It takes the set containing only the $\emptyset$ and fixes an element of $A$ to it. The "left side" ($\emptyset$ part) carries no information, so we identify $f:A^0 \rightarrow A$ with the element $f(\emptyset) \in A$, $I(c) \in A$.
+\end{remark}
+
+\begin{remark}
+	If $P \in \mathcal{P}$, $\alpha (P) = 0$
+	$$ I(P) \subseteq A^0 \implies I(P) \subseteq \{\emptyset\}$$
+	So $I(P)$ can be either $\emptyset$ or $\{\emptyset\}$ (we can call them 0 and 1 respectively).
+\end{remark}
+
+\begin{remark}
+  	To each relation we can associate its characteristic function:
+	$$ Q \in \mathcal{P} \quad \alpha(Q) = n$$
+	$$ \scalebox{1.5}{$\chi$}_{I(Q)} : A^n \rightarrow \{0,1\} : \qquad \scalebox{1.5}{$\chi$}_{I(Q)}(a_1,a_2, \dots, a_n) = 1 \ \ \textbf{ iff } \ \ (a_1,a_2, \dots, a_n) \in I(Q)  $$
+\end{remark}
+
+\begin{remark}
+	Let $\lang$ be a language with identity, $= \ \in \mathcal{P}$, $\alpha(=) = 2$. The semantics of "$=$" is fixed. Let $\mathcal{A} = (A,I)$ be an $\mathcal{L}$-structure, then:
+	$$ I (=) \subseteq A^2 \;\;\;\;\; I (=) := \{ (a,a): a \in A\} $$
+	Each element is in relation with only itself, this is the meaning of "$=$".\\
+	We shall see later that $(I(a), I(b)) \in I(=)$ iff $I(a) = I(b)$ (assuming $a,b \in \tl$).\\
+\end{remark}
+
+\noindent
+Define the \textbf{semantics} of \textbf{$\mathcal{L}$-sentences} (and \textbf{ground $\mathcal{L}$-terms}) in \textbf{every $\mathcal{L}$-structure}. We proceed by layers
+\begin{itemize}
+	\item layer for (ground) $\mathcal{L}$-terms
+	\item layer of $\mathcal{L}$-sentences ($\mathcal{L}$-formulas)
+\end{itemize}
+and inductively on each of these two layers. We have to capture the Tarskian "idea". We'll need to say when an $\mathcal{L}$-structure such as $\lstruc$ "\textbf{models}" a certain property, e.g.,
+$$ \mathcal{A} \models W(s)$$
+
+% End L19
+
+%% \paragraph{Key observation about the variables:} If we want to give \textbf{semantics to $\mathcal{L}$-sentences} proceeding inductively (and we're obliged to) we have a problem with quantifiers and variables
+%% $$ \forall x \;\; Cube(x) \;\;\;\;\; \exists x \;\; Cube(x) $$
+
+%% The semantics we want to define for these two examples, if we are to proceed inductively, should be based on the components of those two sentences, it should be based on the semantics of
+%% $$ Cube(x) $$
+%% and there is no way to definitely assign a truth value (in any given $\mathcal{L}$-structure; it's not a sentence, it doesn't make sense) to $Cube(x)$.\\
+
+%% Possible \textbf{solutions}:
+%% \begin{enumerate}
+%% 	\item \textbf{Enrich the interpretation}: interpret any variable $x$, too
+%% 	\item try to \textbf{get rid of variables} %What
+%% \end{enumerate}
+
+%% These two methods give the same semantics. We'll take a look at the second approach first.\\
+
+\subsection{Interpretation}
+
+We are going to establish the \textbf{interpretation of quantifiers}. We want, for instance, to establish whether in a given $\mathcal{L}$-structure $\mathcal{A} = (A,I)$:
+$$ \mathcal{A} \models \exists x F \marginnote{$\leftarrow$ (The structure "models"/"renders true" the sentence on the right. We need to define this notation)}$$
+\noindent
+is true \textbf{iff} it exists at least one element $a \in A$ such that $\mathcal{A} \models F[\sfrac{a}{x}]$. While:
+$$ \mathcal{A} \models \forall x F $$
+
+\noindent
+is true \textbf{iff} for all $a \in A$ it holds that $\mathcal{A} \models F[\sfrac{a}{x}]$.
+
+We're \textbf{substituting} a variable ($x$) with an element of the universe ($a$). These expressions make no sense: we cannot substitute variables with objects of the universe. We can overcome this difficulty if every object in the universe has a name (that is, there is a term whose interpretation is that object).
+
+In general, there is no need to have a name for each object of the universe we want to talk about. In many practical cases, it's usually not the case. For instance, if we want to deal in first order logic with the real numbers we want to do it with an elementary language $\mathcal{L}$ containing just finitely many symbols and able to name just enumerably many reals.
+
+So, in order to give the semantics to $\mathcal{L}$-sentences over universes "too large" to have names for all objects in the universe, we "cheat" expanding the language $\mathcal{L}$ to give names to all objects. This expansion of the language will only be "instrumental" to give the semantics.
+
+\textbf{Side effect:} variables will be mere "placeholders", they will be just syntactic devices, without any direct semantics.
+
+\paragraph{Expansion} $\mathcal{L}$ to $\mathcal{L}_\mathcal{A}$:
+\begin{enumerate}
+	\item Let $\lang$.
+
+	\item Let $\mathcal{A} = (A,I)$ be an $\mathcal{L}$-structure.
+
+	  \bline
+
+	\item Define the expansion $\la$ of $\mathcal{L}$ with respect to $\mathcal{A}$. $\mathcal{L}_\mathcal{A}$ is \textbf{defined} as follows:
+	\begin{enumerate}
+		\item For all $a \in A$ add to the set of constants .. a new symbol $\overline a$ (the "name" of $a$)
+		\item we shall interpret each $\overline a$ into $a$ \\
+	\end{enumerate}
+\end{enumerate}
+
+\noindent
+Now we need create a new $\mathcal{L}$-structure on $\mathcal{L}_{\mathcal{A}}$
+\begin{enumerate}
+	\item Given:
+	$$ \mathcal{L}_\mathcal{A} := (\mathcal{P}, \mathcal{F}^\mathcal{A}, \alpha, \beta^\mathcal{A}) $$
+	$$ \mathcal{F}^\mathcal{A} := \mathcal{F} \cup \{\overline a: a \in A\} \;\;\;\; (\overline a \notin \mathcal{F}) $$
+	$$ \beta^\mathcal{A} = \beta \; \text{ for all } \;  f \in \mathcal{F} $$
+	$$ \beta^\mathcal{A}(\overline a) = 0 \; \text{ for all }\; a \in A $$
+
+	\item $\overline{\mathcal{A}} = (A, \overline I)$, $\overline{\mathcal{A}}$ is an $\la$-structure. $\overline I$ coincides with $I$ on $\mathcal{L}$, while $\overline{I} (\overline a) := a$, for all $a \in A$
+\end{enumerate}
+
+\noindent
+So to sum up the whole procedure:
+First there is $\lang$, then there could be infinitely many $\mathcal{L}$-structures:
+$$
+\begin{cases}
+  	\ \ \ \ \ \ \vdots & \\
+	\lstruc & \rightsquigarrow \la \rightsquigarrow \overline{\mathcal{A}} = (A, \overline I) \;\;\; \la \text{-structure} \\
+	\mathcal{B} = (B, I) & \rightsquigarrow \mathcal{L}_\mathcal{B} \rightsquigarrow \overline{\mathcal{B}} = (B, \overline{I}) \; \; \; \mathcal{L}_\mathcal{B} \text{-structure}\\
+	\ \ \ \ \ \ \vdots & \\
+\end{cases}
+$$
+
+\subsubsection{Interpretation of $\la$-ground terms}
+
+Inductively:
+\begin{itemize}
+	\item \textbf{Base:}
+	\begin{itemize}
+		\item old constants \ $\rightarrow c \in \mathcal{F}, \beta(c) = 0 \rightarrow \overline I (c) := I(c)$
+		\item new constants $\rightarrow \overline a \in \mathcal{F}^\mathcal{A} \setminus \mathcal{F} \quad \,\,\, \rightarrow \overline I (\overline a) := a$ $(a \in A)$
+	\end{itemize} \nn
+
+	\item \textbf{Step:} Let $F \in \mathcal{F}$, $\beta (F) = n > 0$ and let $t_1, \, \dots \, , t_n$ be $\la$-terms, that are \textbf{ground}.\\
+	Then
+	$$\overline I (F(t_1, \, \dots \, , t_n)) := (I(F))(\overline I (t_1), \, \dots \, , \overline I (t_n)) \marginnote{$\leftarrow$ (remeber that $ I(F): A^n \rightarrow A $)} $$
+	
+\end{itemize}
+
+\noindent
+By induction, for each \textbf{ground} $\la$-term, the interpretation of $t$ is guaranteed to be an element of $A$, $\overline I (t) \in A$.
+
+\subsubsection{Interpretation of $\la$-sentences}
+
+Inductively we define $\overline{\mathcal{A}} \models F$ ($\overline{\mathcal{A}}$ "modes"/"renders true" $F$) for each $F \in \la$-sentence.
+
+\begin{itemize}
+	\item \textbf{Base}; ground atomic $\mathcal{L}_\mathcal{A}$ formulas (an atomic formula is a sentence iff it is ground)
+	$$ F = P (t_1, \, \dots \, , t_n)  \; \text{ for } \; P \in \mathcal{P}, \alpha(P) = n \quad t_1, \, \dots \, , t_n \ \ \text{are $\la$-ground terms} $$.
+	Then we can define (remeber the iff is by definition)
+	$$
+	\overline{\mathcal{A}} \models P(t_1, \, \dots \, , t_n) \; \text{ iff } \; (\overline I (t_1), \, \dots \, , \overline I (t_n)) \in I (P)
+	$$
+
+	\item Step:
+	$$
+	\begin{array}{c c c}
+		\overline{\mathcal{A}} \models F_1 \wedge F_2 & \; \text{ iff } \; & \overline{\mathcal{A}} \models F_1 \; \text{ and } \overline{\mathcal{A}} \models F_2 \\
+		\overline{\mathcal{\mathcal{A}}} \models F_1 \vee F_2 & \; \text{ iff } \; & \overline{\mathcal{A}} \models F_1 \; \text{ or } \; \overline{\mathcal{A}} \models F_2 \\
+		\overline{\mathcal{A}} \models \neg F_1 & \; \text{ iff } \; & \overline{\mathcal{A}} \not \models F_1 \\
+		\overline{\mathcal{A}} \models F_1 \rightarrow F_2 & \; \text{ iff } \; & \overline{\mathcal{A}} \not \models F_1 \; \text{ or } \; \overline{\mathcal{A}} \models F_2
+	\end{array}
+	$$
+
+	\item Step (again):
+
+		$$ \quad\quad\quad \ \text{$\overline{\mathcal{A}} \models \forall x F$ \quad\quad iff \quad\quad for all $a \in A$, $\overline{\mathcal{A}} \models F [\sfrac{\overline a}{x}]$} \marginnote{$\leftarrow$ (note we are using $\bar a$ (the name) not $a$)}$$
+		$$ \quad\quad\quad\quad\quad\quad\quad \ \ \, \ \text{$\overline{\mathcal{A}} \models \exists x F$ \quad\quad iff \quad\quad there is $a \in A$ such that $\overline{\mathcal{A}} \models F [\sfrac{\overline a}{x}]$} $$
+\end{itemize}
+
+\noindent
+By induction, for every $\la$-sentence $F$ the \textbf{truth value of} $F$ in the structure $\overline{\mathcal{A}}$ is \textbf{completely determined}, either $\overline{\mathcal{A}} \models F$ xor $\overline{\mathcal{A}} \not \models F$.
+
+We have completed the inductive definition of the \textbf{relation} $\overline{\mathcal{A}} \models F$ for each $\mathcal{L}$-structure $\mathcal{A}$ and $\la$-sentence $F$. For all $F \in \mathcal{L}$-sentence, we have that $\mathcal{A} \models F$ (as an $\mathcal{L}$-structure) iff $\overline{\mathcal{A}} \models F$ (as an $\la$-structure). \marginnote{$\leftarrow$ (important)}
+
+\begin{remark}
+	$F \in \fl$ but $F$ is not in $\mathcal{L}$-sentence. Assume
+	$$ FV(F) \neq \emptyset \;\;\;\;\; FV(F) \subseteq \{x_1, x_2, \, \dots \, , x_n\} $$
+	that is, $F$ has some free variables. How can we define the notion
+	$$ \mathcal{A} \models^? F $$
+	If $F$ is a sentence we already specified, but if there are free variables we simply do:
+	$$ \forall [F] := \forall x_1 \forall x_2 \, \dots \, \forall x_n F$$
+	we call this "universal closure of $F$", $\implies \forall [F]$ is an $\mathcal{L}$-sentence (so $FV(\forall[F]) \neq \emptyset$).
+	By definition we say: $\mathcal A \models F$ iff $\mathcal A \models \forall [F]$.
+\end{remark}
+
+\begin{remark}
+	If $\mathcal{L}$ is a \textbf{language with identity} $\lang$, $= \ \in \mathcal{P}$, $\alpha(=) = 2$, and in every $\mathcal{L}$-structure (with identity) $\mathcal{A} = (A,I)$ we have the same interpretation of $=$,
+	$$ I(=) = \{(a,a): a \in A\} \subseteq A^2 $$
+
+	\noindent
+	Then $t_1, t_2$ ground $\mathcal{L}$-terms ($\la$-terms) then we have that
+	$$ \mathcal{A} \models t_1 = t_2 \;\;\;\; (\overline{\mathcal{A}} \models t_1 = t_2) $$
+	$$\text{iff} \quad\quad\quad\quad\quad\quad \text{iff}$$
+	$$ I(t_1) = I(t_2) \;\;\;\; (\overline I (t_1) = \overline I (t_2)) $$
+\end{remark}
+
+
+\paragraph{Alternative (but equivalent) definition of $\mathcal{A} \models F$:} We'll say $\mathcal{A} \models' F$ to distinguish them, but they're functionally the same. Here, the variables will play a major role (instead of being just placeholders). The two definitions $\models$, $\models'$ are completely equivalent $\models = \models'$ ($\mathcal{A} \models F$ iff $\mathcal{A} \models' F$).
+
+\begin{definition}
+	An (interpretational) \textbf{environment} in an $\mathcal{L}$-structure $\mathcal{A} = (A,I)$ is just a function $v: \mathcal{V} \rightarrow A$ (map every variable to an element of the universe).
+\end{definition}
+
+\begin{definition}
+	\textbf{Variant of an environment}, having $v: \mathcal{V} \rightarrow A$, for a variable $x \in \mathcal{V}$ and an element of the universe $a \in A$
+	$$ v[\sfrac{a}{x}] (y) =
+	\begin{cases}
+		v(y) & \text{ if } y \neq x \\
+		a & \text{ if } y = x
+	\end{cases}
+	$$
+\end{definition}
+\noindent
+$v[\sfrac{a}{x}]$ is the variant of $v$ with respect to $x,a$. Clearly it's an environment.\\
+
+\noindent
+Interpretation of $\mathcal{L}$-terms (also non-ground terms):
+\begin{itemize}
+	\item For all $x \in \mathcal{V}$ and each environment $v: \mathcal{V} \rightarrow A$
+	$$ I_v (x) := v(x) $$
+	\item While $I_v (F(t_1, \, \dots \, , t_n)) := (I(F))(I_v(t_1), \, \dots \, , I_v (t_n))$
+\end{itemize}
+
+\begin{definition} $\mathcal{A} \models_v F$, it's the \textbf{interpretation with regard to some environment} $v$, "$\mathcal{A}$ models $\mathcal{F}$ in the environment $v$".
+\begin{itemize}
+	\item $\mathcal{A} \models_v P(t_1, \, \dots \, , t_n)$ iff $(I_v (t_1), \, \dots \, , I_v (t_n)) \in I(P)$
+	$$
+	\begin{cases}
+		\mathcal{A} \models_v F_1 \wedge F_2 \; \text{ iff } \; \mathcal{A} \models_v F_1 \; \text{ and } \; \mathcal{A} \models_v F_2 \\
+		\vdots
+	\end{cases}
+	$$
+	\item $\mathcal{A} \models_v \forall x \in F$ iff for all $a \in A$ $\mathcal{A} \models_{v [\frac{a}{x}]} F$.\\
+	\item $\mathcal{A} \models_v \exists x \in F$ iff for all $a \in A$ $\mathcal{A} \models_{v [\frac{a}{x}]} F$
+\end{itemize}
+\end{definition}
+
+\noindent
+But we want to define the notion without dependence on the environment so we say that;
+$$ \mathcal{A} \models' F \text{ iff for all $v: \mathcal{V} \rightarrow A$: $\mathcal{A} \models_v F$}$$. \marginnote{$\leftarrow$ (complete as exercise $\mathcal{A} \models' F \text{ iff } \mathcal{A} \models F$)}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.859\textwidth]{img22.png}
+\end{figure}
+
+% End L19
+
+\marginnote{$\leftarrow$ (Exercises remeber to see them!!)}
+
+\vspace{-0.75cm}
+
+\section{Notions, Terminology}
+
+\begin{definition}
+	An $\mathcal{L}$-sentence $F$ is called a \textbf{logical truth}, or is a valid sentence, \textbf{iff} for all $\mathcal{L}$-structures $\mathcal{A}$ we have that $\mathcal{A} \models F$, in this case we write $\models F$ (same notation for tautologies at propositional level, it's kind of like a tautology, but not exactly).
+\end{definition}
+
+There are some differences with propositional tautologies, for example $c=c$ are just propositional letters, but using the fixed semantics of $=$ we can say that this is a valid sentence, same with $\forall x(x=x)$.\\
+Other examples:
+\begin{itemize}
+	\item $(\forall x P(x)) \rightarrow (\forall x P(x))$ is valid and is a tautology, since it's in the form $A \rightarrow A$
+	\item $(\forall x P(x)) \rightarrow (\exists x P(x))$, it's valid and a logical truth, but not a tautology at the propositional level, to say that it's valid we have to reason at first order
+\end{itemize}
+
+\begin{definition}
+	\textbf{Logical equivalence:} Given the $\mathcal{L}$-sentences $A,B$ we say that $A$ is logically equivalent with $B$, written as $A \equiv B$, \textbf{iff} $A$ and $B$ have (exactly) the same models, i.e., for all $\mathcal{L}$-structures $\mathcal{A}$, $\mathcal{A} \models A$ iff $\mathcal{A} \models B$. Equivalently, $A \equiv B$ \textbf{iff} $\models (A \rightarrow B) \wedge (B \rightarrow A)$ (same as $(\models (A \leftrightarrow B)$).
+\end{definition}
+
+
+\begin{definition}
+	\textbf{Equisatisfiability:} Given the $\mathcal{L}$-sentences $A$, $B$. We say that $A$ equisat $B$ \textbf{iff} ($A$ has a model iff $B$ has a model). Similar to propositional logic.
+\end{definition}
+
+\begin{definition}
+	An \textbf{$\mathcal{L}$-theory} $\Gamma$ is just a \textbf{set of $\mathcal{L}$-sentences}. If $\Gamma$ is an $\mathcal{L}$-theory and $\mathcal{A} = (A,I)$ is an $\mathcal{L}$-structure we say that $\mathcal{A}$ is a model of the theory $\Gamma$ (models/renders true/satisfies $\Gamma$), written as $\mathcal{A} \models \Gamma$ iff $\mathcal{A} \models \gamma$ for all $\gamma \in \Gamma$.
+\end{definition}
+
+\begin{definition}
+	An $\mathcal{L}$-theory $\Gamma$ is \textbf{satisfiable} iff $\Gamma$ has at least one model, i.e., there is at least one $\mathcal{A}$ such that $\mathcal{A} \models \Gamma$. Otherwise $\Gamma$ is \textbf{unsatisfiable}.
+\end{definition}
+
+\begin{definition}
+	Let $\Gamma$be an $\mathcal{L}$-theory and $F$ eb an $\mathcal{L}$-sentence. Then $F$is \textbf{logical consequence} of $\Gamma$ ($\Gamma \models F$) iff $F$ is true in every model of $\Gamma$, i.e., if $\mathcal{A} \models \Gamma$ then $\mathcal{A} \models F$.
+\end{definition}
+
+\noindent
+We shall be concerned in ascertaining whether $\Gamma \models F$ of not, for a given $\Gamma \subseteq \fl$, $F \in \fl$.\\
+
+
+Examples of $\mathcal{L}$-theories
+Order, Partial Order, $R$ of arity 2 in a language with identity
+
+\begin{example} \textbf{Partial order} $R$ of arity 2, in language \textbf{with identity}
+
+$$
+\Gamma_{po} := \begin{cases}
+  	\forall x R(x,x) & \text{Reflexivity} \\
+	\forall x \forall y (R(x,y) \wedge R(y,x)) \rightarrow x=y & \text{Antisymmetry} \\
+	\forall x \forall y \forall z (R(x,y) \wedge R(y,z)) \rightarrow R(x,z) & \text{Transitivity}
+\end{cases}
+$$
+
+\noindent
+We can also do a total order adding this:
+$$\Gamma_{to} := \Gamma_{po} \cup \{\forall x \forall y (R(x,y) \vee R(y,x))\} $$,
+
+\noindent
+Obviously we have:
+$$(\mathbb{N}, \leq) \models \Gamma_{po}, \models \Gamma_{to}  \marginnote{$\leftarrow (\mathbb{N}, \leq) = (\mathcal{A} := (A, I(R)))$}$$
+$$(\mathbb{N}, \geq) \models \Gamma_{po}, \models \Gamma_{to}$$
+$$(\mathbb{N}, =) \models \Gamma_{po}, \cancel{\models} \ \Gamma_{to}$$
+$$(\mathbb{N}, | (divisibility)) \models \Gamma_{po}, \cancel{\models} \ \Gamma_{to} \marginnote{ADDITIONAL EXERCISES}$$
+
+\end{example}
+
+\begin{example} \textbf{Congruence relation}, given $\mathcal{L}=(\mathcal{P},\mathcal{F},\alpha, \beta)$, $R \in \mathcal{P}$, $\alpha(R) = 2$
+
+$$
+\Gamma_{eq} := \begin{cases}
+  	\forall x R(x,x) & \text{Reflexivity} \\
+	\forall x \forall y R(x,y) \rightarrow R(y,x) & \text{Symmetry} \\
+	\forall x \forall y \forall z (R(x,y) \wedge R(y,z)) \rightarrow R(x,z) & \text{Transitivity}
+\end{cases}
+$$
+
+\begin{enumerate}
+  \item $\forall x_{1} \dots \forall x_{n} \forall y_{1} \dots \forall y_{n}$, with $F \in \mathcal{F}, \beta(F) = n$:
+		$$ [ R(x_{1},y_{1}) \wedge  R(x_{2},y_{2}) \wedge \dots \wedge  R(x_{n},y_{n}) ] \rightarrow R(F(x_{1}, x_{2}, \ldots, x_{n}), F(y_{1}, y_{2}, \ldots, y_{n}) ) $$
+   \item $\forall x_{1} \dots \forall x_{n} \forall y_{1} \dots \forall y_{n}$, with $P \in \mathcal{P} \setminus \{R\}, \alpha(P) = n$:
+		$$ [ R(x_{1},y_{1}) \wedge  R(x_{2},y_{2}) \wedge \dots \wedge  R(x_{n},y_{n}) ] \rightarrow (P(x_{1}, x_{2}, \ldots, x_{n}) \rightarrow P(y_{1}, y_{2}, \ldots, y_{n}))  $$
+\end{enumerate}
+Every model of $\Gamma_{eq} \cup \{1.,2.\}$ is a congruence with respect to any $F \in \mathcal{F}$ and any $P \in \mathcal{P} \setminus \{R\}$.
+
+\end{example}
+
+\begin{example} \textbf{Group Theory}, A group is an algebraic structure with a binary operation which is associative, and such that every element is invertible.\\
+
+\noindent
+\textbf{First formulation}, $\star \in \mathcal{F}, e \in \mathcal{F}, ()^{-1} \in \mathcal{F}, \beta(star) = 2, \beta(e) = 0 , \beta(()^{-1}) = 1$ also the language has \textbf{identity} :
+
+$$
+\Gamma_{G1} := \begin{cases}
+  	\forall x \forall y \forall z \ ((x \star y)\star z) = (x \star (y \star z)) \\
+	\forall x \  (x \star e = x) \wedge (e \star x = x) \\
+	\forall x \ (x \star x^{-1} = e \wedge x^{-1} \star x = e)
+\end{cases}
+$$
+
+\noindent
+Obviously we have:
+$$(G, \cdot, ()^{-1}, e) \models \Gamma_{G1} \text { iff G is a group }$$
+\begin{equation*}
+  \begin{rcases}
+	(\mathbb{Z}, +, -, 0) \models \Gamma_{G1} \\
+	(\mathbb{Q}, +, -, 0) \models \Gamma_{G1} \\
+	(\mathbb{Q} \setminus \{0\}, \cdot, \frac{1}{()}, 1) \models \Gamma_{G1}
+  \end{rcases}
+  \text{All these examples satisfy also
+  $\forall x \forall y x \star y = y \star x$ :comm} \marginnote{$\leftarrow$ ($\Gamma_{G1} \cup \{comm\}$ makes it the theory of abellian groups.)}
+\end{equation*}
+\\
+
+\noindent
+\textbf{Second formulation}:
+
+$$
+\Gamma_{G2} := \begin{cases}
+  	\forall x \forall y \forall z \ ((x \star y)\star z = (x \star (y \star z)) \\
+	\forall x \ (x \star e = x) \wedge (e \star x = x) \\
+	\forall x \exists y \ (x \star y = e \wedge y \star x = e)
+\end{cases}
+$$
+
+\noindent
+Obviously we have:
+$$(\mathbb{Z}, +, 0) \models \Gamma_{G2} \quad (\mathbb{Q}, +, 0) \models \Gamma_{G2} \quad (\mathbb{Q} \setminus \{0\}, \cdot, 1) \models \Gamma_{G2} $$
+$$(\mathbb{Z}, +, -, 0) \models \Gamma_{G2}$$
+$$(\mathbb{Z}, +, \textunderscore + 1, 0) \models \Gamma_{G2}$$
+$$(\mathbb{Z}, +, \textunderscore + 1, 0) \ \cancel{\models} \ \Gamma_{G1}$$
+
+\end{example}
+
+\newpage
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{img23.png}
+\end{figure}
+
+\vspace{1cm}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{img24.png}
+\end{figure}
+
+\newpage
+
+\subsection{Normal forms}
+
+Our Goal Similarly to propositional logic, is trying to decide whether $\Gamma \models^? A$.
+
+If $\Gamma$ is infinite we can use first-order compactness theorem to study finite approximations of $\Gamma$. If $\Gamma = \{\gamma_1, \, \dots \, , \gamma_n\}$ is a finite theory. Then $\Gamma \models A$ iff $\gamma_1 \wedge \gamma_2 \wedge \, \dots \, \wedge \gamma_u \wedge \neg A$ is UNSAT (in the first-order meaning, i.e., if it doesn't have a model). We need to develop a method to (semi-)decide whether a first-order sentence is UNSAT.\\
+
+\noindent
+\textbf{First Step}: put the sentence in a suitable normal form.
+
+\subsubsection{Prenex Normal Form PNF}
+\begin{definition}
+  An $\mathcal{L}$-sentence is in PNF iff it is of the form $Q_1 x_1 \, \dots \, Q_n x_n M$, where each $Q_i$ is one of the quantifiers, $Q_i \in \{\forall, \exists\}$ and $M$ is an $\mathcal{L}$-formula free of quantifiers (called Matrix). Notice that $FV(M) \subseteq \{x_1, \, \dots \, , x_n\}$.
+\end{definition}
+
+\begin{fact}
+Every $\mathcal{L}$-sentence $A$ is logically equivalent (has the same models, true under the same $\mathcal{L}$-structures) to an $\mathcal{L}$-sentence $\in PNF$
+$$ A \equiv A^P, \; A^P \in PNF $$
+\end{fact}
+
+% Sketch of proof
+\noindent
+The sketch of proof $A^P$ is built (in polynomial time with respect to $||A||$) using iteratively the following notable logical equivalences:
+% In the next episode
+
+%End L21
+
+\begin{fact} Let $P$ be any $\mathcal{L}$-formula and let $z$ be a variable \textbf{not} occurring in $P$ ($z$ is "new").
+\begin{enumerate}
+\item Renaming:
+$$
+\begin{cases}
+	\exists x P & \equiv \exists z P[\sfrac{z}{x}] \\
+	\forall x P & \equiv \forall z P [\sfrac{z}{x}]
+\end{cases}
+$$
+
+\item De Morgan: \marginnote{$\leftarrow$ (can see $\forall$ as a form of generalized conjunction and $\exists$ as a generalized disjunction)}
+$$
+\begin{cases}
+	\neg \forall x P & \equiv \exists x \neg P \\
+	\neg \exists x P & \equiv \forall x \neg P \\
+	\forall x P & \equiv \neg\exists x \neg P \\
+	\exists x P & \equiv \neg \forall x \neg P
+\end{cases}
+$$
+\end{enumerate}
+\end{fact}
+
+\begin{proof}
+Lets prove one case of the De Morgan. Starting from an $\mathcal{L}$-structure we want to prove $\mathcal{A} \models \neg \forall x P$ \textbf{iff} $\mathcal{A} \models \exists x \neg  P$:
+
+\begin{align*}
+&\textbf{iff } \mathcal{A} \models \neg \forall x P \\
+&\textbf{iff } \mathcal{A} \not \models \forall x P & & \text{ by the semantics of negation} \\
+&\textbf{iff } \text{it's not the case that for all } a \in A, \mathcal{A} \models P [ \sfrac{\overline a}{x}]  && \text{ by the semantics of $\forall$} \\
+&\textbf{iff } \text{for some } a \in A, \mathcal{A} \not \models P[\sfrac{\overline a}{x}]  && \text{ by the semantics of $\forall$} \\
+&\textbf{iff } \text{for some } a \in A, \mathcal{A} \models \neg P[\sfrac{\overline a}{x}] & & \text{ by the semantics of negation} \\
+&\textbf{iff } \mathcal{A} \models \exists x \neg P & & \text{ by the semantics of $\exists$} \marginnote{$\leftarrow$ (Notice!, in general $\forall x \exists y P \not \equiv \exists y \forall x P$)}[2cm] \\
+\end{align*}																				\end{proof}
+
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item Redundant quantification and exchange
+$$
+\begin{cases}
+\forall x \forall y P \equiv \forall y \forall x P \\
+\exists x \exists y P \equiv \exists y \exists x P \\
+\forall x P \equiv P \; \text{ if }  x \notin FV(P) \\
+\exists x P \equiv P \; \text{ if }  x \notin FV(P) \\
+\end{cases}
+$$	 
+
+\item Quantifiers shifting (w.r.t $\wedge, vee$)
+$$
+\begin{cases}
+	\forall x (P_1 \wedge P_2) & \equiv \forall x P_1 \wedge \forall x P_2 \\
+	\exists x (P_1 \vee P_2) & \equiv \exists P_1 \vee \exists P_2 \\
+	\forall x (P_1 \vee P_2) & \equiv \forall x P_1 \vee P_2 \; \text{ if } x \notin FV(P_2) \\
+	\exists (P_1 \wedge P_2) & \equiv \exists x P_1 \wedge P_2 \; \text{ if } x \notin FV(P_2) \\
+\end{cases}
+$$
+
+\begin{equation*}
+  \begin{rcases}
+	\forall x (P_1 \vee P_2) \not \equiv \forall x P_1 \vee \forall x P_2 \\
+	\forall x (P_1 \wedge P_2) \not \equiv \forall x P_1 \wedge \forall x P_2 \\
+  \end{rcases}
+  \text{In general}
+\end{equation*}
+
+\noindent
+\begin{example} Given $\mathcal{N} = \{\mathbb{N}, E, O\}$ where $E$ is intrepreted as the set of Even number and $O$ of Odd numbers
+$$
+\begin{cases}
+	\mathcal{N} \models \forall x (E(x) \vee O(x)) \\
+  \mathcal{N} \not \models \forall x E(x) \vee \forall x O(x) \\
+  \mathcal{N} \not \models \exists x (E(x) \vee O(x)) \\
+  \mathcal{N} \models \exists x E(x) \vee \exists x O(x) \\
+\end{cases}
+$$
+\end{example}
+
+\item  When in doubt, substitute, $Q_{1}, Q_{2} \in  \{\forall, \exists\}$
+$$
+\begin{cases}
+	Q_1 x P_1 \vee Q_2 x P_2 &\equiv \;\; Q_1 x Q_2 z (P_1 \vee P_2 [\sfrac{z}{x}]) \\
+	Q_1 x P_1 \vee Q_2 x P_2 &\equiv \;\; Q_1 x Q_2 z (P_1 \vee P_2 [\sfrac{z}{x}]) \\
+\end{cases}
+$$
+
+\item Indirect implication, all these are ture only if $x \notin FV(Q)$
+$$
+\begin{cases}
+	\forall x P \rightarrow Q & \equiv \;\; \exists x (P \rightarrow Q) \marginnote{$\leftarrow$ (si son veri pensaci)} \\
+	\exists x P \rightarrow Q & \equiv \;\; \forall x (P \rightarrow Q) \\
+	Q \rightarrow \forall x P & \equiv \;\; \forall x (P \rightarrow Q) \\
+	Q \rightarrow \exists x P & \equiv \;\; \exists x (P \rightarrow Q) \\
+\end{cases}
+$$
+
+\end{enumerate}			
+
+\begin{fact}
+Given an $\mathcal{L}$-sentence $A$, there is a polinomially short (in $||A||$) sequence
+$$ A = A_0 \underset{\equiv}{\leadsto} A_1 \underset{\equiv}{\leadsto} \, \dots \, \underset{\equiv}{\leadsto} A_u, \;\;\;\; A_u \in PNF \marginnote{$\leftarrow$ (NOT PROVEN)} $$
+\end{fact}
+
+\marginnote{$\leftarrow$ (Exercise in Slides)}
+
+\vspace{-0.75cm}
+
+\subsection{Skolemization}
+
+We're up to the point in which:
+$\mathcal{L}$-sentence $A$, $A \underset{\equiv}{\leadsto} A^P \in PNF$.
+
+Now we want to get rid of all occurrences of $\exists$ from $A^P$. This process is called \textbf{Skolemization} (From Thoralf Skolem).
+
+\begin{definition}
+  An $\mathcal{L}$-sentence $A \in PNF$ is in \textbf{Skolem Normal Form} $SNF$ iff it does not contain any occurrences of $\exists$; they are universal sentences, this is also called universal normal form.
+\end{definition}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{img25.png}
+\end{figure}
+\noindent
+Let us recall the two axiomatizations of the theory of groups:
+
+\begin{enumerate}
+  \item  $\mathcal{A} = (A,I)$, $\mathcal{A} \models \forall x \exists y ((x * y = e) \vee (y * x = e))$ \textbf{iff} forall $a \in A$ there exist a $b \in A$ such that $(a * b = e) \vee (b * a = e) \marginnote{$\leftarrow$ ($b$ is determined functionally by $a$)}$:
+  \item  $\mathcal{A} = (A,I)$, $\mathcal{A} \models \forall x ((x * x^{-1} = e) \vee (x^{-1} * x = e))$ $()^{-1}$ is a function symbol whose interpretation applied to $a \in A$ gives $b \in A$ such that $(a * b = e) \vee (b * a = e)$:
+
+\end{enumerate}
+
+\noindent
+Consider
+$$ \mathcal{A} \models \forall x_1 \, \dots \, \forall x_n \exists y B $$
+where $\exists y$ is the outer most occurrence of $\exists$, the whole formula is $\in PNF$, $B$ may obviously contain other quantifiers.
+
+Now $ \mathcal{A} \models \forall x_1 \, \dots \, \forall x_n \exists y B $ \textbf{iff} for all $(a_1, \, \dots \, , a_n) \in A^n$ there is at least one $b \in A$ such that
+$$ \mathcal{A} \models B[\sfrac{\overline a_1}{x_{1}}][\sfrac{\overline a_2}{x_{2}}] \, \cdots \, [\sfrac{\overline a_n}{x_{n}}] [\sfrac{\overline b}{y}] $$
+so there is a function $f(a_1, \, \dots \, , a_n) = b \marginnote{$\leftarrow$ (if there are more than one $b$ fix one)}$ $(\dag)$.\\
+
+\noindent
+Skolemization:
+\begin{enumerate}
+\item Introducing a \textbf{new} function symbol $\overline f$ of arity $n$
+\item Interpreting the new symbol $\overline f$ in the function defined by the collection of all statements $(\dag)$, for all $(a_1, \, \dots \, , a_n) \in A^n$
+\end{enumerate}
+
+\noindent
+We now changed the language, so we need to change also the structure so we now have $\mathcal{A}'$, a structure obtained from $\mathcal{A}$, in the expanded language
+$$ \mathcal{A}' \models \forall x_1 \, \dots \, \forall x_n B [\overline f(x_1, \, \dots \, , x_n)/y] $$
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{img26.png}
+\end{figure}
+
+\textbf{Notice}: Every $\mathcal L^S$-structure arises as a structure of the form $(\mathcal A, h)$ for some $\mathcal L$-structure $\mathcal A = (U,I)$ and some function $h: U^n \rightarrow U \marginnote{$\leftarrow$ (i mean kinda you get the point)}$.
+
+\begin{example}
+$A \not \equiv A^S$, $P \in \mathcal P$, with $\alpha (P) = 1$, $A := \exists x P(x)$ and $A^S := P[\overline c/x] $
+we replace the quantifier with  a function of arity equal to the number of quantifiers before that, in this case it's a new constant.
+è Given this structure $A = \{U, I\}$, $U = \{e_{1}, e_{2}\}$, $I(P) = \{e_{2}\}$
+
+$$ (\mathcal{A}, e_{2}) \models A$$
+$$ (\mathcal{A}, e_{2}) \models A$$
+$$ (\mathcal{A}, e_{2}) \not \models A^{s} \qquad ((\mathcal{A}, e_{2}) \models P(\overline c) \textbf{ iff } I(\overline c) \in I(P) \textbf{ iff } e_{1} \in \{e_{2}\} \quad NO!)$$
+$$ (\mathcal{A}, e_{2}) \models A^{s} \qquad ((\mathcal{A}, e_{2}) \models P(\overline c) \textbf{ iff } I(\overline c) \in I(P) \textbf{ iff } e_{2} \in \{e_{2}\} \quad SI!)$$
+
+\end{example}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{img27.png}
+\end{figure}
+
+We now have to show that $A$ and $A^S$ are equisatisfiable, we do this by showing that if $(\mathcal A, h) \models A$ then there is $g: U^n \rightarrow U$ (in general $g \neq h$) such that $(\mathcal A, g) \models A^S$.\\
+
+\textbf{Notice}: for each function $\ell: U^n \rightarrow U$, $(\mathcal A, \ell) \models A$ implies $\mathcal A \models A$ since $A$ does not contain occurences of $\overline f$. $(\mathcal A, h) \models A$ then $\mathcal A \models A$ (remember that $A: \forall x_1 \, \dots \, \forall x_n \exists y B$).\\
+
+\noindent
+$\mathcal A \models A$ iff for all $(a_1, \, \dots \, , a_n) \in U^n$ there is $b \in U$ such that $\mathcal A \models B[\overline a_1/x_1] \, \dots \, [\overline a_n/x_n][\overline b/y]$. Put $g(a_1, \, \dots \, , a_n) := b$ and call it $(\dag)$. The collection of all $(\dag)$s, for all $(a_1, \, \dots \, , a_n) \in U^{n}$ defines a function $g: U^{n} \rightarrow U$ (maybe $g \neq h$) 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.89\textwidth]{img28.png}
+\end{figure}
+
+From $\models A^{S} \rightarrow A$ \text{ and } $[(\mathcal{A}, h) \text{ implies there is } g: U^{n} \rightarrow U \text{ such that } (\mathcal{A}, g) \models A^{s}]$ we conclude $A$ equisat $A^{S}$
+
+% End L22
+
+The last step consists in putting the obtained sentence in CNF.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.89\textwidth]{img29.png}
+\end{figure}
+
+Let us consider any atomic formula $P(t_{1}, \dots , t_{k})$ as a propositional letter (even
+if the formula contains variable names). Mind that distinct atomic formulas (distinct as strings of symbols) are distinct propositional letters. Then in
+$\forall x_{1} \cdots \forall x_{n} M \in SNF$, the matrix $M$ is considered as a propositional formula over its atomic formulas as propositional letters. One can use any propositional
+algorithm to produce $M^{C} \in CNF$ such that $M^{C}$ equisat $M$ (or even $M^{C} \equiv M$ if
+an algorithm that preserves logical equivalence is used). Then $\forall x_{1} … \forall x_{m} M^{C}$ is in first-order conjunctive normal form. We would like to semidecide the following statement
+
+$$
+\Gamma \stackrel{?}{\models} A
+$$
+
+assuming $\Gamma$ is finite $\Gamma = {\gamma_{1}, \dots, \gamma_{u}}$ (otherwise we have to use compactness to focus on growing
+finite subsets of $\Gamma$). As we already know, this amounts to asking:
+
+$$
+\Gamma, \neg A \text{ UNSAT } \leadsto \gamma_{1}, \wedge \cdots \wedge \gamma_{u} \wedge \neg A \text{ UNSAT } \leadsto (\gamma_{1}, \wedge \cdots \wedge \gamma_{u} \wedge \neg A)^{P^{S^{C}}} \text{ UNSAT }
+$$
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{img30.png}
+\end{figure}
+
+\noindent
+We now simplify the notation:
+\begin{enumerate}
+\item We forget all quantifiers: writing all quantifiers $\forall x_{1} … \forall x_{m}$ does not add any information, as we already assume every variable is universally quantified. Alternativerly we can say that $\mathcal{A} \models G \text{ iff } \mathcal{A} \models \forall[G]$.
+
+  \item We use set theoretic notations for CNFs as already introduced in a previous chapter, thus:
+		$$
+		F \in PNF \cap SNF \cap CNF \leadsto S_{F} = {C_{1}, \dots , C_{v} }
+		$$
+		where $S_{F}$ is a set of clauses and
+		$$
+		C_{i} = {l_{i1}, \dots , l_{iu}}
+		$$
+		This way we get the following advantages:
+		\begin{itemize}
+		\item We can put any formula in our original theory in our normal form
+indipendently one from another (explained better in further exercies)
+		\item if $\gamma$ is an infinite theory, then $S_{F}$ is going to be just an infinite set of clauses
+		\end{itemize}
+\item Finally we will use sequent form for clauses: take a clause
+		$$
+		C_{i} = {l_{i1}, \dots , l_{iu}}
+		$$
+and consider the two subsets of the negative and positive atomic formulas
+		in $C_{i}$
+$$
+N_{i} = \{ l_{ij} : l_{ij} = \neg P(t_{1}, \dots , t_{k}) \in C_{i} \}
+$$
+$$
+P_{i} = \{ l_{ij} : l_{ij} = P(t_{1}, \dots , t_{k}) \in C_{i} \}
+$$
+observe that this is a partition, and as such:
+		$$
+ P_{i} \cup N_{i} = C_{i}
+		P_{i} \cap N_{i} = \emptyset
+		$$
+the sequent form of $C_{i}$ is then:
+$$N_{i} \Rightarrow P_{i} \marginnote{$\leftarrow$ (think about it its litrally just a implication, also the empty clause $\square$ is just $\{\} \Rightarrow \{\}$)} $$
+
+\end{enumerate}
+
+\begin{example} \hspace{1cm}
+  \begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{img31.png}
+  \end{figure}
+\end{example}
+
+\subsection{Herbrand Theory}
+
+Let $S$ be a set of first-order clauses (written as sequents or as sets of literals). We want to reduce the problem of deciding whether $S$ is satisfiable to the problem of propositional satisfiability on a set of propositional clauses $S'$ obtained in some way from $S$. This process will follow the following step:
+
+\begin{itemize}
+\item Propositional Abstraction: we use a function associating injectively every
+		ground atomic sentence (that is $Q(t_{1}, \dots , t_{n})$ with $Q \in \mathcal{P}$, $\alpha(Q) = n$ and $t_1, \dots , t_{n}$ ground terms) with a propositional letter $p_{Q(t_{1}, \dots ,t_{n})}$.
+
+		Given a clause $C = \{A_{1}, \dots , A_{n} \Rightarrow B_{1}, \dots , B_{p}\}$, where all $A_{i}, B_{i}$ are atomic and ground, then applying propositional abstraction we get:
+		$$
+		C^{*} = \{ p_{A_{1}} , p_{A_{2}}, \dots , p_{A_{u}} \Rightarrow p_{B_{1}}
+	,	p_{B_{2}} , \dots , p_{B_{v}} \}
+		$$
+		with $p_{A_{1}}$ , $p_{B_{1}}$ propositional letters.
+\end{itemize}
+
+\begin{theorem}[Herbrand]
+A set of first order clauses $\mathcal{S}$ is usatisfiable \textbf{iff} there exists a finite set of ground instances of clauses of $\mathcal{S}$ such that
+their propositional abstraction is propositionally unsatisfiable.
+\end{theorem}
+
+\begin{definition}
+Let $\mathcal{S}$ be a set of 1st order $\mathcal{L}$-clauses and let $G$ be a set of ground $\mathcal{L}$-terms
+Then, by $\sfrac{G}{S}$ we mean the \textbf{ground instatiation} of $\mathcal{S}$ over $G$, that is the set of all $\mathcal{L}$-clauses (which are necessarily ground by construction) obtained from each $C \in \mathcal{S}$, by sustituting in $C$ every occurrence of any variable $x$, with some $t \in G$. This happens simultaneously, by which we mean that every instance of some variable $x$ is sustituted by the same $t$, and in each possible way.
+\end{definition}
+
+\begin{example} \hspace{1cm}
+  \begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{img32.png}
+  \end{figure}
+\end{example}
+
+\begin{definition}[Herbrand Universe]
+$H_{\mathcal{S}}$ of a set $\mathcal{S}$ of 1st order $\mathcal{L}$-clauses.
+
+\begin{itemize}
+  \item Let $F_{\mathcal{S}}^{0}$ be the set of all function symbols (including
+		constants) occurring in $\mathcal{S}$;
+
+  \item We divide in two cases:
+		\begin{itemize}
+		  \item If $F_{\mathcal{S}}^{0}$ does not contain any constant, then set $F_{\mathcal{S}} := F_{\mathcal{S}}^{0} \cup \{ \boldsymbol{\nmid} \}$ where $\boldsymbol{\nmid}$ is a new constant
+		  \item Otherwise $F_{\mathcal{S}} := F_{\mathcal{S}}^{0}$
+
+		\end{itemize}
+
+\end{itemize}
+
+Then $H_{\mathcal{S}}$ is the set of all (necessarily ground by construction) terms built only using the symbols in $F_{\mathcal{S}}$
+
+\end{definition}
+
+\begin{example} \hspace{1cm}
+  \begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{img33.png}
+  \end{figure}
+\end{example}
+
+\begin{example} \hspace{1cm}
+  \begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{img34.png}
+  \end{figure}
+\end{example}
+
+\begin{definition}
+Let $\mathcal{S}$ be a set of first order clauses, then $\mathcal{S}$ is unsatisfiable iff $(\sfrac{\mathcal{S}}{H_{\mathcal{S}}})^{\times}$
+is propositionally unsatisfiable.
+\end{definition}
+
+\begin{remark} If $H_{\mathcal{S}}$ is infinite then $(\sfrac{\mathcal{S}}{H_{\mathcal{S}}})^{\times}$ is infinite.
+\end{remark}
+
+\begin{remark} If $G_{1} \subseteq G_{2}$ then $\sfrac{\mathcal{S}}{G_{1}} \subseteq \sfrac{\mathcal{S}}{G_{2}}$
+\end{remark}
+
+The two theorems of Herbrand’s theory that we stated both follows as corollaries of the main theorem of Herbrand’s semantics. Herbrand’s semantics are
+a refinement of Tarskian semantics.
+
+\begin{definition} Given:
+  $$
+  	\Gamma \stackrel{?}{\models} A
+  $$
+
+we shall consider, instead of all $\mathcal{L}$-structures, just some of them, which are ``canonical'' (da spiegare), where the universe is $H_{\mathcal{S}}$ and the interpretation of terms is fixed and reflects that the universe that we consider is made of terms. Herbrand’s semantics flattens semantics to syntax.
+\end{definition}
+
+  \begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{img35.png}
+  \end{figure}
+
+%%% Local Variables:
+%%% TeX-master: "../MathLogic.tex"
+%%% End:
